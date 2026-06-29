@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --navy: #12284A;
+  --off-white: #FAFAF8;
+  --text: #444444;
+  --muted: #6F7480;
+  --border: #E6E6E6;
+  --white: #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--off-white);
+  color: var(--text);
+  font-family: "Inter", Arial, sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--off-white);
+}
+
+.nav {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  text-decoration: none;
+}
+
+.logo {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 44px;
+  line-height: 0.9;
+  letter-spacing: 1.5px;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.tagline {
+  margin: 8px 0 0;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.nav-links {
+  display: flex;
+  gap: 26px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--navy);
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.issue-hero {
+  padding: 72px 0 56px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.issue-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(56px, 8vw, 104px);
+  line-height: 0.88;
+  letter-spacing: -2px;
+  color: var(--navy);
+}
+
+.issue-question {
+  margin: 24px 0 0;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.15;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.issue-description {
+  margin: 24px 0 0;
+  font-size: 18px;
+  max-width: 620px;
+}
+
+.download-row {
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 14px 20px;
+  border-radius: 7px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid var(--navy);
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--navy);
+}
+
+.btn-secondary:hover {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.cover-frame {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 18px 45px rgba(18, 40, 74, 0.10);
+}
+
+.issue-cover {
+  aspect-ratio: 0.72 / 1;
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(18, 40, 74, 0.20), rgba(18, 40, 74, 0.55)),
+    url("https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=900&q=80");
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cover-logo {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.cover-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 54px;
+  line-height: 0.92;
+  font-weight: 700;
+}
+
+.section {
+  padding: 58px 0;
+  border-top: 1px solid var(--border);
+}
+
+.section-title {
+  margin: 0 0 26px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  color: var(--navy);
+  font-size: 42px;
+  line-height: 1;
+}
+
+.snapshot-grid,
+.inside-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 22px rgba(18, 40, 74, 0.04);
+}
+
+.card-label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.card strong,
+.card-title {
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.card p {
+  margin: 8px 0 0;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 44px;
+  align-items: start;
+}
+
+.text-block {
+  font-size: 18px;
+  max-width: 760px;
+}
+
+.text-block p:first-child {
+  margin-top: 0;
+}
+
+.preview-box {
+  background: var(--white);
+  border-left: 5px solid var(--navy);
+  padding: 30px;
+  border-radius: 0 12px 12px 0;
+  font-size: 19px;
+  color: #333;
+}
+
+.site-footer {
+  background: var(--navy);
+  color: var(--white);
+  padding: 34px 0;
+  margin-top: 40px;
+}
+
+.footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.footer-logo {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hero-grid,
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .snapshot-grid,
+  .inside-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .issue-hero {
+    padding-top: 48px;
+  }
+}
+
+@media (max-width: 560px) {
+  .container,
+  .nav,
+  .footer-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .snapshot-grid,
+  .inside-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .download-row {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-size: 38px;
+  }
+}
