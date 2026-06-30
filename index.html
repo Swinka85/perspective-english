@@ -10,9 +10,16 @@
 <body>
 
 <header class="site-header">
-  <div class="container">
-    <h1>PERSPECTIVE</h1>
-    <p>LESSONS WORTH TALKING ABOUT</p>
+  <div class="container nav">
+    <a class="brand-link" href="index.html">
+      <div class="logo">PERSPECTIVE</div>
+      <div class="tagline">LESSONS WORTH TALKING ABOUT</div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#issue-001">Current Issue</a>
+    </nav>
   </div>
 </header>
 
@@ -20,7 +27,8 @@
 
 <section class="hero">
   <div class="container">
-    <h2>Magazine-style English lessons for curious learners.</h2>
+    <h1>Magazine-style English lessons<br>for curious learners.</h1>
+
     <p>
       Original articles, thoughtful discussion, critical thinking, speaking activities,
       writing tasks, audio, and teacher-friendly resources in beautifully designed lessons.
@@ -28,17 +36,22 @@
   </div>
 </section>
 
-<section class="featured">
+<section class="section" id="issue-001">
   <div class="container">
-    <p class="section-label">FEATURED ISSUE</p>
+    <p class="section-label">Featured Issue</p>
 
-    <div class="featured-card">
-      <img src="issue001-image.png" alt="Crowds of tourists in a busy coastal destination">
+    <article class="featured-card">
+      <div class="featured-image">
+        <img src="issue001-image.png" alt="Crowds of tourists in Positano">
+      </div>
 
       <div class="featured-text">
-        <p class="issue-number">ISSUE 001</p>
+        <p class="issue-number">Issue 001</p>
+
         <h2>Overtourism</h2>
-        <p class="question">Can tourism become too successful?</p>
+
+        <p class="issue-question">Can tourism become too successful?</p>
+
         <p>
           A discussion lesson about popular destinations, local communities,
           crowded cities, and who really owns a place when millions of visitors
@@ -47,15 +60,15 @@
 
         <a class="button" href="overtourism.html">Explore Issue 001 →</a>
       </div>
-    </div>
+    </article>
   </div>
 </section>
 
-<section class="includes">
+<section class="section">
   <div class="container">
-    <p class="section-label">EVERY ISSUE INCLUDES</p>
+    <p class="section-label">Every Issue Includes</p>
 
-    <div class="grid">
+    <div class="card-grid">
       <div class="info-card">
         <h3>Original Article</h3>
         <p>A short magazine-style article written to spark curiosity and discussion.</p>
@@ -79,16 +92,16 @@
   </div>
 </section>
 
-<section class="upcoming">
+<section class="section upcoming">
   <div class="container">
-    <p class="section-label">UPCOMING ISSUES</p>
+    <p class="section-label">Upcoming Issues</p>
     <p>AI in Education · Fast Fashion · Food Waste · Space Tourism · Digital Detox</p>
   </div>
 </section>
 
 </main>
 
-<footer>
+<footer class="site-footer">
   <div class="container">
     <p>perspectiveenglish.com | © 2026 Perspective English. All rights reserved.</p>
   </div>
