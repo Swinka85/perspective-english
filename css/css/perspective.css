@@ -1,359 +1,150 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
-
-:root {
-  --navy: #12284A;
-  --off-white: #FAFAF8;
-  --text: #444444;
-  --muted: #6F7480;
-  --border: #E6E6E6;
-  --white: #FFFFFF;
-}
-
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: var(--off-white);
-  color: var(--text);
-  font-family: "Inter", Arial, sans-serif;
-  line-height: 1.6;
-}
-
-a {
-  color: inherit;
-}
-
-.site-header {
-  border-bottom: 1px solid var(--border);
-  background: var(--off-white);
-}
-
-.nav {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 28px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.brand {
-  text-decoration: none;
-}
-
-.logo {
-  margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 44px;
-  line-height: 0.9;
-  letter-spacing: 1.5px;
-  color: var(--navy);
-  font-weight: 700;
-}
-
-.tagline {
-  margin: 8px 0 0;
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--navy);
-}
-
-.nav-links {
-  display: flex;
-  gap: 26px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: var(--navy);
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #061f3f;
+  background: #ffffff;
+  line-height: 1.5;
 }
 
 .container {
-  max-width: 1180px;
+  width: min(1120px, 92%);
   margin: 0 auto;
-  padding: 0 28px;
 }
 
-.issue-hero {
-  padding: 72px 0 56px;
+.site-header {
+  padding: 28px 0;
+  border-bottom: 2px solid #061f3f;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 56px;
-  align-items: center;
-}
-
-.eyebrow {
-  margin: 0 0 12px;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--muted);
-}
-
-.issue-title {
+.site-header h1 {
   margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(56px, 8vw, 104px);
-  line-height: 0.88;
-  letter-spacing: -2px;
-  color: var(--navy);
-}
-
-.issue-question {
-  margin: 24px 0 0;
-  font-size: clamp(24px, 3vw, 36px);
-  line-height: 1.15;
-  color: var(--navy);
-  font-weight: 600;
-}
-
-.issue-description {
-  margin: 24px 0 0;
-  font-size: 18px;
-  max-width: 620px;
-}
-
-.download-row {
-  margin-top: 34px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 14px 20px;
-  border-radius: 7px;
-  text-decoration: none;
-  font-weight: 700;
-  border: 1px solid var(--navy);
-  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-}
-
-.btn-primary {
-  background: var(--navy);
-  color: var(--white);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--navy);
-}
-
-.btn-secondary:hover {
-  background: var(--navy);
-  color: var(--white);
-}
-
-.cover-frame {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 18px 45px rgba(18, 40, 74, 0.10);
-}
-
-.issue-cover {
-  aspect-ratio: 0.72 / 1;
-  border-radius: 8px;
-  background:
-    linear-gradient(rgba(18, 40, 74, 0.20), rgba(18, 40, 74, 0.55)),
-    url("https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=900&q=80");
-  background-size: cover;
-  background-position: center;
-  color: var(--white);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.cover-logo {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 36px;
-  font-weight: 700;
+  font-family: Georgia, serif;
+  font-size: 42px;
   letter-spacing: 1px;
 }
 
-.cover-title {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 54px;
-  line-height: 0.92;
-  font-weight: 700;
-}
-
-.section {
-  padding: 58px 0;
-  border-top: 1px solid var(--border);
-}
-
-.section-title {
-  margin: 0 0 26px;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  color: var(--navy);
-  font-size: 42px;
-  line-height: 1;
-}
-
-.snapshot-grid,
-.inside-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-}
-
-.card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 8px 22px rgba(18, 40, 74, 0.04);
-}
-
-.card-label {
-  margin: 0 0 8px;
-  color: var(--muted);
+.site-header p {
+  margin: 0;
   font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 700;
+  letter-spacing: 5px;
 }
 
-.card strong,
-.card-title {
-  color: var(--navy);
-  font-weight: 700;
+.hero {
+  padding: 70px 0;
+}
+
+.hero h2 {
+  max-width: 720px;
+  font-size: 44px;
+  line-height: 1.05;
+  margin: 0 0 24px;
+}
+
+.hero p {
+  max-width: 680px;
   font-size: 18px;
 }
 
-.card p {
-  margin: 8px 0 0;
+.featured,
+.includes,
+.upcoming {
+  padding: 55px 0;
+  border-top: 1px solid #d8d8d8;
 }
 
-.two-column {
+.section-label {
+  font-size: 13px;
+  letter-spacing: 5px;
+  font-weight: bold;
+  margin-bottom: 26px;
+}
+
+.featured-card {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 44px;
-  align-items: start;
+  grid-template-columns: 1.1fr 0.9fr;
+  border: 1px solid #d8d8d8;
+  background: #fff;
 }
 
-.text-block {
-  font-size: 18px;
-  max-width: 760px;
+.featured-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.text-block p:first-child {
-  margin-top: 0;
+.featured-text {
+  padding: 44px;
 }
 
-.preview-box {
-  background: var(--white);
-  border-left: 5px solid var(--navy);
-  padding: 30px;
-  border-radius: 0 12px 12px 0;
-  font-size: 19px;
-  color: #333;
+.issue-number {
+  font-size: 13px;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
 }
 
-.site-footer {
-  background: var(--navy);
-  color: var(--white);
-  padding: 34px 0;
-  margin-top: 40px;
+.featured-text h2 {
+  font-size: 42px;
+  margin: 0 0 12px;
 }
 
-.footer-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 28px;
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: center;
+.question {
+  font-size: 22px;
+  font-style: italic;
+  margin-bottom: 24px;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 13px 20px;
+  background: #061f3f;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
   font-size: 14px;
 }
 
-.footer-logo {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 28px;
-  font-weight: 700;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
 }
 
-@media (max-width: 900px) {
-  .nav {
-    align-items: flex-start;
-    flex-direction: column;
+.info-card {
+  border: 1px solid #d8d8d8;
+  padding: 26px;
+  min-height: 170px;
+}
+
+.info-card h3 {
+  margin-top: 0;
+}
+
+footer {
+  padding: 28px 0;
+  border-top: 1px solid #d8d8d8;
+  font-size: 13px;
+  color: #777;
+}
+
+@media (max-width: 800px) {
+  .hero h2 {
+    font-size: 34px;
   }
 
-  .hero-grid,
-  .two-column {
+  .featured-card {
     grid-template-columns: 1fr;
   }
 
-  .snapshot-grid,
-  .inside-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .featured-text {
+    padding: 30px;
   }
 
-  .issue-hero {
-    padding-top: 48px;
-  }
-}
-
-@media (max-width: 560px) {
-  .container,
-  .nav,
-  .footer-inner {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .snapshot-grid,
-  .inside-grid {
+  .grid {
     grid-template-columns: 1fr;
   }
-
-  .download-row {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
-  }
-
-  .footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .logo {
-    font-size: 38px;
-  }
-}
-.issue-image {
-    width: 100%;
-    border-radius: 8px;
-    margin: 24px 0;
-    display: block;
 }
