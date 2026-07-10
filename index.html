@@ -212,3 +212,106 @@
 
 </body>
 </html>
+/* PRODUCT PAGE */
+
+.product-price {
+  margin: 24px 0 16px;
+  font-weight: 700;
+  color: #17324d;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+}
+
+.purchase-note {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #66727d;
+}
+
+.preview-introduction {
+  max-width: 650px;
+  margin-bottom: 30px;
+  color: #5f6870;
+}
+
+.product-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.product-preview-card {
+  background: #ffffff;
+  border: 1px solid #dfe4e8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.product-preview-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #dfe4e8;
+}
+
+.product-preview-text {
+  padding: 22px;
+}
+
+.product-preview-text h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #17324d;
+}
+
+.product-preview-text p {
+  margin: 0;
+  line-height: 1.6;
+  color: #5f6870;
+}
+
+.preview-disclaimer {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #7a838b;
+}
+
+.purchase-panel {
+  padding: 48px;
+  background: #f3f6f7;
+  border: 1px solid #dfe4e8;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.purchase-panel h2 {
+  margin-top: 8px;
+  margin-bottom: 15px;
+  font-family: "Playfair Display", serif;
+  color: #17324d;
+  font-size: 2rem;
+}
+
+.purchase-panel > p {
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.purchase-buttons {
+  max-width: 850px;
+  margin: 30px auto 0;
+}
+
+@media (max-width: 850px) {
+
+  .product-preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .purchase-panel {
+    padding: 32px 22px;
+  }
+
+}
