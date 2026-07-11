@@ -24,11 +24,41 @@
 
   <link rel="stylesheet"
         href="css/css/perspective.css">
+
+  <style>
+    .issue-card {
+      position: relative;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 10;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .card-badge.free {
+      background: #ffffff;
+      color: #0b2c5f;
+      border: 1px solid #0b2c5f;
+    }
+
+    .card-badge.premium {
+      background: #0b2c5f;
+      color: #d4af37;
+      border: 1px solid #0b2c5f;
+    }
+  </style>
 </head>
 
-
 <body>
-
 
 <header class="site-header">
 
@@ -47,14 +77,13 @@
 
     </a>
 
-
     <nav class="nav-links">
 
       <a href="index.html">
         Home
       </a>
 
-      <a href="#issue-006">
+      <a href="#issue-010">
         Latest Issue
       </a>
 
@@ -64,10 +93,7 @@
 
 </header>
 
-
-
 <main>
-
 
 <!-- HERO -->
 
@@ -92,8 +118,6 @@
 
 </section>
 
-
-
 <!-- LATEST ISSUE -->
 
 <section class="section"
@@ -105,16 +129,14 @@
       LATEST ISSUE
     </p>
 
-
     <article class="featured-card">
-
 
       <div class="featured-image">
 
         <img src="images/issue010-image.png"
-     alt="Friends from around the world share a Korean barbecue in Seoul.">
-      </div>
+             alt="Friends from around the world share a Korean barbecue in Seoul.">
 
+      </div>
 
       <div class="featured-text">
 
@@ -127,16 +149,13 @@
         </h2>
 
         <p class="issue-question">
-         From kimchi to Korean fried chicken, how did one country’s cuisine become a global phenomenon?
+          From kimchi to Korean fried chicken, how did one country’s cuisine become a global phenomenon?
         </p>
 
         <p>
-  <p>
-  Explore Korean food, its global influence and 
-    whether it has changed the way the world eats 
-    through a ready-to-teach magazine-style English lesson.
-</p>
-</p>
+          Explore Korean food, its global influence and whether it has changed
+          the way the world eats through a ready-to-teach magazine-style English lesson.
+        </p>
 
         <a class="button"
            href="issue010.html">
@@ -145,14 +164,11 @@
 
       </div>
 
-
     </article>
 
   </div>
 
 </section>
-
-
 
 <!-- EXPLORE THE COLLECTION -->
 
@@ -164,11 +180,11 @@
       EXPLORE THE COLLECTION
     </p>
 
-
     <div class="issue-grid">
 
-
       <article class="issue-card">
+
+        <div class="card-badge free">Free</div>
 
         <img src="images/issue001-image.png"
              alt="Overtourism">
@@ -196,9 +212,9 @@
 
       </article>
 
-
-
       <article class="issue-card">
+
+        <div class="card-badge free">Free</div>
 
         <img src="images/issue002-image.png"
              alt="AI in Education">
@@ -226,9 +242,9 @@
 
       </article>
 
-
-
       <article class="issue-card">
+
+        <div class="card-badge free">Free</div>
 
         <img src="images/issue003-images.png"
              alt="Food Waste">
@@ -256,9 +272,9 @@
 
       </article>
 
-
-
       <article class="issue-card">
+
+        <div class="card-badge free">Free</div>
 
         <img src="images/issue004-image.png"
              alt="Fast Fashion">
@@ -286,9 +302,9 @@
 
       </article>
 
-
-
       <article class="issue-card">
+
+        <div class="card-badge free">Free</div>
 
         <img src="images/issue005-image.png"
              alt="World Cup Special">
@@ -316,9 +332,9 @@
 
       </article>
 
-
-
       <article class="issue-card">
+
+        <div class="card-badge premium">Premium</div>
 
         <img src="images/issue006-image.png"
              alt="Digital Detox">
@@ -345,7 +361,10 @@
         </div>
 
       </article>
- <article class="issue-card">
+
+      <article class="issue-card">
+
+        <div class="card-badge premium">Premium</div>
 
         <img src="images/issue007-image.png"
              alt="The Four-Day Work Week">
@@ -372,95 +391,102 @@
         </div>
 
       </article>
+
       <article class="issue-card">
 
-  <img src="images/issue008-image.png"
-       alt="The End of Cash">
+        <div class="card-badge premium">Premium</div>
 
-  <div class="issue-card-content">
+        <img src="images/issue008-image.png"
+             alt="The End of Cash">
 
-    <p class="issue-number">
-      ISSUE 008
-    </p>
+        <div class="issue-card-content">
 
-    <h2>
-      The End of Cash
-    </h2>
+          <p class="issue-number">
+            ISSUE 008
+          </p>
 
-    <p>
-      Is cash becoming a thing of the past?
-    </p>
+          <h2>
+            The End of Cash
+          </h2>
 
-    <a class="button secondary"
-       href="issue008.html">
-      Explore →
-    </a>
+          <p>
+            Is cash becoming a thing of the past?
+          </p>
 
-  </div>
+          <a class="button secondary"
+             href="issue008.html">
+            Explore →
+          </a>
 
-</article>
+        </div>
+
+      </article>
+
       <article class="issue-card">
 
-  <img src="images/issue009-image.png"
-       alt="Slowing Aging">
+        <div class="card-badge premium">Premium</div>
 
-  <div class="issue-card-content">
+        <img src="images/issue009-image.png"
+             alt="Slowing Aging">
 
-    <p class="issue-number">
-      ISSUE 009
-    </p>
+        <div class="issue-card-content">
 
-    <h2>
-      Slowing Ageing
-    </h2>
+          <p class="issue-number">
+            ISSUE 009
+          </p>
 
-    <p>
-      Could science help us live longer?
-    </p>
+          <h2>
+            Slowing Aging
+          </h2>
 
-    <a class="button secondary"
-       href="issue009.html">
-      Explore →
-    </a>
+          <p>
+            Could science help us live longer?
+          </p>
 
-  </div>
+          <a class="button secondary"
+             href="issue009.html">
+            Explore →
+          </a>
 
-</article>
+        </div>
+
+      </article>
+
       <article class="issue-card">
 
-  <img src="images/issue010-image.png"
-       alt="How Korean Food Conquered the World">
+        <div class="card-badge premium">Premium</div>
 
-  <div class="issue-card-content">
+        <img src="images/issue010-image.png"
+             alt="How Korean Food Conquered the World">
 
-    <p class="issue-number">
-      ISSUE 010
-    </p>
+        <div class="issue-card-content">
 
-    <h2>
-      Korean Food Special
-    </h2>
+          <p class="issue-number">
+            ISSUE 010
+          </p>
 
-    <p>
-      How did one country’s cuisine become a global phenomenon?
-    </p>
+          <h2>
+            Korean Food Special
+          </h2>
 
-    <a class="button secondary"
-       href="issue010.html">
-      Explore →
-    </a>
+          <p>
+            How did one country’s cuisine become a global phenomenon?
+          </p>
 
-  </div>
+          <a class="button secondary"
+             href="issue010.html">
+            Explore →
+          </a>
 
-</article>
+        </div>
+
+      </article>
 
     </div>
 
   </div>
 
 </section>
-
-
 
 <!-- EVERY ISSUE INCLUDES -->
 
@@ -472,9 +498,7 @@
       EVERY ISSUE INCLUDES
     </p>
 
-
     <div class="card-grid">
-
 
       <div class="info-card">
 
@@ -488,7 +512,6 @@
 
       </div>
 
-
       <div class="info-card">
 
         <h3>
@@ -500,7 +523,6 @@
         </p>
 
       </div>
-
 
       <div class="info-card">
 
@@ -514,7 +536,6 @@
 
       </div>
 
-
       <div class="info-card">
 
         <h3>
@@ -527,14 +548,11 @@
 
       </div>
 
-
     </div>
 
   </div>
 
 </section>
-
-
 
 <!-- UPCOMING ISSUES -->
 
@@ -554,10 +572,7 @@
 
 </section>
 
-
 </main>
-
-
 
 <footer class="site-footer">
 
@@ -571,7 +586,6 @@
   </div>
 
 </footer>
-
 
 </body>
 
