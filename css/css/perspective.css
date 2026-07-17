@@ -123,14 +123,19 @@ body {
 /* BUTTONS */
 
 .button {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
   padding: 13px 18px;
   background: var(--navy);
   color: #ffffff;
   border: 1px solid var(--navy);
+  text-align: center;
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .button:hover {
@@ -165,12 +170,17 @@ body {
 }
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
   padding: 13px 18px;
   border: 1px solid var(--navy);
+  text-align: center;
   text-decoration: none;
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .btn-primary {
@@ -541,6 +551,9 @@ footer p {
 
   .hero h1 {
     font-size: 34px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    text-wrap: balance;
   }
 
   .featured-card,
@@ -570,7 +583,14 @@ footer p {
   .button-row,
   .download-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .button-row .button,
+  .download-row .button,
+  .button-row .btn,
+  .download-row .btn {
+    width: 100%;
   }
 
   .purchase-panel {
@@ -582,12 +602,34 @@ footer p {
   }
 }
 
+@media (max-width: 600px) {
+  .issue-hero {
+    padding: 42px 0 48px;
+  }
+
+  .issue-intro h1,
+  .issue-title {
+    max-width: 100%;
+    font-size: clamp(34px, 10vw, 40px);
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+    text-wrap: balance;
+  }
+
+  .featured-text h2 {
+    font-size: 34px;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+}
+
 @media (max-width: 768px) {
   .button-grid {
     grid-template-columns: 1fr;
   }
 
-  .button-grid .button {
+  .button-grid .button,
+  .button-grid .btn {
     width: 100%;
     text-align: center;
   }
