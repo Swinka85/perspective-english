@@ -1,1 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>ESL Lesson Collections and Bundles | Perspective English</title>
+
+  <meta name="description"
+        content="Explore Perspective English ESL lesson collections. Save with ready-to-teach discussion lesson bundles featuring worksheets, teacher guides, audio, and presentation slides.">
+
+  <meta name="keywords"
+        content="ESL lesson bundles, ESL lesson collections, English discussion lesson packs, university ESL worksheets, ESL teaching materials, critical thinking ESL lessons">
+
+  <meta name="author" content="Perspective English">
+  <meta name="robots" content="index, follow">
+
+  <link rel="canonical"
+        href="https://perspectiveenglish.com/esl-lesson-collections.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title"
+        content="ESL Lesson Collections and Bundles | Perspective English">
+  <meta property="og:description"
+        content="Save with ready-to-teach Perspective English lesson collections featuring discussion worksheets, teacher guides, audio, and presentation slides.">
+  <meta property="og:url"
+        content="https://perspectiveenglish.com/esl-lesson-collections.html">
+  <meta property="og:site_name" content="Perspective English">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="css/css/perspective.css">
+
+  <style>
+    .collections-hero {
+      padding: 82px 0 58px;
+      background: #f3f0e8;
+      border-bottom: 1px solid rgba(11, 44, 95, 0.15);
+    }
+
+    .collections-hero-inner {
+      max-width: 880px;
+    }
+
+    .collections-kicker {
+      margin: 0 0 16px;
+      color: #b28a2e;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .collections-hero h1 {
+      margin: 0 0 22px;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(44px, 7vw, 74px);
+      line-height: 1.02;
+    }
+
+    .collections-intro {
+      max-width: 760px;
+      margin: 0;
+      color: #334155;
+      font-size: 20px;
+      line-height: 1.75;
+    }
+
+    .collections-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .collection-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid rgba(11, 44, 95, 0.14);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(11, 44, 95, 0.07);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .collection-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 34px rgba(11, 44, 95, 0.12);
+    }
+
+    .collection-card-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .collection-card-content {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 26px;
+    }
+
+    .collection-label {
+      margin: 0 0 10px;
+      color: #b28a2e;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .collection-card h2 {
+      margin: 0 0 10px;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .collection-subtitle {
+      margin: 0 0 20px;
+      color: #475569;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .collection-includes {
+      margin: 0 0 26px;
+      padding: 20px;
+      background: #f7f5ef;
+      border-radius: 8px;
+    }
+
+    .collection-includes h3 {
+      margin: 0 0 12px;
+      color: #0b2c5f;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .collection-includes ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .collection-includes li + li {
+      margin-top: 4px;
+    }
+
+    .collection-features {
+      margin: 0 0 26px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(11, 44, 95, 0.12);
+    }
+
+    .collection-features p {
+      margin: 0 0 8px;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .collection-features p:last-child {
+      margin-bottom: 0;
+    }
+
+    .collection-card .button {
+      width: 100%;
+      margin-top: auto;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .collections-note {
+      padding: 38px;
+      text-align: center;
+      background: #f3f0e8;
+      border-radius: 12px;
+    }
+
+    .collections-note h2 {
+      margin: 0 0 12px;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 32px;
+    }
+
+    .collections-note p {
+      max-width: 720px;
+      margin: 0 auto;
+      color: #475569;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 1000px) {
+      .collections-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .collections-hero {
+        padding: 58px 0 42px;
+      }
+
+      .collections-intro {
+        font-size: 18px;
+      }
+
+      .collections-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .collection-card-content {
+        padding: 24px;
+      }
+
+      .collections-note {
+        padding: 30px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+
+    <a class="brand-link" href="index.html">
+      <div class="logo">PERSPECTIVE</div>
+      <div class="tagline">LESSONS WORTH TALKING ABOUT</div>
+    </a>
+
+    <nav class="nav-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html#lessons">
+        Lessons
+      </a>
+
+      <a href="esl-lesson-collections.html">
+        Collections
+      </a>
+
+      <a href="resources.html">
+        Resources
+      </a>
+
+    </nav>
+
+  </div>
+</header>
+
+<main>
+
+<section class="collections-hero">
+  <div class="container collections-hero-inner">
+
+    <p class="collections-kicker">
+      ESL LESSON COLLECTIONS
+    </p>
+
+    <h1>
+      More lessons. Better value.
+    </h1>
+
+    <p class="collections-intro">
+      Build your lesson library with complete Perspective collections.
+      Each bundle includes five ready-to-teach discussion lessons designed
+      for meaningful speaking, critical thinking, and classroom engagement.
+    </p>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <p class="section-label">
+      EXPLORE THE COLLECTIONS
+    </p>
+
+    <div class="collections-grid">
+
+      <article class="collection-card">
+
+        <img class="collection-card-image"
+             src="images/issue010-image.png"
+             alt="Perspective English Collection 01 ESL lesson bundle">
+
+        <div class="collection-card-content">
+
+          <p class="collection-label">
+            ISSUES 006–010
+          </p>
+
+          <h2>
+            Collection 01
+          </h2>
+
+          <p class="collection-subtitle">
+            Five thought-provoking lessons exploring technology, work,
+            society, the future, and global culture.
+          </p>
+
+          <div class="collection-includes">
+
+            <h3>Lessons included</h3>
+
+            <ul>
+              <li>Digital Detox</li>
+              <li>The Four-Day Workweek</li>
+              <li>The End of Cash?</li>
+              <li>Would You Live Forever?</li>
+              <li>Korean Food Special</li>
+            </ul>
+
+          </div>
+
+          <div class="collection-features">
+            <p>✓ Student worksheets</p>
+            <p>✓ Teacher guides and answer keys</p>
+            <p>✓ Downloadable audio</p>
+            <p>✓ Classroom presentation slides</p>
+          </div>
+
+          <a class="button secondary"
+             href="https://payhip.com/b/I3rC1"
+             target="_blank"
+             rel="noopener noreferrer">
+            View Collection →
+          </a>
+
+        </div>
+
+      </article>
+
+      <article class="collection-card">
+
+        <img class="collection-card-image"
+             src="images/issue015-image.png"
+             alt="Perspective English Collection 02 ESL lesson bundle">
+
+        <div class="collection-card-content">
+
+          <p class="collection-label">
+            ISSUES 011–015
+          </p>
+
+          <h2>
+            Collection 02
+          </h2>
+
+          <p class="collection-subtitle">
+            Five engaging lessons examining relationships, science,
+            the environment, reading, and modern sport.
+          </p>
+
+          <div class="collection-includes">
+
+            <h3>Lessons included</h3>
+
+            <ul>
+              <li>Space Tourism</li>
+              <li>AI Friends</li>
+              <li>Microplastics</li>
+              <li>The Decline of Reading</li>
+              <li>Women’s Sport Special</li>
+            </ul>
+
+          </div>
+
+          <div class="collection-features">
+            <p>✓ Student worksheets</p>
+            <p>✓ Teacher guides and answer keys</p>
+            <p>✓ Downloadable audio</p>
+            <p>✓ Classroom presentation slides</p>
+          </div>
+
+          <a class="button secondary"
+             href="https://payhip.com/b/fdRNo"
+             target="_blank"
+             rel="noopener noreferrer">
+            View Collection →
+          </a>
+
+        </div>
+
+      </article>
+
+      <article class="collection-card">
+
+        <img class="collection-card-image"
+             src="images/issue020-image.png"
+             alt="Perspective English Collection 03 ESL lesson bundle">
+
+        <div class="collection-card-content">
+
+          <p class="collection-label">
+            ISSUES 016–020
+          </p>
+
+          <h2>
+            Collection 03
+          </h2>
+
+          <p class="collection-subtitle">
+            Five timely lessons exploring careers, the media, success,
+            population change, and global entertainment.
+          </p>
+
+          <div class="collection-includes">
+
+            <h3>Lessons included</h3>
+
+            <ul>
+              <li>The Human Advantage</li>
+              <li>Behind the Headlines</li>
+              <li>Lucky?</li>
+              <li>The Baby Bust</li>
+              <li>The Pokémon Effect</li>
+            </ul>
+
+          </div>
+
+          <div class="collection-features">
+            <p>✓ Student worksheets</p>
+            <p>✓ Teacher guides and answer keys</p>
+            <p>✓ Downloadable audio</p>
+            <p>✓ Classroom presentation slides</p>
+          </div>
+
+          <a class="button secondary"
+             href="https://payhip.com/b/mMabi"
+             target="_blank"
+             rel="noopener noreferrer">
+            View Collection →
+          </a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="collections-note">
+
+      <h2>
+        Everything you need to teach the lesson.
+      </h2>
+
+      <p>
+        Every Perspective lesson is designed as a complete classroom package,
+        with an engaging article, vocabulary support, comprehension tasks,
+        discussion questions, critical thinking activities, audio, and
+        presentation slides.
+      </p>
+
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>
+      perspectiveenglish.com | © 2026 Perspective English. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
