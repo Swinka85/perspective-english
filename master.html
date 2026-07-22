@@ -1,0 +1,276 @@
+<!--
+PERSPECTIVE MASTER LESSON PAGE TEMPLATE
+
+Replace every {{PLACEHOLDER}} before publishing.
+
+Required checks:
+1. SEO title, descriptions, canonical URL, and social tags
+2. Structured-data name, headline, image, thumbnail, topics, and offer URL
+3. Issue number, title, question, hero description, and image alt text
+4. Payhip lesson URL, collection URL/number/range, and audio filename
+5. About This Lesson paragraphs and From the Article excerpt
+6. Hero and preview image filenames
+7. Remove this comment before publishing if preferred
+
+Tip: use Find (Ctrl+F) for "{{" to confirm no placeholders remain.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+<link rel="apple-touch-icon" href="/favicon-180x180.png">
+<meta name="theme-color" content="#173a7a">
+
+  <title>{{SEO_TITLE}} | Perspective English</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://perspectiveenglish.com/{{PAGE_FILENAME}}">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Perspective English">
+  <meta property="og:title" content="{{SEO_TITLE}} | Perspective English">
+  <meta property="og:description" content="{{OG_DESCRIPTION}}">
+  <meta property="og:url" content="https://perspectiveenglish.com/{{PAGE_FILENAME}}">
+  <meta property="og:image" content="https://perspectiveenglish.com/images/{{HERO_IMAGE_FILENAME}}">
+  <meta property="og:image:alt" content="{{SOCIAL_IMAGE_ALT}}">
+  <meta property="og:locale" content="en_US">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{SEO_TITLE}} | Perspective English">
+  <meta name="twitter:description" content="{{TWITTER_DESCRIPTION}}">
+  <meta name="twitter:image" content="https://perspectiveenglish.com/images/{{HERO_IMAGE_FILENAME}}">
+  <meta name="twitter:image:alt" content="{{SOCIAL_IMAGE_ALT}}">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LearningResource",
+        "@id": "https://perspectiveenglish.com/{{PAGE_FILENAME}}#lesson",
+        "name": "{{STRUCTURED_DATA_NAME}}",
+        "headline": "{{TITLE}}",
+        "description": "{{STRUCTURED_DATA_DESCRIPTION}}",
+        "url": "https://perspectiveenglish.com/{{PAGE_FILENAME}}",
+        "image": "https://perspectiveenglish.com/images/{{HERO_IMAGE_FILENAME}}",
+        "thumbnailUrl": "https://perspectiveenglish.com/images/{{PREVIEW_IMAGE_FILENAME}}",
+        "inLanguage": "en",
+        "educationalLevel": "{{LEVEL}}",
+        "learningResourceType": [
+          "Lesson plan",
+          "Student worksheet",
+          "Teacher guide",
+          "Audio recording",
+          "Classroom presentation"
+        ],
+        "teaches": [
+          "English reading",
+          "English vocabulary",
+          "Speaking",
+          "Discussion",
+          "Critical thinking"
+        ],
+        "about": [
+          {{ABOUT_SCHEMA_ITEMS}}
+        ],
+        "timeRequired": "{{TIME_REQUIRED}}",
+        "isAccessibleForFree": false,
+        "author": {
+          "@type": "Organization",
+          "@id": "https://perspectiveenglish.com/#organization",
+          "name": "Perspective English",
+          "url": "https://perspectiveenglish.com/"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://perspectiveenglish.com/#organization",
+          "name": "Perspective English",
+          "url": "https://perspectiveenglish.com/"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "{{LESSON_PAYHIP_URL}}",
+          "availability": "https://schema.org/InStock",
+          "category": "Digital English lesson"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://perspectiveenglish.com/{{PAGE_FILENAME}}#breadcrumbs",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Perspective English",
+            "item": "https://perspectiveenglish.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "{{STRUCTURED_DATA_NAME}}",
+            "item": "https://perspectiveenglish.com/{{PAGE_FILENAME}}"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/css/perspective.css">
+</head>
+
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand-link" href="index.html">
+      <div class="logo">PERSPECTIVE</div>
+      <div class="tagline">LESSONS WORTH TALKING ABOUT</div>
+    </a>
+
+    <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#lessons">Lessons</a>
+    <a href="esl-lesson-collections.html">Collections</a>
+    <a href="resources.html">Resources</a>
+</nav>
+  </div>
+</header>
+
+<main>
+<section class="issue-hero">
+  <div class="container issue-hero-grid">
+    <div class="issue-intro">
+      <p class="issue-number">ISSUE {{ISSUE_NUMBER}}</p>
+      <h1>{{TITLE}}</h1>
+      <p class="issue-question">{{QUESTION}}</p>
+
+      <p class="issue-description">
+        {{HERO_DESCRIPTION}}
+      </p>
+
+      <div class="button-grid">
+        <a class="btn btn-primary" href="{{LESSON_PAYHIP_URL}}" target="_blank" rel="noopener">Buy Lesson</a>
+        <a class="button secondary" href="{{COLLECTION_PAYHIP_URL}}" target="_blank" rel="noopener noreferrer">Buy Collection {{COLLECTION_NUMBER}}</a>
+        <a class="button secondary" href="audio/{{AUDIO_FILENAME}}" target="_blank">Listen to Audio</a>
+      </div>
+
+      <p class="purchase-note">Collection {{COLLECTION_NUMBER}} includes Issues {{COLLECTION_RANGE}}.</p>
+    </div>
+
+    <div class="issue-image-card">
+      <img
+        src="images/{{HERO_IMAGE_FILENAME}}"
+        alt="{{HERO_IMAGE_ALT}}"
+      >
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <p class="section-label">LESSON PREVIEW</p>
+
+    <div class="single-preview">
+      <img
+        src="images/{{PREVIEW_IMAGE_FILENAME}}"
+        alt="{{PREVIEW_IMAGE_ALT}}"
+      >
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-column">
+    <div>
+      <p class="section-label">ABOUT THIS LESSON</p>
+    </div>
+
+    <div class="text-block">
+      <p>
+        {{ABOUT_PARAGRAPH_1}}
+      </p>
+
+      <p>
+        {{ABOUT_PARAGRAPH_2}}
+      </p>
+
+      <p>
+        {{ABOUT_PARAGRAPH_3}}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-column">
+    <div>
+      <p class="section-label">FROM THE ARTICLE</p>
+    </div>
+
+    <div class="preview-box">
+      {{ARTICLE_EXCERPT}}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container two-column">
+    <div>
+      <p class="section-label">WHAT'S INCLUDED</p>
+    </div>
+
+    <div class="text-block">
+      <ul class="included-list">
+        <li>Magazine-style student worksheet</li>
+        <li>Original article and audio recording</li>
+        <li>Vocabulary and reading activities</li>
+        <li>Discussion and critical-thinking tasks</li>
+        <li>Speaking challenge and writing prompt</li>
+        <li>Teacher guide and complete answer key</li>
+        <li>Classroom presentation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="purchase">
+  <div class="container">
+    <div class="purchase-panel">
+      <p class="section-label">GET THE COMPLETE LESSON</p>
+
+      <h2>Ready to teach {{TITLE}}?</h2>
+
+      <p>
+        Purchase this lesson individually or save with
+        Perspective Collection 03.
+      </p>
+
+      <div class="button-grid purchase-buttons">
+        <a class="btn btn-primary" href="{{LESSON_PAYHIP_URL}}" target="_blank" rel="noopener">Buy Lesson</a>
+        <a class="button secondary" href="{{COLLECTION_PAYHIP_URL}}" target="_blank" rel="noopener noreferrer">Buy Collection {{COLLECTION_NUMBER}}</a>
+        <a class="button secondary" href="audio/{{AUDIO_FILENAME}}" target="_blank">Listen to Audio</a>
+      </div>
+
+      <p class="purchase-note">
+        Secure checkout and instant digital delivery through Payhip.
+      </p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>perspectiveenglish.com | © 2026 Perspective English. All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
