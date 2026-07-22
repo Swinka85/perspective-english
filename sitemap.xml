@@ -177,5 +177,8 @@
   <changefreq>monthly</changefreq>
   <priority>0.80</priority>
 </url>
+  <url>
+  <loc>https://perspectiveenglish.com/about.html</loc>
+</url>
 
 </urlset>
