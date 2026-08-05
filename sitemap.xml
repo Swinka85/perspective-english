@@ -4,14 +4,14 @@
 
   <url>
     <loc>https://perspectiveenglish.com/</loc>
-    <lastmod>2026-07-18</lastmod>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
 
   <url>
     <loc>https://perspectiveenglish.com/resources.html</loc>
-    <lastmod>2026-07-18</lastmod>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -162,23 +162,70 @@
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-  
+
+  <!-- NEW ISSUES -->
+
   <url>
-  <loc>https://perspectiveenglish.com/critical-thinking-activities-esl.html</loc>
-  <lastmod>2026-07-18</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.90</priority>
-</url>
+    <loc>https://perspectiveenglish.com/greenwashing-esl-lesson.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
   <url>
-  <loc>https://perspectiveenglish.com/esl-lesson-collections.html</loc>
-</url>
+    <loc>https://perspectiveenglish.com/happiness-esl-lesson.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
   <url>
-  <loc>https://perspectiveenglish.com/how-to-teach-news-articles-esl-classroom.html</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.80</priority>
-</url>
+    <loc>https://perspectiveenglish.com/side-hustle-esl-lesson.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
   <url>
-  <loc>https://perspectiveenglish.com/about.html</loc>
-</url>
+    <loc>https://perspectiveenglish.com/food-fraud-esl-lesson.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/harry-potter-esl-lesson.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/critical-thinking-activities-esl.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/esl-lesson-collections.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/how-to-teach-news-articles-esl-classroom.html</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/about.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.70</priority>
+  </url>
 
 </urlset>
