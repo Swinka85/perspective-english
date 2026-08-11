@@ -29,7 +29,6 @@ body {
   margin: 0 auto;
 }
 
-
 /* HEADER */
 
 .site-header {
@@ -82,7 +81,6 @@ body {
   text-decoration: underline;
 }
 
-
 /* HOME HERO */
 
 .hero {
@@ -103,7 +101,6 @@ body {
   font-size: 17px;
 }
 
-
 /* SHARED SECTIONS */
 
 .section {
@@ -118,7 +115,6 @@ body {
   font-weight: 700;
   text-transform: uppercase;
 }
-
 
 /* BUTTONS */
 
@@ -188,7 +184,6 @@ body {
   color: #ffffff;
 }
 
-
 /* FEATURED CARD */
 
 .featured-card {
@@ -246,7 +241,6 @@ body {
   margin-top: 28px;
 }
 
-
 /* HOME ISSUE GRID */
 
 .issue-grid {
@@ -279,7 +273,6 @@ body {
 .issue-card-content p {
   margin-bottom: 18px;
 }
-
 
 /* CARDS */
 
@@ -322,7 +315,6 @@ body {
   margin: 0;
 }
 
-
 /* ISSUE PAGE */
 
 .issue-hero {
@@ -361,7 +353,6 @@ body {
   object-fit: cover;
 }
 
-
 /* OLD ISSUE COVER SUPPORT */
 
 .cover-frame {
@@ -390,7 +381,6 @@ body {
   font-weight: 700;
 }
 
-
 /* TEXT SECTIONS */
 
 .two-column {
@@ -418,7 +408,6 @@ body {
   background: var(--light);
   font-size: 16px;
 }
-
 
 /* PAID PRODUCT PAGE */
 
@@ -488,6 +477,60 @@ body {
   justify-content: center;
 }
 
+/* RELATED LESSONS */
+
+.related-lessons-section h2 {
+  margin: 8px 0 24px;
+  color: var(--navy);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2rem;
+}
+
+.related-lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.related-lesson-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 170px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--navy);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.related-lesson-card:hover {
+  transform: translateY(-3px);
+  border-color: #b8c0cb;
+  box-shadow: 0 8px 22px rgba(7, 31, 61, 0.08);
+}
+
+.related-lesson-card strong {
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.related-issue {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #66727d;
+}
+
+.related-lesson-card span:last-child {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #66727d;
+}
 
 /* FOOTER */
 
@@ -517,7 +560,6 @@ footer p {
   font-weight: 700;
   color: var(--navy);
 }
-
 
 /* TABLET AND MOBILE */
 
@@ -602,6 +644,26 @@ footer p {
   }
 }
 
+@media (max-width: 768px) {
+  .button-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-grid .button,
+  .button-grid .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .related-lessons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .related-lesson-card {
+    min-height: 0;
+  }
+}
+
 @media (max-width: 600px) {
   .issue-hero {
     padding: 42px 0 48px;
@@ -620,17 +682,5 @@ footer p {
     font-size: 34px;
     line-height: 1.05;
     text-wrap: balance;
-  }
-}
-
-@media (max-width: 768px) {
-  .button-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .button-grid .button,
-  .button-grid .btn {
-    width: 100%;
-    text-align: center;
   }
 }
