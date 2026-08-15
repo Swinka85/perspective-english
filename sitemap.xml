@@ -4,7 +4,7 @@
 
   <url>
     <loc>https://perspectiveenglish.com/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
@@ -18,10 +18,12 @@
 
   <url>
     <loc>https://perspectiveenglish.com/esl-discussion-topics-university-students.html</loc>
-    <lastmod>2026-07-18</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
+
+  <!-- ISSUES 001–020 -->
 
   <url>
     <loc>https://perspectiveenglish.com/overtourism-esl-lesson.html</loc>
@@ -200,25 +202,39 @@
     <priority>0.90</priority>
   </url>
 
-  <!-- ISSUES 026–028 -->
+  <!-- ISSUES 026–030 -->
 
   <url>
     <loc>https://perspectiveenglish.com/fake-reviews-esl-lesson.html</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
 
   <url>
     <loc>https://perspectiveenglish.com/looksmaxxing-esl-lesson.html</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
 
   <url>
     <loc>https://perspectiveenglish.com/rage-bait-esl-lesson.html</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/attention-economy-esl-lesson.html</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/michelin-guide-esl-lesson.html</loc>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
@@ -234,7 +250,7 @@
 
   <url>
     <loc>https://perspectiveenglish.com/esl-lesson-collections.html</loc>
-    <lastmod>2026-08-05</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
