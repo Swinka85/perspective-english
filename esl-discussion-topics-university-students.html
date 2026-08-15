@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
-<link rel="apple-touch-icon" href="/favicon-180x180.png">
-<meta name="theme-color" content="#173a7a">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+  <link rel="apple-touch-icon" href="/favicon-180x180.png">
+  <meta name="theme-color" content="#173a7a">
 
   <title>20 ESL Discussion Topics for University Students | Perspective English</title>
 
@@ -64,7 +65,7 @@
     },
     "image": "https://perspectiveenglish.com/images/issue020-image.png",
     "datePublished": "2026-07-18",
-    "dateModified": "2026-07-18"
+    "dateModified": "2026-08-15"
   }
   </script>
 
@@ -177,6 +178,57 @@
       color: #b28a2e;
     }
 
+    .more-lessons-intro {
+      margin-bottom: 26px;
+    }
+
+    .more-lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin: 28px 0 10px;
+    }
+
+    .more-lesson-card {
+      display: block;
+      padding: 24px;
+      background: #f3f0e8;
+      border: 1px solid rgba(11, 44, 95, 0.12);
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .more-lesson-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(11, 44, 95, 0.08);
+    }
+
+    .more-issue {
+      display: block;
+      margin-bottom: 8px;
+      color: #b28a2e;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .more-lesson-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .more-lesson-card span:last-child {
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
     .resource-sidebar {
       position: sticky;
       top: 30px;
@@ -253,6 +305,10 @@
       .topic-card {
         padding: 22px;
       }
+
+      .more-lessons-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -267,12 +323,13 @@
       <div class="tagline">LESSONS WORTH TALKING ABOUT</div>
     </a>
 
-   <nav class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="index.html#lessons">Lessons</a>
-    <a href="esl-lesson-collections.html">Collections</a>
-    <a href="resources.html">Resources</a>
-</nav>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#lessons">Lessons</a>
+      <a href="esl-lesson-collections.html">Collections</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
+    </nav>
 
   </div>
 </header>
@@ -589,6 +646,54 @@
         </a>
       </div>
 
+      <h2 id="more-lessons">More ready-to-teach discussion lessons</h2>
+
+      <p class="more-lessons-intro">
+        Looking for more current topics? These newer Perspective English lessons
+        explore online trust, appearance, social media, attention, food culture,
+        and the reasons people want to belong.
+      </p>
+
+      <div class="more-lessons-grid">
+
+        <a class="more-lesson-card" href="harry-potter-esl-lesson.html">
+          <span class="more-issue">ISSUE 025</span>
+          <strong>Harry Potter</strong>
+          <span>Why do people want to belong?</span>
+        </a>
+
+        <a class="more-lesson-card" href="fake-reviews-esl-lesson.html">
+          <span class="more-issue">ISSUE 026</span>
+          <strong>Fake Reviews</strong>
+          <span>Can you trust what strangers say online?</span>
+        </a>
+
+        <a class="more-lesson-card" href="looksmaxxing-esl-lesson.html">
+          <span class="more-issue">ISSUE 027</span>
+          <strong>Looksmaxxing</strong>
+          <span>How far should people go to improve their appearance?</span>
+        </a>
+
+        <a class="more-lesson-card" href="rage-bait-esl-lesson.html">
+          <span class="more-issue">ISSUE 028</span>
+          <strong>Rage Bait</strong>
+          <span>Why does the internet want you angry?</span>
+        </a>
+
+        <a class="more-lesson-card" href="attention-economy-esl-lesson.html">
+          <span class="more-issue">ISSUE 029</span>
+          <strong>The Attention Economy</strong>
+          <span>Who is competing for your attention?</span>
+        </a>
+
+        <a class="more-lesson-card" href="michelin-guide-esl-lesson.html">
+          <span class="more-issue">ISSUE 030 · SPECIAL EDITION</span>
+          <strong>The Michelin Guide</strong>
+          <span>Who decides what good food is?</span>
+        </a>
+
+      </div>
+
       <h2 id="better-discussions">How to make these discussions work</h2>
 
       <p>
@@ -639,7 +744,7 @@
           comprehension, critical thinking, speaking activities, teacher
           guides, classroom presentations, and audio.
         </p>
-        <a class="button" href="index.html">Explore all Perspective lessons →</a>
+        <a class="button" href="index.html#lessons">Explore all Perspective lessons →</a>
       </div>
 
     </article>
@@ -653,6 +758,7 @@
 
       <ol class="contents-list">
         <li><a href="#topics">20 discussion topics</a></li>
+        <li><a href="#more-lessons">More discussion lessons</a></li>
         <li><a href="#better-discussions">Making discussions work</a></li>
         <li><a href="#choosing">Choosing the right topic</a></li>
       </ol>
