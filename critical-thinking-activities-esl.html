@@ -85,7 +85,7 @@
     },
     "image": "https://perspectiveenglish.com/images/issue017-image.png",
     "datePublished": "2026-07-18",
-    "dateModified": "2026-07-18"
+    "dateModified": "2026-08-15"
   }
   </script>
 
@@ -259,6 +259,59 @@
       font-weight: 800;
     }
 
+    .practice-intro {
+      margin-bottom: 26px;
+    }
+
+    .practice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin: 28px 0 10px;
+    }
+
+    .practice-card {
+      display: block;
+      padding: 24px;
+      background: #f3f0e8;
+      border: 1px solid rgba(11, 44, 95, 0.12);
+      border-radius: 12px;
+      text-decoration: none;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .practice-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(11, 44, 95, 0.08);
+    }
+
+    .practice-issue {
+      display: block;
+      margin-bottom: 8px;
+      color: #b28a2e;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .practice-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .practice-card span:last-child {
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
     .resource-sidebar {
       position: sticky;
       top: 30px;
@@ -338,6 +391,10 @@
         padding: 22px;
       }
 
+      .practice-grid {
+        grid-template-columns: 1fr;
+      }
+
     }
 
   </style>
@@ -379,6 +436,10 @@
 
   <a href="resources.html">
     Resources
+  </a>
+
+  <a href="about.html">
+    About
   </a>
 
 </nav>
@@ -954,6 +1015,56 @@
 
       </div>
 
+      <h2 id="practice">
+        Put these skills into practice
+      </h2>
+
+      <p class="practice-intro">
+        These newer Perspective English lessons are especially useful for
+        critical thinking because students must evaluate evidence, question
+        assumptions, compare competing viewpoints, and defend decisions.
+      </p>
+
+      <div class="practice-grid">
+
+        <a class="practice-card" href="fake-reviews-esl-lesson.html">
+          <span class="practice-issue">ISSUE 026</span>
+          <strong>Fake Reviews</strong>
+          <span>Can you trust what you read online?</span>
+        </a>
+
+        <a class="practice-card" href="looksmaxxing-esl-lesson.html">
+          <span class="practice-issue">ISSUE 027</span>
+          <strong>Looksmaxxing</strong>
+          <span>How far should we go to look better?</span>
+        </a>
+
+        <a class="practice-card" href="rage-bait-esl-lesson.html">
+          <span class="practice-issue">ISSUE 028</span>
+          <strong>Rage Bait</strong>
+          <span>Why does the internet want you angry?</span>
+        </a>
+
+        <a class="practice-card" href="attention-economy-esl-lesson.html">
+          <span class="practice-issue">ISSUE 029</span>
+          <strong>The Attention Economy</strong>
+          <span>Who is really paying when everything is free?</span>
+        </a>
+
+        <a class="practice-card" href="michelin-guide-esl-lesson.html">
+          <span class="practice-issue">ISSUE 030 · SPECIAL EDITION</span>
+          <strong>The Michelin Guide</strong>
+          <span>Who decides what good food is?</span>
+        </a>
+
+        <a class="practice-card" href="greenwashing-esl-lesson.html">
+          <span class="practice-issue">ISSUE 021</span>
+          <strong>Greenwashing</strong>
+          <span>Can you trust a company that claims to be green?</span>
+        </a>
+
+      </div>
+
       <h2 id="stronger-activities">
         How to make critical thinking activities stronger
       </h2>
@@ -1108,6 +1219,12 @@
         <li>
           <a href="#four-opinions">
             One Question, Four Opinions
+          </a>
+        </li>
+
+        <li>
+          <a href="#practice">
+            Put Skills Into Practice
           </a>
         </li>
 
