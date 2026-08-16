@@ -13,10 +13,10 @@
   <title>ESL Teaching Resources | Perspective English</title>
 
   <meta name="description"
-        content="Explore practical ESL teaching resources, reading comprehension worksheets, discussion topics, critical thinking activities, and classroom guidance from Perspective English.">
+        content="Explore ESL news lessons, current events, reading comprehension worksheets, discussion topics, critical thinking activities, and classroom resources from Perspective English.">
 
   <meta name="keywords"
-        content="ESL teaching resources, ESL reading comprehension worksheets, ESL discussion topics, critical thinking activities ESL, university ESL activities, English speaking activities">
+        content="ESL teaching resources, ESL news lessons, current events ESL, ESL reading comprehension worksheets, ESL discussion topics, critical thinking activities ESL, university ESL activities, English speaking activities">
 
   <meta name="author" content="Perspective English">
   <meta name="robots" content="index, follow">
@@ -30,7 +30,7 @@
         content="ESL Teaching Resources | Perspective English">
 
   <meta property="og:description"
-        content="Practical ESL teaching articles, reading resources, discussion ideas, critical thinking activities, and classroom resources for English teachers.">
+        content="ESL news lessons, current events, reading resources, discussion ideas, critical thinking activities, and practical classroom resources for English teachers.">
 
   <meta property="og:url"
         content="https://perspectiveenglish.com/resources.html">
@@ -81,7 +81,7 @@
     }
 
     .resources-intro {
-      max-width: 740px;
+      max-width: 760px;
       margin: 0;
       color: #334155;
       font-size: 20px;
@@ -147,6 +147,48 @@
       align-self: flex-start;
     }
 
+    /* FEATURED NEWS HUB */
+
+    .resource-card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+      min-height: 370px;
+    }
+
+    .resource-card.featured .resource-card-image {
+      height: 100%;
+      aspect-ratio: auto;
+      object-fit: cover;
+    }
+
+    .resource-card.featured .resource-card-content {
+      justify-content: center;
+      padding: 42px;
+    }
+
+    .resource-card.featured h2 {
+      max-width: 620px;
+      font-size: clamp(32px, 4vw, 44px);
+      line-height: 1.08;
+    }
+
+    .resource-card.featured p {
+      max-width: 640px;
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .featured-note {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: #0b2c5f;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
     .coming-soon {
       padding: 34px;
       text-align: center;
@@ -169,6 +211,24 @@
       line-height: 1.7;
     }
 
+    @media (max-width: 850px) {
+
+      .resource-card.featured {
+        grid-template-columns: 1fr;
+      }
+
+      .resource-card.featured .resource-card-image {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        height: auto;
+      }
+
+      .resource-card.featured .resource-card-content {
+        padding: 30px;
+      }
+
+    }
+
     @media (max-width: 750px) {
 
       .resources-hero {
@@ -181,6 +241,10 @@
 
       .resources-grid {
         grid-template-columns: 1fr;
+      }
+
+      .resource-card.featured {
+        grid-column: auto;
       }
 
     }
@@ -236,6 +300,7 @@
 
 </header>
 
+
 <main>
 
 <section class="resources-hero">
@@ -251,13 +316,15 @@
     </h1>
 
     <p class="resources-intro">
-      Practical articles, classroom ideas, and discussion resources designed
-      to help English teachers create more thoughtful, engaging lessons.
+      ESL news lessons, current events, practical teaching articles, discussion
+      resources, and classroom ideas designed to help English teachers create
+      more thoughtful, engaging lessons.
     </p>
 
   </div>
 
 </section>
+
 
 <section class="section">
 
@@ -268,6 +335,45 @@
     </p>
 
     <div class="resources-grid">
+
+
+      <!-- FEATURED: ESL NEWS LESSONS -->
+
+      <article class="resource-card featured">
+
+        <img class="resource-card-image"
+             src="images/resources03-image.png"
+             alt="ESL news lessons and current events resources featuring global news, technology, society, environment, and culture">
+
+        <div class="resource-card-content">
+
+          <span class="featured-note">
+            FEATURED RESOURCE
+          </span>
+
+          <p class="resource-label">
+            NEWS &amp; CURRENT EVENTS
+          </p>
+
+          <h2>
+            ESL News Lessons &amp; Current Events
+          </h2>
+
+          <p>
+            Ready-to-teach B1–B2 lessons exploring the news, trends, debates,
+            and global issues shaping the world today. Browse topics including
+            technology, society, media, work, culture, and the environment.
+          </p>
+
+          <a class="button secondary"
+             href="esl-news-lessons.html">
+            Explore News Lessons →
+          </a>
+
+        </div>
+
+      </article>
+
 
       <!-- CRITICAL THINKING -->
 
@@ -402,6 +508,7 @@
 
       </article>
 
+
     </div>
 
   </div>
@@ -420,9 +527,9 @@
       </h2>
 
       <p>
-        Future articles will cover university speaking activities, current
-        events, lesson planning, and getting quiet students involved in
-        discussion.
+        Future resources will cover university speaking activities,
+        media literacy, lesson planning, classroom discussion, and
+        practical ways to get students communicating with confidence.
       </p>
 
     </div>
