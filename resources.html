@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EQ6N2R6KF8"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-EQ6N2R6KF8');
-</script>
+<head>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EQ6N2R6KF8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-EQ6N2R6KF8');
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -19,13 +22,13 @@
   <link rel="apple-touch-icon" href="/favicon-180x180.png">
   <meta name="theme-color" content="#173a7a">
 
-  <title>ESL Teaching Resources | Perspective English</title>
+  <title>ESL Teaching Resources, News Lessons & Worksheets | Perspective English</title>
 
   <meta name="description"
-        content="Explore ESL news lessons, current events, reading comprehension worksheets, discussion topics, critical thinking activities, and classroom resources from Perspective English.">
+        content="ESL teaching resources for B1–B2 learners, including news lessons, reading worksheets, discussion topics, critical thinking activities and free classroom materials.">
 
   <meta name="keywords"
-        content="ESL teaching resources, ESL news lessons, current events ESL, ESL reading comprehension worksheets, ESL discussion topics, critical thinking activities ESL, university ESL activities, English speaking activities">
+        content="ESL teaching resources, ESL news lessons, ESL worksheets, current events ESL, ESL reading comprehension worksheets, ESL discussion topics, critical thinking activities ESL, university ESL activities, English speaking activities">
 
   <meta name="author" content="Perspective English">
   <meta name="robots" content="index, follow">
@@ -34,18 +37,89 @@
         href="https://perspectiveenglish.com/resources.html">
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Perspective English">
 
   <meta property="og:title"
-        content="ESL Teaching Resources | Perspective English">
+        content="ESL Teaching Resources, News Lessons & Worksheets | Perspective English">
 
   <meta property="og:description"
-        content="ESL news lessons, current events, reading resources, discussion ideas, critical thinking activities, and practical classroom resources for English teachers.">
+        content="Explore B1–B2 ESL news lessons, reading worksheets, discussion topics, critical thinking activities and practical classroom resources for English teachers.">
 
   <meta property="og:url"
         content="https://perspectiveenglish.com/resources.html">
 
-  <meta property="og:site_name"
-        content="Perspective English">
+  <meta property="og:locale"
+        content="en_US">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": "https://perspectiveenglish.com/resources.html#resources",
+        "name": "ESL Teaching Resources, News Lessons & Worksheets",
+        "description": "ESL teaching resources for B1–B2 learners, including news lessons, reading comprehension worksheets, discussion topics, critical thinking activities and classroom resources.",
+        "url": "https://perspectiveenglish.com/resources.html",
+        "inLanguage": "en",
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "ESL teaching resources"
+          },
+          {
+            "@type": "Thing",
+            "name": "ESL news lessons"
+          },
+          {
+            "@type": "Thing",
+            "name": "ESL worksheets"
+          },
+          {
+            "@type": "Thing",
+            "name": "ESL reading comprehension"
+          },
+          {
+            "@type": "Thing",
+            "name": "ESL discussion topics"
+          },
+          {
+            "@type": "Thing",
+            "name": "Critical thinking activities"
+          },
+          {
+            "@type": "Thing",
+            "name": "English speaking activities"
+          }
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://perspectiveenglish.com/#organization",
+          "name": "Perspective English",
+          "url": "https://perspectiveenglish.com/"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://perspectiveenglish.com/resources.html#breadcrumbs",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Perspective English",
+            "item": "https://perspectiveenglish.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "ESL Teaching Resources",
+            "item": "https://perspectiveenglish.com/resources.html"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect"
         href="https://fonts.googleapis.com">
@@ -69,7 +143,7 @@
     }
 
     .resources-hero-inner {
-      max-width: 850px;
+      max-width: 950px;
     }
 
     .resources-kicker {
@@ -82,15 +156,16 @@
     }
 
     .resources-hero h1 {
+      max-width: 900px;
       margin: 0 0 22px;
       color: #0b2c5f;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(44px, 7vw, 74px);
-      line-height: 1.02;
+      font-size: clamp(42px, 6vw, 68px);
+      line-height: 1.04;
     }
 
     .resources-intro {
-      max-width: 760px;
+      max-width: 820px;
       margin: 0;
       color: #334155;
       font-size: 20px;
@@ -198,26 +273,30 @@
       text-transform: uppercase;
     }
 
-    .coming-soon {
-      padding: 34px;
+    /* LESSON LIBRARY CTA */
+
+    .lesson-library {
+      padding: 42px;
       text-align: center;
       background: #f3f0e8;
+      border: 1px solid rgba(11, 44, 95, 0.12);
       border-radius: 12px;
     }
 
-    .coming-soon h2 {
-      margin: 0 0 10px;
+    .lesson-library h2 {
+      margin: 0 0 14px;
       color: #0b2c5f;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: 30px;
+      font-size: clamp(30px, 4vw, 40px);
+      line-height: 1.15;
     }
 
-    .coming-soon p {
-      max-width: 650px;
-      margin: 0 auto;
+    .lesson-library p {
+      max-width: 760px;
+      margin: 0 auto 24px;
       color: #475569;
       font-size: 17px;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
     @media (max-width: 850px) {
@@ -256,13 +335,19 @@
         grid-column: auto;
       }
 
+      .lesson-library {
+        padding: 30px 24px;
+      }
+
     }
 
   </style>
 
 </head>
 
+
 <body>
+
 
 <header class="site-header">
 
@@ -312,6 +397,9 @@
 
 <main>
 
+
+<!-- HERO -->
+
 <section class="resources-hero">
 
   <div class="container resources-hero-inner">
@@ -321,13 +409,14 @@
     </p>
 
     <h1>
-      Ideas worth teaching.
+      ESL Teaching Resources, News Lessons &amp; Worksheets
     </h1>
 
     <p class="resources-intro">
-      ESL news lessons, current events, practical teaching articles, discussion
-      resources, and classroom ideas designed to help English teachers create
-      more thoughtful, engaging lessons.
+      Ideas worth teaching. Explore ready-to-use B1–B2 ESL news lessons,
+      current events, reading comprehension worksheets, discussion topics,
+      critical thinking activities, and classroom resources designed to get
+      students reading, thinking, and talking.
     </p>
 
   </div>
@@ -335,12 +424,14 @@
 </section>
 
 
+<!-- RESOURCE HUBS -->
+
 <section class="section">
 
   <div class="container">
 
     <p class="section-label">
-      TEACHING RESOURCES
+      EXPLORE ESL RESOURCES
     </p>
 
     <div class="resources-grid">
@@ -369,9 +460,10 @@
           </h2>
 
           <p>
-            Ready-to-teach B1–B2 lessons exploring the news, trends, debates,
-            and global issues shaping the world today. Browse topics including
-            technology, society, media, work, culture, and the environment.
+            Ready-to-teach B1–B2 ESL news lessons and current events worksheets
+            exploring the trends, debates, and global issues shaping the world
+            today. Browse topics including technology, society, media, work,
+            culture, food, and the environment.
           </p>
 
           <a class="button secondary"
@@ -403,8 +495,9 @@
           </h2>
 
           <p>
-            Ten adaptable classroom activities that develop analysis,
-            problem-solving, decision-making, debate, and meaningful speaking.
+            Ten adaptable ESL classroom activities that develop analysis,
+            problem-solving, decision-making, debate, critical thinking,
+            and meaningful speaking.
           </p>
 
           <a class="button secondary"
@@ -436,8 +529,9 @@
           </h2>
 
           <p>
-            Twenty meaningful classroom topics, practical teaching angles,
-            and direct links to ready-to-teach Perspective lessons.
+            Twenty meaningful ESL discussion topics, practical teaching
+            angles, speaking ideas, and direct links to ready-to-teach
+            Perspective lessons for university students.
           </p>
 
           <a class="button secondary"
@@ -470,8 +564,8 @@
 
           <p>
             Practical strategies for turning real-world news stories into
-            engaging reading, discussion, media literacy, and critical
-            thinking lessons.
+            engaging ESL reading, discussion, media literacy, speaking,
+            and critical thinking lessons.
           </p>
 
           <a class="button secondary"
@@ -503,9 +597,9 @@
           </h2>
 
           <p>
-            Ready-to-teach B1–B2 reading lessons with original articles,
-            vocabulary, comprehension, discussion, critical thinking, audio,
-            and teacher resources.
+            Ready-to-teach B1–B2 ESL reading comprehension worksheets
+            with original articles, vocabulary, comprehension, discussion,
+            critical thinking, audio, and teacher resources.
           </p>
 
           <a class="button secondary"
@@ -525,27 +619,41 @@
 </section>
 
 
+<!-- FULL LESSON LIBRARY -->
+
 <section class="section">
 
   <div class="container">
 
-    <div class="coming-soon">
+    <div class="lesson-library">
+
+      <p class="section-label">
+        READY-TO-TEACH ESL LESSONS
+      </p>
 
       <h2>
-        More resources coming soon
+        Explore the Perspective ESL Lesson Library
       </h2>
 
       <p>
-        Future resources will cover university speaking activities,
-        media literacy, lesson planning, classroom discussion, and
-        practical ways to get students communicating with confidence.
+        Discover ready-to-teach B1–B2 ESL lessons on current events,
+        technology, society, culture, media, work, food, sport, and the
+        environment. Each Perspective issue is built around an original
+        reading and designed to develop vocabulary, comprehension,
+        discussion, speaking, and critical thinking.
       </p>
+
+      <a class="button secondary"
+         href="index.html#lessons">
+        Browse All ESL Lessons →
+      </a>
 
     </div>
 
   </div>
 
 </section>
+
 
 </main>
 
@@ -561,6 +669,7 @@
   </div>
 
 </footer>
+
 
 </body>
 </html>
