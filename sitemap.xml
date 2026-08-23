@@ -6,7 +6,7 @@
 
   <url>
     <loc>https://perspectiveenglish.com/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
@@ -329,6 +329,27 @@
     <priority>0.90</priority>
   </url>
 
+  <url>
+    <loc>https://perspectiveenglish.com/travel-esl-lesson.html</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/pets-esl-lesson.html</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/uk-esl-lesson.html</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
 
   <!-- RESOURCE / COLLECTION PAGES -->
 
@@ -341,7 +362,7 @@
 
   <url>
     <loc>https://perspectiveenglish.com/esl-lesson-collections.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
