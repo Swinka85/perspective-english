@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-EQ6N2R6KF8"></script>
   <script>
@@ -27,7 +28,13 @@
   <title>Pick Any 5 ESL Lessons | Perspective English</title>
 
   <meta name="description"
-        content="Choose any five premium Perspective English ESL lessons for $10.99. Build your own ready-to-teach lesson bundle with worksheets, teacher guides, presentations and audio.">
+        content="Choose any five premium Perspective English ESL lessons for $10.99. Build your own ready-to-teach lesson bundle with worksheets, teacher guides, audio and presentation slides.">
+
+  <meta name="keywords"
+        content="ESL lesson bundle, choose your own ESL lessons, ESL teaching materials, English discussion lessons, university ESL worksheets, ready-to-teach ESL lessons">
+
+  <meta name="author"
+        content="Perspective English">
 
   <meta name="robots"
         content="index, follow">
@@ -38,9 +45,6 @@
   <meta property="og:type"
         content="website">
 
-  <meta property="og:site_name"
-        content="Perspective English">
-
   <meta property="og:title"
         content="Pick Any 5 ESL Lessons | Perspective English">
 
@@ -50,8 +54,11 @@
   <meta property="og:url"
         content="https://perspectiveenglish.com/pick-any-5-esl-lessons.html">
 
+  <meta property="og:site_name"
+        content="Perspective English">
+
   <meta property="og:image"
-        content="https://perspectiveenglish.com/images/pick-any-5-image.png">
+        content="https://perspectiveenglish.com/images/pick-any-5-image">
 
   <meta property="og:image:alt"
         content="Pick Any 5 Perspective English lesson bundle">
@@ -66,7 +73,7 @@
         content="Choose any five premium Perspective English lessons for $10.99 and build your own ready-to-teach ESL lesson bundle.">
 
   <meta name="twitter:image"
-        content="https://perspectiveenglish.com/images/pick-any-5-image.png">
+        content="https://perspectiveenglish.com/images/pick-any-5-image">
 
   <script type="application/ld+json">
   {
@@ -74,7 +81,7 @@
     "@type": "Product",
     "name": "Pick Any 5 Perspective Issues",
     "description": "Choose any five premium Perspective English ESL lessons and build your own ready-to-teach lesson bundle.",
-    "image": "https://perspectiveenglish.com/images/pick-any-5-image.png",
+    "image": "https://perspectiveenglish.com/images/pick-any-5-image",
     "brand": {
       "@type": "Brand",
       "name": "Perspective English"
@@ -104,376 +111,390 @@
 
   <style>
 
-    .pick5-hero {
-      position: relative;
-      overflow: hidden;
-      padding: 82px 0 76px;
-      background:
-        radial-gradient(circle at 85% 15%, rgba(212,175,55,.16), transparent 28%),
-        linear-gradient(135deg, #081f45 0%, #0b2c5f 55%, #173a7a 100%);
-      color: #ffffff;
-    }
+    /* HERO */
 
-    .pick5-hero::after {
-      content: "";
-      position: absolute;
-      right: -90px;
-      bottom: -120px;
-      width: 360px;
-      height: 360px;
-      border: 1px solid rgba(212,175,55,.18);
-      border-radius: 50%;
+    .pick5-hero {
+      padding: 82px 0 58px;
+      background: #f3f0e8;
+      border-bottom: 1px solid rgba(11, 44, 95, 0.15);
     }
 
     .pick5-hero-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 860px;
+      max-width: 880px;
     }
 
     .pick5-kicker {
-      margin: 0 0 18px;
-      color: #d4af37;
+      margin: 0 0 16px;
+      color: #b28a2e;
       font-size: 13px;
       font-weight: 800;
-      letter-spacing: 2.2px;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
 
     .pick5-hero h1 {
-      max-width: 780px;
       margin: 0 0 22px;
-      color: #ffffff;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(48px, 7vw, 78px);
-      line-height: 1.03;
-    }
-
-    .pick5-lead {
-      max-width: 690px;
-      margin: 0 0 30px;
-      color: rgba(255,255,255,.9);
-      font-size: 20px;
-      line-height: 1.65;
-    }
-
-    .pick5-offer-line {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 0 0 30px;
-    }
-
-    .pick5-pill {
-      display: inline-flex;
-      align-items: center;
-      min-height: 38px;
-      padding: 8px 14px;
-      border: 1px solid rgba(212,175,55,.55);
-      border-radius: 999px;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .pick5-pill strong {
-      color: #d4af37;
-    }
-
-    .pick5-cta,
-    .pick5-cta:visited {
-      display: inline-block;
-      padding: 15px 24px;
-      border-radius: 4px;
-      background: #d4af37;
       color: #0b2c5f;
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: .3px;
-      transition: transform .18s ease, filter .18s ease;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(44px, 7vw, 74px);
+      line-height: 1.02;
     }
 
-    .pick5-cta:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.05);
+    .pick5-intro {
+      max-width: 760px;
+      margin: 0;
+      color: #334155;
+      font-size: 20px;
+      line-height: 1.75;
     }
 
-    .pick5-note {
-      margin: 14px 0 0;
-      color: rgba(255,255,255,.72);
-      font-size: 13px;
-    }
 
-    .pick5-artwork {
-      padding: 0 0 18px;
+    /* MAIN PRODUCT */
+
+    .pick5-product {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.75fr);
+      overflow: hidden;
       background: #ffffff;
+      border: 1px solid rgba(11, 44, 95, 0.14);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(11, 44, 95, 0.07);
     }
 
-    .pick5-artwork-inner {
-      max-width: 1080px;
-      margin: 0 auto;
+    .pick5-product-image-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      background: #f7f5ef;
     }
 
-    .pick5-artwork img {
+    .pick5-product-image {
       display: block;
       width: 100%;
       height: auto;
       border-radius: 8px;
-      box-shadow: 0 14px 38px rgba(11,44,95,.12);
+      box-shadow: 0 8px 22px rgba(11, 44, 95, 0.10);
     }
 
-    .pick5-intro {
-      max-width: 780px;
-      margin: 0 auto 38px;
-      text-align: center;
-    }
-
-    .pick5-intro h2 {
-      margin-bottom: 14px;
-      font-size: clamp(30px, 4vw, 46px);
-    }
-
-    .pick5-intro p {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.7;
-    }
-
-    .pick5-steps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 22px;
-      margin-top: 34px;
-    }
-
-    .pick5-step {
-      padding: 30px 26px;
-      border: 1px solid #e4e6ea;
-      border-radius: 8px;
-      background: #ffffff;
-      box-shadow: 0 8px 28px rgba(11,44,95,.06);
-    }
-
-    .pick5-step-number {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      margin-bottom: 18px;
-      border-radius: 50%;
-      background: #0b2c5f;
-      color: #d4af37;
-      font-weight: 800;
-    }
-
-    .pick5-step h3 {
-      margin: 0 0 10px;
-      color: #0b2c5f;
-      font-size: 21px;
-    }
-
-    .pick5-step p {
-      margin: 0;
-      line-height: 1.65;
-    }
-
-    .pick5-includes {
-      background: #f7f8fa;
-    }
-
-    .pick5-includes-grid {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 34px;
-    }
-
-    .pick5-include-card {
-      padding: 24px 18px;
-      border: 1px solid #e4e6ea;
-      border-radius: 7px;
-      background: #ffffff;
-      text-align: center;
-    }
-
-    .pick5-include-icon {
+    .pick5-product-content {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 15px;
-      border-radius: 50%;
-      background: #eef2f8;
-      color: #0b2c5f;
-      font-size: 21px;
+      padding: 38px;
+    }
+
+    .pick5-product-label {
+      margin: 0 0 10px;
+      color: #b28a2e;
+      font-size: 12px;
       font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
     }
 
-    .pick5-include-card h3 {
-      margin: 0 0 8px;
-      color: #0b2c5f;
-      font-size: 17px;
-    }
-
-    .pick5-include-card p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.55;
-    }
-
-    .pick5-value {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: center;
-      padding: 42px;
-      border: 1px solid #e1d3a1;
-      border-radius: 9px;
-      background:
-        linear-gradient(135deg, #fffdf6 0%, #f8f1d8 100%);
-    }
-
-    .pick5-value-copy h2 {
-      margin: 0 0 12px;
-      color: #0b2c5f;
-      font-size: clamp(30px, 4vw, 44px);
-    }
-
-    .pick5-value-copy p {
-      max-width: 700px;
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.7;
-    }
-
-    .pick5-price {
-      min-width: 180px;
-      text-align: center;
-    }
-
-    .pick5-price-old {
-      display: block;
-      margin-bottom: 3px;
-      color: #6c7480;
-      font-size: 15px;
-      text-decoration: line-through;
-    }
-
-    .pick5-price-new {
-      display: block;
+    .pick5-product h2 {
+      margin: 0 0 14px;
       color: #0b2c5f;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: 45px;
+      font-size: 38px;
+      line-height: 1.12;
+    }
+
+    .pick5-product-description {
+      margin: 0 0 24px;
+      color: #475569;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .pick5-price-box {
+      margin: 0 0 24px;
+      padding: 22px;
+      background: #f7f5ef;
+      border-radius: 8px;
+    }
+
+    .pick5-price-main {
+      margin: 0;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 42px;
       line-height: 1;
     }
 
-    .pick5-price-save {
-      display: block;
-      margin-top: 8px;
-      color: #9b7710;
-      font-size: 13px;
+    .pick5-price-note {
+      margin: 8px 0 0;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .pick5-price-note strong {
+      color: #b28a2e;
+    }
+
+    .pick5-product .button {
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+
+    /* THREE STEP CARDS */
+
+    .pick5-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .pick5-card {
+      display: flex;
+      flex-direction: column;
+      padding: 30px;
+      background: #ffffff;
+      border: 1px solid rgba(11, 44, 95, 0.14);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(11, 44, 95, 0.07);
+    }
+
+    .pick5-card-number {
+      margin: 0 0 14px;
+      color: #b28a2e;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .pick5-card h2 {
+      margin: 0 0 12px;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 28px;
+      line-height: 1.18;
+    }
+
+    .pick5-card p {
+      margin: 0;
+      color: #475569;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+
+    /* INCLUDED */
+
+    .pick5-included {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 28px;
+    }
+
+    .pick5-included-card {
+      padding: 34px;
+      background: #ffffff;
+      border: 1px solid rgba(11, 44, 95, 0.14);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(11, 44, 95, 0.07);
+    }
+
+    .pick5-included-card h2 {
+      margin: 0 0 18px;
+      color: #0b2c5f;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 31px;
+      line-height: 1.15;
+    }
+
+    .pick5-included-box {
+      padding: 22px;
+      background: #f7f5ef;
+      border-radius: 8px;
+    }
+
+    .pick5-included-box h3 {
+      margin: 0 0 12px;
+      color: #0b2c5f;
+      font-size: 14px;
       font-weight: 800;
       letter-spacing: 1px;
       text-transform: uppercase;
     }
 
-    .pick5-delivery {
-      max-width: 820px;
-      margin: 0 auto;
+    .pick5-included-box ul {
+      margin: 0;
+      padding-left: 20px;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .pick5-included-box li + li {
+      margin-top: 4px;
+    }
+
+    .pick5-features {
+      margin-top: 22px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(11, 44, 95, 0.12);
+    }
+
+    .pick5-features p {
+      margin: 0 0 8px;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .pick5-features p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    /* DELIVERY */
+
+    .pick5-note {
+      padding: 38px;
       text-align: center;
+      background: #f3f0e8;
+      border-radius: 12px;
     }
 
-    .pick5-delivery h2 {
-      margin-bottom: 15px;
+    .pick5-note h2 {
+      margin: 0 0 12px;
       color: #0b2c5f;
-      font-size: clamp(30px, 4vw, 44px);
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 32px;
     }
 
-    .pick5-delivery p {
-      margin: 0 auto 14px;
+    .pick5-note p {
+      max-width: 760px;
+      margin: 0 auto;
+      color: #475569;
       font-size: 17px;
-      line-height: 1.75;
+      line-height: 1.7;
     }
 
-    .pick5-email {
-      display: inline-block;
-      margin-top: 8px;
+    .pick5-note p + p {
+      margin-top: 12px;
+    }
+
+    .pick5-note strong {
+      color: #0b2c5f;
+    }
+
+
+    /* FINAL CTA */
+
+    .pick5-final {
+      padding: 48px;
+      text-align: center;
+      background: #0b2c5f;
+      border-radius: 12px;
+    }
+
+    .pick5-final-label {
+      margin: 0 0 10px;
+      color: #d4af37;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .pick5-final h2 {
+      margin: 0 0 12px;
+      color: #ffffff;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: 36px;
+      line-height: 1.15;
+    }
+
+    .pick5-final p {
+      max-width: 680px;
+      margin: 0 auto 24px;
+      color: rgba(255,255,255,0.86);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .pick5-final .button {
+      min-width: 240px;
+      background: #d4af37;
+      border-color: #d4af37;
       color: #0b2c5f;
       font-weight: 800;
     }
 
-    .pick5-final {
-      padding: 72px 0;
-      background: #0b2c5f;
-      color: #ffffff;
-      text-align: center;
+    .pick5-final .button:hover {
+      background: #e1bd48;
+      border-color: #e1bd48;
     }
 
-    .pick5-final h2 {
-      margin: 0 0 14px;
-      color: #ffffff;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(36px, 5vw, 54px);
-    }
 
-    .pick5-final p {
-      max-width: 650px;
-      margin: 0 auto 28px;
-      color: rgba(255,255,255,.85);
-      font-size: 18px;
-      line-height: 1.65;
-    }
+    /* RESPONSIVE */
 
-    .pick5-final .pick5-cta {
-      font-size: 16px;
-    }
+    @media (max-width: 1000px) {
 
-    @media (max-width: 900px) {
-
-      .pick5-steps {
+      .pick5-product {
         grid-template-columns: 1fr;
       }
 
-      .pick5-includes-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .pick5-product-content {
+        padding: 32px;
       }
 
-      .pick5-value {
+      .pick5-grid {
         grid-template-columns: 1fr;
       }
 
-      .pick5-price {
-        text-align: left;
+      .pick5-included {
+        grid-template-columns: 1fr;
       }
 
     }
 
-    @media (max-width: 620px) {
+    @media (max-width: 700px) {
 
       .pick5-hero {
-        padding: 60px 0 58px;
+        padding: 58px 0 42px;
       }
 
-      .pick5-hero h1 {
-        font-size: 46px;
-      }
-
-      .pick5-lead {
+      .pick5-intro {
         font-size: 18px;
       }
 
-      .pick5-includes-grid {
-        grid-template-columns: 1fr;
+      .pick5-product-image-wrap {
+        padding: 18px;
       }
 
-      .pick5-value {
+      .pick5-product-content {
+        padding: 26px;
+      }
+
+      .pick5-product h2 {
+        font-size: 32px;
+      }
+
+      .pick5-card,
+      .pick5-included-card {
+        padding: 26px;
+      }
+
+      .pick5-note {
         padding: 30px 24px;
       }
 
-      .pick5-artwork img {
-        border-radius: 4px;
+      .pick5-final {
+        padding: 38px 24px;
+      }
+
+      .pick5-final .button {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
       }
 
     }
@@ -482,7 +503,9 @@
 
 </head>
 
+
 <body>
+
 
 <header class="site-header">
 
@@ -501,94 +524,132 @@
 
     </a>
 
+
     <nav class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="index.html#lessons">Lessons</a>
-      <a href="esl-lesson-collections.html">Collections</a>
-      <a href="resources.html">Resources</a>
-      <a href="about.html">About</a>
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="index.html#lessons">
+        Lessons
+      </a>
+
+      <a href="esl-lesson-collections.html">
+        Collections
+      </a>
+
+      <a href="resources.html">
+        Resources
+      </a>
+
     </nav>
 
   </div>
 
 </header>
 
+
+
 <main>
+
 
   <!-- HERO -->
 
   <section class="pick5-hero">
 
+    <div class="container pick5-hero-inner">
+
+      <p class="pick5-kicker">
+        BUILD YOUR OWN COLLECTION
+      </p>
+
+      <h1>
+        Pick Any 5.<br>
+        Build It Your Way.
+      </h1>
+
+      <p class="pick5-intro">
+        Choose any five premium Perspective issues and create a lesson
+        collection built around your students. Five complete ready-to-teach
+        lessons for just $10.99.
+      </p>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- FEATURED BUNDLE -->
+
+  <section class="section">
+
     <div class="container">
 
-      <div class="pick5-hero-inner">
+      <p class="section-label">
+        YOUR CUSTOM COLLECTION
+      </p>
 
-        <p class="pick5-kicker">
-          BUILD YOUR OWN COLLECTION
-        </p>
 
-        <h1>
-          Pick Any 5 Perspective Issues
-        </h1>
+      <article class="pick5-product">
 
-        <p class="pick5-lead">
-          No fixed bundle. No filler. Choose the five premium Perspective lessons
-          that fit your students, your course and your classroom.
-        </p>
 
-        <div class="pick5-offer-line"
-             aria-label="Bundle highlights">
+        <div class="pick5-product-image-wrap">
 
-          <span class="pick5-pill">
-            5 premium lessons
-          </span>
-
-          <span class="pick5-pill">
-            <strong>$10.99</strong>
-          </span>
-
-          <span class="pick5-pill">
-            Save 45%
-          </span>
+          <img class="pick5-product-image"
+               src="images/pick-any-5-image"
+               alt="Pick Any 5 Perspective English ESL lesson bundle">
 
         </div>
 
-        <a class="pick5-cta"
-           href="https://payhip.com/b/84CQm"
-           target="_blank"
-           rel="noopener">
-          Choose Your 5 →
-        </a>
 
-        <p class="pick5-note">
-          You’ll choose your five issues securely at checkout.
-        </p>
+        <div class="pick5-product-content">
 
-      </div>
+          <p class="pick5-product-label">
+            FIVE LESSONS · YOUR CHOICE
+          </p>
+
+          <h2>
+            Pick Any 5 Perspective Issues
+          </h2>
+
+          <p class="pick5-product-description">
+            Build your own bundle from the full premium Perspective catalogue.
+            Choose the topics that work best for your students, your course,
+            and your classroom.
+          </p>
+
+
+          <div class="pick5-price-box">
+
+            <p class="pick5-price-main">
+              $10.99
+            </p>
+
+            <p class="pick5-price-note">
+              Five individual lessons would cost $19.95.
+              <strong>Save 45%.</strong>
+            </p>
+
+          </div>
+
+
+          <a class="button secondary"
+             href="https://payhip.com/b/84CQm"
+             target="_blank"
+             rel="noopener noreferrer">
+            Choose Your 5 →
+          </a>
+
+        </div>
+
+      </article>
 
     </div>
 
   </section>
 
-
-  <!-- PICK ANY 5 ARTWORK -->
-
-  <section class="pick5-artwork"
-           aria-label="Pick Any 5 bundle">
-
-    <div class="container">
-
-      <div class="pick5-artwork-inner">
-
-        <img src="images/pick-any-5-image.png"
-             alt="Pick Any 5 Perspective English premium lesson bundle"
-             loading="eager">
-
-      </div>
-
-    </div>
-
-  </section>
 
 
   <!-- HOW IT WORKS -->
@@ -597,272 +658,183 @@
 
     <div class="container">
 
-      <div class="pick5-intro">
+      <p class="section-label">
+        HOW IT WORKS
+      </p>
 
-        <p class="section-label">
-          HOW IT WORKS
-        </p>
 
-        <h2>
-          Your lessons. Your bundle.
-        </h2>
+      <div class="pick5-grid">
 
-        <p>
-          Build a five-lesson collection around the topics your students will actually want to talk about.
-        </p>
 
-      </div>
+        <article class="pick5-card">
 
-      <div class="pick5-steps">
+          <p class="pick5-card-number">
+            STEP 01
+          </p>
 
-        <article class="pick5-step">
-
-          <div class="pick5-step-number">
-            1
-          </div>
-
-          <h3>
-            Choose your five
-          </h3>
+          <h2>
+            Choose Your Lessons
+          </h2>
 
           <p>
-            Browse the premium Perspective catalogue and select exactly five issues at checkout.
+            Head to checkout and select exactly five premium Perspective
+            issues from the full catalogue.
           </p>
 
         </article>
 
-        <article class="pick5-step">
 
-          <div class="pick5-step-number">
-            2
-          </div>
 
-          <h3>
-            Complete your order
-          </h3>
+        <article class="pick5-card">
+
+          <p class="pick5-card-number">
+            STEP 02
+          </p>
+
+          <h2>
+            Complete Your Order
+          </h2>
 
           <p>
-            Pay $10.99 for the complete five-lesson bundle, instead of buying each issue separately.
+            Pay $10.99 for your custom five-lesson collection through
+            our secure Payhip checkout.
           </p>
 
         </article>
 
-        <article class="pick5-step">
 
-          <div class="pick5-step-number">
-            3
-          </div>
 
-          <h3>
-            Get your lesson packs
-          </h3>
+        <article class="pick5-card">
+
+          <p class="pick5-card-number">
+            STEP 03
+          </p>
+
+          <h2>
+            We Send Your Bundle
+          </h2>
 
           <p>
-            Your five complete Perspective packs will be sent to the email address used for your purchase within 24 hours.
+            Your five complete lesson packs will be sent to the email
+            address used for your purchase within 24 hours.
           </p>
 
         </article>
+
 
       </div>
 
     </div>
 
   </section>
+
 
 
   <!-- WHAT'S INCLUDED -->
-
-  <section class="section pick5-includes">
-
-    <div class="container">
-
-      <div class="pick5-intro">
-
-        <p class="section-label">
-          WHAT YOU GET
-        </p>
-
-        <h2>
-          Five complete ready-to-teach lessons.
-        </h2>
-
-        <p>
-          Every issue gives you the materials you need to take the topic straight into the classroom.
-        </p>
-
-      </div>
-
-      <div class="pick5-includes-grid">
-
-        <article class="pick5-include-card">
-
-          <div class="pick5-include-icon">
-            01
-          </div>
-
-          <h3>
-            Student Worksheet
-          </h3>
-
-          <p>
-            Magazine-style reading, vocabulary, comprehension and discussion.
-          </p>
-
-        </article>
-
-        <article class="pick5-include-card">
-
-          <div class="pick5-include-icon">
-            02
-          </div>
-
-          <h3>
-            Critical Thinking
-          </h3>
-
-          <p>
-            Meaningful activities designed to create opinions and conversation.
-          </p>
-
-        </article>
-
-        <article class="pick5-include-card">
-
-          <div class="pick5-include-icon">
-            03
-          </div>
-
-          <h3>
-            Teacher Guide
-          </h3>
-
-          <p>
-            Answer key and teacher notes to make preparation simple.
-          </p>
-
-        </article>
-
-        <article class="pick5-include-card">
-
-          <div class="pick5-include-icon">
-            04
-          </div>
-
-          <h3>
-            Presentation
-          </h3>
-
-          <p>
-            Classroom slides covering the lesson activities and discussion.
-          </p>
-
-        </article>
-
-        <article class="pick5-include-card">
-
-          <div class="pick5-include-icon">
-            05
-          </div>
-
-          <h3>
-            Audio
-          </h3>
-
-          <p>
-            Article audio for listening practice or flexible classroom use.
-          </p>
-
-        </article>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- VALUE -->
 
   <section class="section">
 
     <div class="container">
 
-      <div class="pick5-value">
+      <p class="section-label">
+        WHAT YOU GET
+      </p>
 
-        <div class="pick5-value-copy">
 
-          <p class="section-label">
-            BUILD IT YOUR WAY
-          </p>
+      <div class="pick5-included">
+
+
+        <article class="pick5-included-card">
 
           <h2>
-            Why settle for a fixed bundle?
+            Five Complete Lessons
           </h2>
 
-          <p>
-            Pick the five topics that work for your students. Mix technology,
-            culture, society, food, media, work and Special Editions to create
-            a Perspective collection that fits your classroom.
-          </p>
 
-        </div>
+          <div class="pick5-included-box">
 
-        <div class="pick5-price">
+            <h3>Every issue includes</h3>
 
-          <span class="pick5-price-old">
-            $19.95 separately
-          </span>
+            <ul>
+              <li>Magazine-style student worksheet</li>
+              <li>Original reading article</li>
+              <li>Vocabulary and comprehension tasks</li>
+              <li>Discussion questions</li>
+              <li>Critical thinking activities</li>
+              <li>Speaking activities</li>
+            </ul>
 
-          <span class="pick5-price-new">
-            $10.99
-          </span>
+          </div>
 
-          <span class="pick5-price-save">
-            Save 45%
-          </span>
+        </article>
 
-        </div>
+
+
+        <article class="pick5-included-card">
+
+          <h2>
+            Ready to Teach
+          </h2>
+
+
+          <div class="pick5-included-box">
+
+            <h3>Teacher resources</h3>
+
+            <ul>
+              <li>Teacher guide</li>
+              <li>Answer key</li>
+              <li>Classroom presentation slides</li>
+              <li>Article audio</li>
+              <li>Flexible print or digital use</li>
+            </ul>
+
+          </div>
+
+
+          <div class="pick5-features">
+
+            <p>✓ Five premium Perspective issues</p>
+            <p>✓ Mix and match any available premium lessons</p>
+            <p>✓ No fixed collection</p>
+            <p>✓ One simple bundle price</p>
+
+          </div>
+
+        </article>
+
 
       </div>
 
     </div>
 
   </section>
+
 
 
   <!-- DELIVERY -->
 
-  <section class="section pick5-includes">
+  <section class="section">
 
     <div class="container">
 
-      <div class="pick5-delivery">
-
-        <p class="section-label">
-          DELIVERY
-        </p>
+      <div class="pick5-note">
 
         <h2>
-          Built for you. Sent to your inbox.
+          How will I receive my lessons?
         </h2>
 
         <p>
-          Because every Pick Any 5 bundle is built specifically for you,
-          your lesson packs are prepared after purchase. Your five selected
-          lessons will be emailed to the address used at checkout
+          Your Pick Any 5 collection is built specifically from the lessons
+          you choose. After purchase, your five complete lesson packs will
+          be sent to the email address used at checkout
           <strong>within 24 hours</strong>.
         </p>
 
         <p>
-          Your order will be sent from:
-        </p>
-
-        <span class="pick5-email">
-          perspectiveenglishlessons@gmail.com
-        </span>
-
-        <p style="margin-top:18px;">
-          If you don't see your lessons, please check your spam or junk folder.
+          Your lessons will be sent from
+          <strong>perspectiveenglishlessons@gmail.com</strong>.
+          If you do not see them, please check your spam or junk folder.
         </p>
 
       </div>
@@ -872,54 +844,58 @@
   </section>
 
 
+
   <!-- FINAL CTA -->
 
-  <section class="pick5-final">
+  <section class="section">
 
     <div class="container">
 
-      <h2>
-        Five lessons. Your choice.
-      </h2>
+      <div class="pick5-final">
 
-      <p>
-        Choose the Perspective issues that fit your classroom and build
-        your own five-lesson collection for $10.99.
-      </p>
+        <p class="pick5-final-label">
+          BUILD YOUR BUNDLE
+        </p>
 
-      <a class="pick5-cta"
-         href="https://payhip.com/b/84CQm"
-         target="_blank"
-         rel="noopener">
-        Choose Your 5 →
-      </a>
+        <h2>
+          Five lessons. Your choice.
+        </h2>
+
+        <p>
+          Choose the Perspective issues that fit your classroom and build
+          your own five-lesson collection for $10.99.
+        </p>
+
+        <a class="button"
+           href="https://payhip.com/b/84CQm"
+           target="_blank"
+           rel="noopener noreferrer">
+          Choose Your 5 →
+        </a>
+
+      </div>
 
     </div>
 
   </section>
 
+
 </main>
+
 
 
 <footer class="site-footer">
 
   <div class="container">
 
-    <div class="footer-brand">
-      PERSPECTIVE
-    </div>
-
     <p>
-      Lessons Worth Talking About
-    </p>
-
-    <p>
-      © 2026 Perspective English
+      perspectiveenglish.com | © 2026 Perspective English. All rights reserved.
     </p>
 
   </div>
 
 </footer>
+
 
 </body>
 
