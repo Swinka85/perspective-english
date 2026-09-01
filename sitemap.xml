@@ -13,14 +13,14 @@
 
   <url>
     <loc>https://perspectiveenglish.com/resources.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
 
   <url>
     <loc>https://perspectiveenglish.com/esl-news-lessons.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -415,6 +415,20 @@
   <url>
     <loc>https://perspectiveenglish.com/esl-reading-comprehension-worksheets-adults.html</loc>
     <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/esl-articles-for-discussion.html</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/esl-news-lesson-plans.html</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
