@@ -245,6 +245,128 @@
         width: 100%;
       }
     }
+
+
+    /* VOLUME ONE PROMO */
+    .volume1-promo {
+      margin: 0 0 42px;
+      background: #0b2c5f;
+      color: #ffffff;
+      border: 1px solid rgba(11, 44, 95, 0.18);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(11, 44, 95, 0.12);
+    }
+
+    .volume1-promo-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 180px;
+      align-items: center;
+      gap: 32px;
+      padding: 30px 32px;
+    }
+
+    .volume1-kicker {
+      margin: 0 0 8px;
+      color: #d4af37;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    .volume1-promo h2 {
+      margin: 0 0 10px;
+      color: #ffffff;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.08;
+    }
+
+    .volume1-promo-copy > p:not(.volume1-kicker) {
+      margin: 0;
+      max-width: 720px;
+      color: rgba(255,255,255,0.86);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .volume1-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-top: 16px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .volume1-meta span::before {
+      content: '✓';
+      color: #d4af37;
+      margin-right: 7px;
+    }
+
+    .volume1-actions {
+      margin-top: 22px;
+    }
+
+    .volume1-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 190px;
+      padding: 13px 18px;
+      border-radius: 4px;
+      background: #d4af37;
+      color: #0b2c5f;
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .volume1-button:hover {
+      transform: translateY(-1px);
+      background: #e1bd48;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.16);
+    }
+
+    .volume1-cover-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .volume1-cover {
+      display: block;
+      width: 100%;
+      max-width: 160px;
+      height: auto;
+      border-radius: 3px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+    }
+
+    @media (max-width: 760px) {
+      .volume1-promo-inner {
+        grid-template-columns: 1fr;
+        padding: 26px 24px;
+      }
+
+      .volume1-cover-wrap {
+        order: -1;
+        justify-content: flex-start;
+      }
+
+      .volume1-cover {
+        max-width: 130px;
+      }
+
+      .volume1-button {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+
   </style>
 </head>
 
@@ -393,6 +515,42 @@
            href="pick-any-5-esl-lessons.html">
           Pick Your 5 →
         </a>
+
+      </div>
+    </aside>
+
+    <!-- VOLUME ONE PROMO -->
+    <aside class="volume1-promo" aria-label="Perspective The Discussion Book Volume One">
+      <div class="volume1-promo-inner">
+
+        <div class="volume1-promo-copy">
+          <p class="volume1-kicker">THE COMPLETE COLLECTION</p>
+
+          <h2>Perspective: The Discussion Book · Volume One</h2>
+
+          <p>
+            Twenty ready-to-teach discussion lessons in one professionally designed volume.
+            Student Book, article audio and complete Teacher’s Edition.
+          </p>
+
+          <div class="volume1-meta">
+            <span>20 complete lessons</span>
+            <span>B1–B2</span>
+            <span>Teacher’s Edition included</span>
+          </div>
+
+          <div class="volume1-actions">
+            <a class="volume1-button" href="perspective-discussion-book-volume-one.html">
+              Explore Volume One →
+            </a>
+          </div>
+        </div>
+
+        <div class="volume1-cover-wrap">
+          <img class="volume1-cover"
+               src="images/volume1-image.png"
+               alt="Perspective The Discussion Book Volume One">
+        </div>
 
       </div>
     </aside>
