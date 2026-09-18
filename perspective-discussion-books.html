@@ -3,62 +3,418 @@
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-EQ6N2R6KF8"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-EQ6N2R6KF8');</script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments)}
+    gtag('js', new Date());
+    gtag('config', 'G-EQ6N2R6KF8');
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="apple-touch-icon" href="/favicon-180x180.png">
   <meta name="theme-color" content="#173a7a">
+
   <title>Perspective Discussion Books | ESL Discussion Lesson Volumes</title>
-  <meta name="description" content="Explore Perspective: The Discussion Book. Two complete ESL discussion volumes with 40 ready-to-teach lessons, Teacher's Editions, PowerPoint presentations and audio.">
+
+  <meta
+    name="description"
+    content="Explore Perspective: The Discussion Book collection. Ready-to-teach ESL discussion lessons with Student Books, Teacher's Editions, PowerPoint presentations and audio."
+  >
+
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://perspectiveenglish.com/perspective-discussion-books.html">
+
+  <link
+    rel="canonical"
+    href="https://perspectiveenglish.com/perspective-discussion-books.html"
+  >
+
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Perspective English">
-  <meta property="og:title" content="Perspective: The Discussion Books">
-  <meta property="og:description" content="Forty ready-to-teach ESL discussion lessons across two complete volumes.">
-  <meta property="og:url" content="https://perspectiveenglish.com/perspective-discussion-books.html">
-  <meta property="og:image" content="https://perspectiveenglish.com/images/volume1-image.webp">
+  <meta property="og:title" content="Perspective: The Discussion Book Collection">
+  <meta
+    property="og:description"
+    content="Explore complete volumes of ready-to-teach Perspective ESL discussion lessons."
+  >
+  <meta
+    property="og:url"
+    content="https://perspectiveenglish.com/perspective-discussion-books.html"
+  >
+  <meta
+    property="og:image"
+    content="https://perspectiveenglish.com/images/volume1-image.webp"
+  >
+
   <meta name="twitter:card" content="summary_large_image">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="css/css/perspective.css">
+
   <style>
-    .volumes-hero{background:#0b1d45;color:#fff;padding:78px 0 72px}
-    .volumes-kicker{margin:0 0 14px;color:#d4af37;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-    .volumes-hero h1{max-width:820px;margin:0 0 20px;font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,76px);line-height:1}
-    .volumes-hero p{max-width:760px;margin:0;color:#dbe5f7;font-size:19px;line-height:1.7}
-    .volumes-section{padding:66px 0}
-    .volumes-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px}
-    .volume-card{display:grid;grid-template-columns:190px 1fr;gap:30px;align-items:center;padding:32px;background:#fff;border:1px solid rgba(11,44,95,.14);box-shadow:0 10px 30px rgba(11,44,95,.08)}
-    .volume-card img{display:block;width:100%;height:auto;box-shadow:0 14px 30px rgba(0,0,0,.22)}
-    .volume-label{margin:0 0 8px;color:#b28a2e;font-size:12px;font-weight:800;letter-spacing:1.7px;text-transform:uppercase}
-    .volume-card h2{margin:0 0 12px;color:#0b2c5f;font-family:'Playfair Display',serif;font-size:34px;line-height:1.05}
-    .volume-card p{margin:0;color:#475569;line-height:1.65}
-    .volume-meta{display:flex;flex-wrap:wrap;gap:8px 14px;margin:18px 0;color:#0b2c5f;font-size:13px;font-weight:700}
-    .volume-meta span:before{content:'✓';color:#b28a2e;margin-right:6px}
-    .volume-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
-    .volume-actions a{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;text-decoration:none;font-weight:800;border:1px solid #0b2c5f}
-    .volume-actions .primary{background:#0b2c5f;color:#fff}
-    .volume-actions .secondary{background:#fff;color:#0b2c5f}
-    .volumes-note{margin-top:42px;padding:34px;background:#f3f0e8;text-align:center;border:1px solid rgba(11,44,95,.12)}
-    .volumes-note h2{margin:0 0 10px;color:#0b2c5f;font-family:'Playfair Display',serif;font-size:32px}
-    .volumes-note p{max-width:720px;margin:0 auto;color:#475569;line-height:1.7}
-    @media(max-width:950px){.volumes-grid{grid-template-columns:1fr}}
-    @media(max-width:600px){.volume-card{grid-template-columns:1fr}.volume-card img{max-width:180px}.volumes-hero{padding:56px 0}.volumes-section{padding:48px 0}.volume-actions a{width:100%}}
+    .volumes-hero {
+      background: #0b1d45;
+      color: #fff;
+      padding: 78px 0 72px;
+    }
+
+    .volumes-kicker {
+      margin: 0 0 14px;
+      color: #d4af37;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .volumes-hero h1 {
+      max-width: 820px;
+      margin: 0 0 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 7vw, 76px);
+      line-height: 1;
+    }
+
+    .volumes-hero p {
+      max-width: 760px;
+      margin: 0;
+      color: #dbe5f7;
+      font-size: 19px;
+      line-height: 1.7;
+    }
+
+    .volumes-section {
+      padding: 66px 0;
+    }
+
+    .volumes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 34px;
+    }
+
+    .volume-card {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 30px;
+      align-items: center;
+      padding: 32px;
+      background: #fff;
+      border: 1px solid rgba(11,44,95,.14);
+      box-shadow: 0 10px 30px rgba(11,44,95,.08);
+    }
+
+    .volume-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      box-shadow: 0 14px 30px rgba(0,0,0,.22);
+    }
+
+    .volume-label {
+      margin: 0 0 8px;
+      color: #b28a2e;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+      text-transform: uppercase;
+    }
+
+    .volume-card h2 {
+      margin: 0 0 12px;
+      color: #0b2c5f;
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      line-height: 1.05;
+    }
+
+    .volume-card p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.65;
+    }
+
+    .volume-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 18px 0;
+      color: #0b2c5f;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .volume-meta span:before {
+      content: '✓';
+      color: #b28a2e;
+      margin-right: 6px;
+    }
+
+    .volume-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .volume-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid #0b2c5f;
+    }
+
+    .volume-actions .primary {
+      background: #0b2c5f;
+      color: #fff;
+    }
+
+    .volume-actions .secondary {
+      background: #fff;
+      color: #0b2c5f;
+    }
+
+    .volumes-note {
+      margin-top: 42px;
+      padding: 34px;
+      background: #f3f0e8;
+      text-align: center;
+      border: 1px solid rgba(11,44,95,.12);
+    }
+
+    .volumes-note h2 {
+      margin: 0 0 10px;
+      color: #0b2c5f;
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+    }
+
+    .volumes-note p {
+      max-width: 720px;
+      margin: 0 auto;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 950px) {
+      .volumes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .volume-card {
+        grid-template-columns: 1fr;
+      }
+
+      .volume-card img {
+        max-width: 180px;
+      }
+
+      .volumes-hero {
+        padding: 56px 0;
+      }
+
+      .volumes-section {
+        padding: 48px 0;
+      }
+
+      .volume-actions a {
+        width: 100%;
+      }
+    }
   </style>
 </head>
+
 <body>
-<header class="site-header"><div class="container nav"><a class="brand-link" href="index.html"><div class="logo">PERSPECTIVE</div><div class="tagline">LESSONS WORTH TALKING ABOUT</div></a><nav class="nav-links"><a href="index.html">Home</a><a href="index.html#lessons">Lessons</a><a href="esl-lesson-collections.html">Collections</a><a href="perspective-discussion-books.html">Volumes</a><a href="resources.html">Resources</a><a href="about.html">About</a></nav></div></header>
+
+<header class="site-header">
+  <div class="container nav">
+
+    <a class="brand-link" href="index.html">
+      <div class="logo">PERSPECTIVE</div>
+      <div class="tagline">LESSONS WORTH TALKING ABOUT</div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#lessons">Lessons</a>
+      <a href="esl-lesson-collections.html">Collections</a>
+      <a href="perspective-discussion-books.html">Volumes</a>
+      <a href="resources.html">Resources</a>
+      <a href="about.html">About</a>
+    </nav>
+
+  </div>
+</header>
+
 <main>
-<section class="volumes-hero"><div class="container"><p class="volumes-kicker">PERSPECTIVE DISCUSSION BOOKS</p><h1>Forty lessons.<br>Two complete volumes.</h1><p>Perspective: The Discussion Book brings the magazine-style Perspective lesson format together in complete classroom collections. Choose a volume, open to a topic, and teach.</p></div></section>
-<section class="volumes-section"><div class="container"><div class="volumes-grid">
-<article class="volume-card"><img src="images/volume1-image.webp" alt="Perspective The Discussion Book Volume One cover"><div><p class="volume-label">ISSUES 001–020</p><h2>Volume One</h2><p>Twenty ready-to-teach discussions covering technology, work, society, culture and global issues.</p><div class="volume-meta"><span>20 lessons</span><span>CEFR B1-B2</span><span>Teacher's Edition</span><span>Slides + audio</span></div><div class="volume-actions"><a class="primary" href="perspective-discussion-book-volume-one.html">Look Inside →</a><a class="secondary" href="https://payhip.com/b/vYwBS" target="_blank" rel="noopener noreferrer">Buy Volume One</a></div></div></article>
-<article class="volume-card"><img src="images/volume2-image.webp" alt="Perspective The Discussion Book Volume Two cover"><div><p class="volume-label">ISSUES 021–040</p><h2>Volume Two</h2><p>Twenty more conversations exploring media, modern life, education, money, culture and the pressures shaping society.</p><div class="volume-meta"><span>20 lessons</span><span>CEFR B1-B2</span><span>Teacher's Edition</span><span>Slides + audio</span></div><div class="volume-actions"><a class="primary" href="perspective-discussion-book-volume-two.html">Look Inside →</a><a class="secondary" href="https://payhip.com/b/XZv2b" target="_blank" rel="noopener noreferrer">Buy Volume Two</a></div></div></article>
-</div><div class="volumes-note"><h2>Open it. Pick a topic. Teach.</h2><p>Each volume contains 20 self-contained discussion lessons, a complete Teacher's Edition, classroom presentations and article audio. Use the books in order or choose the topic that fits your class.</p></div></div></section>
+
+  <section class="volumes-hero">
+    <div class="container">
+
+      <p class="volumes-kicker">
+        PERSPECTIVE DISCUSSION BOOKS
+      </p>
+
+      <h1>
+        The Discussion Book Collection
+      </h1>
+
+      <p>
+        Ready-to-teach discussion lessons, collected in complete classroom volumes.
+        Each book brings together Perspective lessons with student materials,
+        teacher support, presentations and audio.
+      </p>
+
+    </div>
+  </section>
+
+  <section class="volumes-section">
+    <div class="container">
+
+      <div class="volumes-grid">
+
+        <article class="volume-card">
+
+          <img
+            src="images/volume1-image.webp"
+            alt="Perspective The Discussion Book Volume One cover"
+          >
+
+          <div>
+
+            <p class="volume-label">
+              ISSUES 001–020
+            </p>
+
+            <h2>Volume One</h2>
+
+            <p>
+              Twenty ready-to-teach discussions covering technology,
+              work, society, culture and global issues.
+            </p>
+
+            <div class="volume-meta">
+              <span>20 lessons</span>
+              <span>CEFR B1-B2</span>
+              <span>Teacher's Edition</span>
+              <span>Slides + audio</span>
+            </div>
+
+            <div class="volume-actions">
+
+              <a
+                class="primary"
+                href="perspective-discussion-book-volume-one.html"
+              >
+                Look Inside →
+              </a>
+
+              <a
+                class="secondary"
+                href="https://payhip.com/b/vYwBS"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Buy Volume One
+              </a>
+
+            </div>
+
+          </div>
+        </article>
+
+        <article class="volume-card">
+
+          <img
+            src="images/volume2-image.webp"
+            alt="Perspective The Discussion Book Volume Two cover"
+          >
+
+          <div>
+
+            <p class="volume-label">
+              ISSUES 021–040
+            </p>
+
+            <h2>Volume Two</h2>
+
+            <p>
+              Twenty more conversations exploring media, modern life,
+              education, money, culture and the pressures shaping society.
+            </p>
+
+            <div class="volume-meta">
+              <span>20 lessons</span>
+              <span>CEFR B1-B2</span>
+              <span>Teacher's Edition</span>
+              <span>Slides + audio</span>
+            </div>
+
+            <div class="volume-actions">
+
+              <a
+                class="primary"
+                href="perspective-discussion-book-volume-two.html"
+              >
+                Look Inside →
+              </a>
+
+              <a
+                class="secondary"
+                href="https://payhip.com/b/XZv2b"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Buy Volume Two
+              </a>
+
+            </div>
+
+          </div>
+        </article>
+
+      </div>
+
+      <div class="volumes-note">
+
+        <h2>
+          Open it. Pick a topic. Teach.
+        </h2>
+
+        <p>
+          Each volume contains 20 self-contained discussion lessons,
+          a complete Teacher's Edition, classroom presentations and article audio.
+          Use the books in order or choose the topic that fits your class.
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
 </main>
-<footer class="site-footer"><div class="container"><p>perspectiveenglish.com | © 2026 Perspective English. All rights reserved.</p></div></footer>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>
+      perspectiveenglish.com | © 2026 Perspective English. All rights reserved.
+    </p>
+  </div>
+</footer>
+
 </body>
 </html>
