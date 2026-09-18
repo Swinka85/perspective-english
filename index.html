@@ -247,7 +247,7 @@
     }
 
 
-    /* PERSPECTIVE DISCUSSION BOOKS PROMO */
+    /* VOLUME ONE PROMO */
     .volume1-promo {
       margin: 0 0 42px;
       background: #0b2c5f;
@@ -260,7 +260,7 @@
 
     .volume1-promo-inner {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 180px;
+      grid-template-columns: minmax(0, 1fr) 245px;
       align-items: center;
       gap: 32px;
       padding: 30px 32px;
@@ -346,6 +346,32 @@
       box-shadow: 0 10px 24px rgba(0,0,0,0.28);
     }
 
+    .volume-books-covers {
+      position: relative;
+      min-height: 230px;
+      min-width: 225px;
+    }
+
+    .volume-books-covers .volume1-cover {
+      position: absolute;
+      width: 135px;
+      max-width: none;
+    }
+
+    .volume-book-one {
+      left: 0;
+      top: 14px;
+      transform: rotate(-3deg);
+      z-index: 1;
+    }
+
+    .volume-book-two {
+      right: 0;
+      top: 0;
+      transform: rotate(3deg);
+      z-index: 2;
+    }
+
     @media (max-width: 760px) {
       .volume1-promo-inner {
         grid-template-columns: 1fr;
@@ -359,6 +385,16 @@
 
       .volume1-cover {
         max-width: 130px;
+      }
+
+      .volume-books-covers {
+        width: 225px;
+        min-height: 205px;
+      }
+
+      .volume-books-covers .volume1-cover {
+        width: 118px;
+        max-width: none;
       }
 
       .volume1-button {
@@ -392,7 +428,8 @@
     <nav class="nav-links">
       <a href="index.html">Home</a>
       <a href="index.html#lessons">Lessons</a>
-      <a href="esl-lesson-collections.html">Collections</a><a href="perspective-discussion-books.html">Volumes</a>
+      <a href="esl-lesson-collections.html">Collections</a>
+      <a href="perspective-discussion-books.html">Volumes</a>
       <a href="resources.html">Resources</a>
       <a href="about.html">About</a>
     </nav>
@@ -519,38 +556,41 @@
       </div>
     </aside>
 
-    <!-- VOLUME ONE PROMO -->
-    <aside class="volume1-promo" aria-label="Perspective The Discussion Book Volume One">
+    <!-- DISCUSSION BOOKS PROMO -->
+    <aside class="volume1-promo" aria-label="Perspective Discussion Books">
       <div class="volume1-promo-inner">
 
         <div class="volume1-promo-copy">
-          <p class="volume1-kicker">THE COMPLETE COLLECTION</p>
+          <p class="volume1-kicker">PERSPECTIVE DISCUSSION BOOKS</p>
 
-          <h2>Perspective: The Discussion Book<br>Volume One</h2>
+          <h2>Perspective: The Discussion Book</h2>
 
           <p>
-            Twenty ready-to-teach discussion lessons in one professionally designed volume.
-            Student Book, complete Teacher’s Edition, PowerPoint presentations and article audio included.
+            Complete collections of ready-to-teach Perspective lessons in professionally designed volumes.
+            Each book includes a Student Book, complete Teacher’s Edition, PowerPoint presentations and article audio.
           </p>
 
           <div class="volume1-meta">
-            <span>20 complete lessons</span>
-            <span>B1–B2</span>
-            <span>Teacher’s Edition</span>
-            <span>20 PowerPoint presentations</span>
+            <span>Ready-to-teach lessons</span>
+            <span>CEFR B1–B2</span>
+            <span>Teacher’s Editions</span>
+            <span>Slides + audio</span>
           </div>
 
           <div class="volume1-actions">
-            <a class="volume1-button" href="perspective-discussion-book-volume-one.html">
-              Explore Volume One →
+            <a class="volume1-button" href="perspective-discussion-books.html">
+              Explore the Volumes →
             </a>
           </div>
         </div>
 
-        <div class="volume1-cover-wrap">
-          <img class="volume1-cover"
+        <div class="volume1-cover-wrap volume-books-covers">
+          <img class="volume1-cover volume-book-one"
                src="images/volume1-image.webp"
                alt="Perspective The Discussion Book Volume One">
+          <img class="volume1-cover volume-book-two"
+               src="images/volume2-image.webp"
+               alt="Perspective The Discussion Book Volume Two">
         </div>
 
       </div>
