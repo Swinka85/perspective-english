@@ -6,7 +6,7 @@
 
   <url>
     <loc>https://perspectiveenglish.com/</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-09-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
@@ -427,6 +427,16 @@
   </url>
 
 
+  <!-- ISSUES 051–055 -->
+
+  <url>
+    <loc>https://perspectiveenglish.com/war-and-peace-esl-lesson.html</loc>
+    <lastmod>2026-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+
   <!-- RESOURCE / COLLECTION PAGES -->
 
   <url>
@@ -456,8 +466,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
-
-
 
   <url>
     <loc>https://perspectiveenglish.com/critical-thinking-activities-esl.html</loc>
