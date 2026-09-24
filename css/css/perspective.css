@@ -12,6 +12,26 @@
   --text: #071f3d;
 }
 
+/* LEVEL IDENTITIES */
+
+body.level-a {
+  --navy: #176b6b;
+  --navy-soft: #125858;
+  --text: #071f3d;
+}
+
+body.level-b {
+  --navy: #071f3d;
+  --navy-soft: #102c52;
+  --text: #071f3d;
+}
+
+body.level-c {
+  --navy: #451a2a;
+  --navy-soft: #5a2638;
+  --text: #071f3d;
+}
+
 html {
   scroll-behavior: smooth;
 }
