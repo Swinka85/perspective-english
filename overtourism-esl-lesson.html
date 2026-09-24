@@ -19,7 +19,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
   <link rel="apple-touch-icon" href="/favicon-180x180.png">
-  <meta name="theme-color" content="#173a7a">
+  <meta name="theme-color" content="#071f3d">
 
   <title>Free Overtourism ESL Lesson | Tourism & Travel</title>
 
@@ -151,9 +151,69 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/css/perspective.css">
+
+  <style>
+    .level-switcher {
+      margin: 1.35rem 0 1.6rem;
+    }
+
+    .level-switcher-label {
+      margin: 0 0 .55rem;
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .level-switcher-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+    }
+
+    .level-switcher-links a,
+    .level-switcher-links span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 86px;
+      padding: .58rem .8rem;
+      border: 1px solid #c9c9c9;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: .9rem;
+      background: #ffffff;
+      color: #333333;
+    }
+
+    .level-switcher-links .active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #ffffff;
+    }
+
+    .level-switcher-links a:hover {
+      border-color: var(--navy);
+      color: var(--navy-soft);
+    }
+
+    .issue-number,
+    .section-label {
+      color: var(--navy);
+    }
+
+    @media (max-width: 520px) {
+      .level-switcher-links a,
+      .level-switcher-links span {
+        flex: 1 1 30%;
+        min-width: 0;
+      }
+    }
+  </style>
 </head>
 
-<body>
+<body class="level-b">
 
 <header class="site-header">
 
@@ -195,6 +255,16 @@
       <p class="issue-description">
         A free ready-to-teach ESL lesson exploring overtourism, mass tourism, crowded destinations, local communities and responsible travel, with reading, listening, vocabulary, discussion and critical-thinking activities for B1–B2 English learners.
       </p>
+
+      <div class="level-switcher" aria-label="Choose lesson level">
+        <p class="level-switcher-label">Choose your level</p>
+
+        <div class="level-switcher-links">
+          <a href="overtourism-esl-lesson-a1-a2.html">A1–A2</a>
+          <span class="active" aria-current="page">B1–B2</span>
+          <a href="overtourism-esl-lesson-c1-c2.html">C1–C2</a>
+        </div>
+      </div>
 
       <div class="button-grid">
 
