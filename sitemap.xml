@@ -1,519 +1,549 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- MAIN SITE -->
-
   <url>
     <loc>https://perspectiveenglish.com/</loc>
-    <lastmod>2026-09-19</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/resources.html</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/esl-news-lessons.html</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/free-esl-lessons.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/b1-b2-esl-lessons.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/esl-discussion-topics-university-students.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 001–005 -->
-
   <url>
     <loc>https://perspectiveenglish.com/overtourism-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/ai-in-education-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/food-waste-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/fast-fashion-esl-lesson.html</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/world-cup-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 006–010 -->
-
   <url>
     <loc>https://perspectiveenglish.com/digital-detox-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/four-day-workweek-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/end-of-cash-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/slowing-ageing-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/korean-food-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 011–015 -->
-
   <url>
     <loc>https://perspectiveenglish.com/space-tourism-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/ai-friends-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/microplastics-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/decline-of-reading-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/womens-sport-special-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 016–020 -->
-
   <url>
     <loc>https://perspectiveenglish.com/future-of-work-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/behind-the-headlines-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/lucky-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/baby-bust-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/pokemon-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 021–025 -->
-
   <url>
     <loc>https://perspectiveenglish.com/greenwashing-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/happiness-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/side-hustle-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/food-fraud-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/harry-potter-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 026–030 -->
-
   <url>
     <loc>https://perspectiveenglish.com/fake-reviews-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/looksmaxxing-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/rage-bait-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/attention-economy-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/michelin-guide-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 031–035 -->
-
   <url>
     <loc>https://perspectiveenglish.com/extreme-heat-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/experiences-vs-possessions-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/generation-stereotypes-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/vlogging-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/fast-food-globalization-esl-lesson.html</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 036–040 -->
-
   <url>
     <loc>https://perspectiveenglish.com/life-skills-esl-lesson.html</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/streaming-esl-lesson.html</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/travel-esl-lesson.html</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/pets-esl-lesson.html</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/uk-esl-lesson.html</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 041–045 -->
-
   <url>
     <loc>https://perspectiveenglish.com/modern-music-instruments-esl-lesson.html</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/superstitions-esl-lesson.html</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/protein-boom-esl-lesson.html</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/public-etiquette-esl-lesson.html</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/9-11-esl-lesson.html</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 046–050 -->
-
   <url>
     <loc>https://perspectiveenglish.com/school-daze-esl-lesson.html</loc>
     <lastmod>2026-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/seasons-esl-lesson.html</loc>
     <lastmod>2026-09-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/dynamic-pricing-esl-lesson.html</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/coffee-tea-esl-lesson.html</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/moon-festival-esl-lesson.html</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- ISSUES 051–055 -->
-
   <url>
     <loc>https://perspectiveenglish.com/war-and-peace-esl-lesson.html</loc>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
-
-  <!-- RESOURCE / COLLECTION PAGES -->
-
   <url>
     <loc>https://perspectiveenglish.com/environment-sustainability-esl-lessons.html</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/perspective-discussion-book-volume-one.html</loc>
     <lastmod>2026-09-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/perspective-discussion-books.html</loc>
     <lastmod>2026-09-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/perspective-discussion-book-volume-two.html</loc>
     <lastmod>2026-09-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/critical-thinking-activities-esl.html</loc>
     <lastmod>2026-07-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/esl-lesson-collections.html</loc>
     <lastmod>2026-09-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/how-to-teach-news-articles-esl-classroom.html</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/esl-reading-comprehension-worksheets-adults.html</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/esl-articles-for-discussion.html</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/esl-news-lesson-plans.html</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/about.html</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.70</priority>
   </url>
-
+  <url>
+    <loc>https://perspectiveenglish.com/beginner-esl-lessons.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/intermediate-esl-lessons.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/advanced-esl-lessons.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/overtourism-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/ai-in-education-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/food-waste-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/fast-fashion-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/world-cup-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/digital-detox-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/four-day-workweek-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/end-of-cash-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/slowing-ageing-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/korean-food-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/overtourism-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/ai-in-education-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/food-waste-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/fast-fashion-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/world-cup-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/digital-detox-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/four-day-workweek-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/end-of-cash-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/slowing-ageing-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/korean-food-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
 </urlset>
