@@ -149,6 +149,54 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/css/perspective.css">
+
+  <style>
+    .level-selector {
+      margin-top: 24px;
+    }
+
+    .level-selector-label {
+      margin: 0 0 9px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .level-selector-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .level-selector-buttons a,
+    .level-selector-buttons span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 82px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .level-selector-buttons a:hover {
+      border-color: var(--navy);
+      color: var(--navy);
+    }
+
+    .level-selector-buttons .active {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
@@ -191,6 +239,30 @@
       <p class="issue-description">
         A ready-to-teach ESL lesson exploring falling birth rates, population decline, changing family choices and aging societies, with reading, listening, vocabulary, discussion and critical-thinking activities for B1–B2 English learners.
       </p>
+
+      <div class="level-selector">
+
+        <p class="level-selector-label">
+          CHOOSE YOUR LEVEL
+        </p>
+
+        <div class="level-selector-buttons">
+
+          <a href="baby-bust-esl-lesson-a1-a2.html">
+            A1–A2
+          </a>
+
+          <span class="active">
+            B1–B2
+          </span>
+
+          <a href="baby-bust-esl-lesson-c1-c2.html">
+            C1–C2
+          </a>
+
+        </div>
+
+      </div>
 
       <div class="button-grid">
 
@@ -315,11 +387,23 @@
       <ul class="included-list">
 
         <li>Magazine-style B1–B2 ESL student worksheet</li>
+
         <li>Original birth rates reading and audio recording</li>
-        <li>Vocabulary and reading comprehension activities</li>
-        <li>Population and family discussion questions and critical-thinking tasks</li>
-        <li>Speaking challenge and writing prompt</li>
+
+        <li>Five vocabulary items and reading comprehension</li>
+
+        <li>Five discussion questions about birth rates, family choices and population change</li>
+
+        <li>The Decision Tree critical-thinking activity</li>
+
+        <li>Language in Context vocabulary practice</li>
+
+        <li>City-planner speaking challenge: design and present one realistic policy</li>
+
+        <li>150–200 word opinion-writing task</li>
+
         <li>Teacher guide and complete answer key</li>
+
         <li>Ready-to-use classroom presentation</li>
 
       </ul>
@@ -384,28 +468,61 @@
 
   <div class="container">
 
-    <p class="section-label">KEEP EXPLORING</p>
+    <p class="section-label">EXPLORE THIS TOPIC</p>
 
-    <h2>You Might Also Like</h2>
+    <h2>The Baby Bust at Every Level</h2>
 
     <div class="related-lessons-grid">
 
-      <a class="related-lesson-card" href="side-hustle-esl-lesson.html">
-        <span class="related-issue">ISSUE 023</span>
-        <strong>The Side Hustle</strong>
-        <span>Is a second job a path to freedom or another source of pressure?</span>
+      <a class="related-lesson-card"
+         href="baby-bust-esl-lesson-a1-a2.html">
+
+        <span class="related-issue">
+          A1–A2
+        </span>
+
+        <strong>
+          Beginner
+        </strong>
+
+        <span>
+          Families, costs and falling birth rates
+        </span>
+
       </a>
 
-      <a class="related-lesson-card" href="four-day-workweek-esl-lesson.html">
-        <span class="related-issue">ISSUE 007</span>
-        <strong>Four-Day Workweek</strong>
-        <span>Could working less actually make us more productive?</span>
+      <a class="related-lesson-card"
+         href="baby-bust-esl-lesson.html">
+
+        <span class="related-issue">
+          B1–B2
+        </span>
+
+        <strong>
+          Intermediate
+        </strong>
+
+        <span>
+          Population decline, family choices and aging societies
+        </span>
+
       </a>
 
-      <a class="related-lesson-card" href="future-of-work-esl-lesson.html">
-        <span class="related-issue">ISSUE 016</span>
-        <strong>The Future of Work</strong>
-        <span>Which jobs will survive the age of AI?</span>
+      <a class="related-lesson-card"
+         href="baby-bust-esl-lesson-c1-c2.html">
+
+        <span class="related-issue">
+          C1–C2
+        </span>
+
+        <strong>
+          Advanced
+        </strong>
+
+        <span>
+          Demographics, policy, autonomy and social responsibility
+        </span>
+
       </a>
 
     </div>
