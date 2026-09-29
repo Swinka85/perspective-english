@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://perspectiveenglish.com/</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
@@ -158,31 +158,31 @@
   </url>
   <url>
     <loc>https://perspectiveenglish.com/greenwashing-esl-lesson.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://perspectiveenglish.com/happiness-esl-lesson.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://perspectiveenglish.com/side-hustle-esl-lesson.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://perspectiveenglish.com/food-fraud-esl-lesson.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
   <url>
     <loc>https://perspectiveenglish.com/harry-potter-esl-lesson.html</loc>
-    <lastmod>2026-08-18</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
@@ -374,7 +374,7 @@
   </url>
   <url>
     <loc>https://perspectiveenglish.com/esl-lesson-collections.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
@@ -410,19 +410,19 @@
   </url>
   <url>
     <loc>https://perspectiveenglish.com/beginner-esl-lessons.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://perspectiveenglish.com/intermediate-esl-lessons.html</loc>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://perspectiveenglish.com/advanced-esl-lessons.html</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-09-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -666,7 +666,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
-
   <url>
     <loc>https://perspectiveenglish.com/overtourism-esl-discussion-questions.html</loc>
     <lastmod>2026-09-29</lastmod>
@@ -783,6 +782,66 @@
   </url>
   <url>
     <loc>https://perspectiveenglish.com/pokemon-esl-discussion-questions.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/food-fraud-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/food-fraud-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/greenwashing-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/greenwashing-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/happiness-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/happiness-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/harry-potter-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/harry-potter-esl-lesson-c1-c2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/side-hustle-esl-lesson-a1-a2.html</loc>
+    <lastmod>2026-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/side-hustle-esl-lesson-c1-c2.html</loc>
     <lastmod>2026-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
