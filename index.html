@@ -616,27 +616,44 @@
     .book-covers {
       position: relative;
       width: 100%;
-      max-width: 430px;
-      height: 305px;
+      max-width: 470px;
+      height: 330px;
       margin-left: auto;
     }
 
     .book-covers img {
       position: absolute;
-      width: 175px;
+      width: 150px;
       box-shadow: 0 18px 42px rgba(0,0,0,.22);
+      transition: transform .25s ease;
     }
 
-    .book-covers img:first-child {
-      left: 60px;
-      top: 30px;
-      transform: rotate(-5deg);
+    .book-covers .book-a {
+      left: 10px;
+      top: 62px;
+      transform: rotate(-7deg);
+      z-index: 1;
     }
 
-    .book-covers img:last-child {
-      right: 52px;
-      top: 0;
-      transform: rotate(4deg);
+    .book-covers .book-b1 {
+      left: 112px;
+      top: 25px;
+      transform: rotate(-3deg);
+      z-index: 3;
+    }
+
+    .book-covers .book-b2 {
+      right: 102px;
+      top: 12px;
+      transform: rotate(3deg);
+      z-index: 4;
+    }
+
+    .book-covers .book-c {
+      right: 0;
+      top: 58px;
+      transform: rotate(7deg);
+      z-index: 2;
     }
 
     /* ========================================================
@@ -868,21 +885,33 @@
 
       .book-covers {
         width: 100%;
-        height: 270px;
+        max-width: 360px;
+        height: 275px;
         margin: 0 auto;
       }
 
       .book-covers img {
-        width: 170px;
+        width: 120px;
       }
 
-      .book-covers img:first-child {
-        left: 18px;
-        top: 30px;
+      .book-covers .book-a {
+        left: 0;
+        top: 60px;
       }
 
-      .book-covers img:last-child {
-        right: 18px;
+      .book-covers .book-b1 {
+        left: 78px;
+        top: 25px;
+      }
+
+      .book-covers .book-b2 {
+        right: 76px;
+        top: 15px;
+      }
+
+      .book-covers .book-c {
+        right: 0;
+        top: 58px;
       }
 
       .value + .value {
@@ -1306,12 +1335,24 @@
     <div class="book-covers"
          aria-label="Perspective Discussion Book covers">
 
-      <img src="images/volume1-image.webp"
-           alt="Perspective The Discussion Book Volume One"
+      <img class="book-a"
+           src="images/volume1-a-preview-01.webp"
+           alt="Perspective The Discussion Book Volume One A1–A2 Beginner"
            loading="lazy">
 
-      <img src="images/volume2-image.webp"
-           alt="Perspective The Discussion Book Volume Two"
+      <img class="book-b1"
+           src="images/volume1-image.webp"
+           alt="Perspective The Discussion Book Volume One B1–B2 Intermediate"
+           loading="lazy">
+
+      <img class="book-b2"
+           src="images/volume2-image.webp"
+           alt="Perspective The Discussion Book Volume Two B1–B2 Intermediate"
+           loading="lazy">
+
+      <img class="book-c"
+           src="images/volume1-c-preview-01.webp"
+           alt="Perspective The Discussion Book Volume One C1–C2 Advanced"
            loading="lazy">
 
     </div>
