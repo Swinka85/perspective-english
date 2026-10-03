@@ -846,4 +846,35 @@
     <changefreq>monthly</changefreq>
     <priority>0.90</priority>
   </url>
+
+  <url>
+    <loc>https://perspectiveenglish.com/greenwashing-esl-discussion-questions.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/happiness-esl-discussion-questions.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/side-hustle-esl-discussion-questions.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/food-fraud-esl-discussion-questions.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://perspectiveenglish.com/harry-potter-esl-discussion-questions.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
 </urlset>
