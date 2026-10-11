@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -197,6 +198,14 @@
     border-color: #157f78;
     color: #157f78;
   }
+</style><style>
+/* Consistent compact level navigation */
+.level-selector{margin:24px 0 18px}
+.level-selector-label{margin:0 0 9px;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.level-selector-buttons{display:flex;flex-wrap:wrap;gap:8px}
+.level-selector-buttons a,.level-selector-buttons span{display:inline-flex;align-items:center;justify-content:center;min-width:82px;padding:9px 14px;border:1px solid #d4dbe5;border-radius:999px;background:#fff;color:#0b2140;font-size:.85rem;font-weight:700;text-decoration:none;box-sizing:border-box}
+.level-selector-buttons a:hover{border-color:var(--level-accent);color:var(--level-accent)}
+.level-selector-buttons .active{border-color:var(--level-accent);background:var(--level-accent);color:#fff}
 </style></head>
 <body>
 <header class="site-header">
@@ -221,18 +230,9 @@
 <p class="issue-number">ISSUE 039</p>
 <h1>Pets ESL Lesson</h1>
 <p class="issue-question">Are pets welcome everywhere now?</p>
-<p class="issue-description">A ready-to-teach A1–A2 ESL lesson about dogs in cafés, pet-friendly spaces and making fair rules, with reading, audio, vocabulary, discussion and guided writing.</p>
-<div aria-label="Choose lesson level" class="level-switcher" style="display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 24px;">
-<a aria-current="page" href="pets-esl-lesson-a1-a2.html" style="background:#157f78;color:#fff;padding:11px 16px;border-radius:6px;text-decoration:none;font-weight:700;;outline:2px solid #d9b877;outline-offset:2px">A1–A2 Beginner</a>
-<a href="pets-esl-lesson.html" style="background:#1a2a5e;color:#fff;padding:11px 16px;border-radius:6px;text-decoration:none;font-weight:700;">B1–B2 Intermediate</a>
-<a href="pets-esl-lesson-c1-c2.html" style="background:#7b2942;color:#fff;padding:11px 16px;border-radius:6px;text-decoration:none;font-weight:700;">C1–C2 Advanced</a>
-</div>
-<div class="level-selector">
-<p class="level-selector-label">
-          CHOOSE YOUR LEVEL
-        </p>
-<div class="level-selector-buttons"><span class="active">A1–A2</span><a href="pets-esl-lesson.html">B1–B2</a><a href="pets-esl-lesson-c1-c2.html">C1–C2</a></div>
-</div><div class="button-grid">
+<p class="issue-description">A ready-to-teach A1–A2 ESL lesson about dogs in cafés, pet-friendly spaces and making fair rules, with reading, audio, vocabulary, discussion and guided writing.</p><div class="level-selector" style="--level-accent:#157f78;"><p class="level-selector-label">CHOOSE YOUR LEVEL</p><div class="level-selector-buttons"><span class="active">A1–A2</span><a href="pets-esl-lesson.html">B1–B2</a><a href="pets-esl-lesson-c1-c2.html">C1–C2</a></div></div>
+
+<div class="button-grid">
 <a class="btn btn-primary" href="https://payhip.com/b/soDOS" rel="noopener" target="_blank">
           Buy Lesson
         </a>
