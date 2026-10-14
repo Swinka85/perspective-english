@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <ns0:urlset xmlns:ns0="http://www.sitemaps.org/schemas/sitemap/0.9">
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/</ns0:loc>
@@ -278,31 +278,31 @@
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/modern-music-instruments-esl-lesson.html</ns0:loc>
-    <ns0:lastmod>2026-08-26</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/superstitions-esl-lesson.html</ns0:loc>
-    <ns0:lastmod>2026-08-26</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/protein-boom-esl-lesson.html</ns0:loc>
-    <ns0:lastmod>2026-08-30</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/public-etiquette-esl-lesson.html</ns0:loc>
-    <ns0:lastmod>2026-08-30</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/9-11-esl-lesson.html</ns0:loc>
-    <ns0:lastmod>2026-09-01</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
@@ -374,7 +374,7 @@
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/esl-lesson-collections.html</ns0:loc>
-    <ns0:lastmod>2026-10-11</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
@@ -410,7 +410,7 @@
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/beginner-esl-lessons.html</ns0:loc>
-    <ns0:lastmod>2026-10-11</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>weekly</ns0:changefreq>
     <ns0:priority>0.95</ns0:priority>
   </ns0:url>
@@ -422,7 +422,7 @@
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/advanced-esl-lessons.html</ns0:loc>
-    <ns0:lastmod>2026-10-11</ns0:lastmod>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>weekly</ns0:changefreq>
     <ns0:priority>0.95</ns0:priority>
   </ns0:url>
@@ -1095,6 +1095,66 @@
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/uk-esl-lesson-c1-c2.html</ns0:loc>
     <ns0:lastmod>2026-10-11</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/modern-music-instruments-esl-lesson-a1-a2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/modern-music-instruments-esl-lesson-c1-c2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/superstitions-esl-lesson-a1-a2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/superstitions-esl-lesson-c1-c2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/protein-boom-esl-lesson-a1-a2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/protein-boom-esl-lesson-c1-c2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/public-etiquette-esl-lesson-a1-a2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/public-etiquette-esl-lesson-c1-c2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/9-11-esl-lesson-a1-a2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
+    <ns0:changefreq>monthly</ns0:changefreq>
+    <ns0:priority>0.90</ns0:priority>
+  </ns0:url>
+  <ns0:url>
+    <ns0:loc>https://perspectiveenglish.com/9-11-esl-lesson-c1-c2.html</ns0:loc>
+    <ns0:lastmod>2026-10-14</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
