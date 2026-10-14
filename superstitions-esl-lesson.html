@@ -132,6 +132,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/css/perspective.css">
+  <style>
+  /* Consistent compact level navigation, matching Issue 040 */
+  .level-selector{margin:24px 0 18px}
+  .level-selector-label{margin:0 0 9px;font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .level-selector-buttons{display:flex;flex-wrap:wrap;gap:8px}
+  .level-selector-buttons a,.level-selector-buttons span{display:inline-flex;align-items:center;justify-content:center;min-width:82px;padding:9px 14px;border:1px solid #d4dbe5;border-radius:999px;background:#fff;color:#0b2140;font-size:.85rem;font-weight:700;text-decoration:none;box-sizing:border-box}
+  .level-selector-buttons a:hover{border-color:var(--level-accent);color:var(--level-accent)}
+  .level-selector-buttons .active{border-color:var(--level-accent);background:var(--level-accent);color:#fff}
+  </style>
 </head>
 
 <body>
@@ -168,6 +177,15 @@
       <p class="issue-description">
         A ready-to-teach ESL lesson exploring superstitions, omens and cultural beliefs around the world, and asking why the same sign can represent good fortune in one culture and disaster in another.
       </p>
+
+      <div class="level-selector" style="--level-accent:#1a2a5e;">
+        <p class="level-selector-label">CHOOSE YOUR LEVEL</p>
+        <div class="level-selector-buttons">
+          <a href="superstitions-esl-lesson-a1-a2.html">A1–A2</a>
+          <span class="active">B1–B2</span>
+          <a href="superstitions-esl-lesson-c1-c2.html">C1–C2</a>
+        </div>
+      </div>
 
       <div class="button-grid">
         <a class="btn btn-primary"
@@ -279,6 +297,7 @@
         <li>Discussion questions about luck, rituals and modern superstition</li>
         <li>Opposite Omens critical-thinking activity</li>
         <li>Six cross-cultural superstitions for students to compare and evaluate</li>
+        <li>Language in Context practice with ritual, omen, interpret, coincidence and superstition</li>
         <li>International hotel speaking challenge</li>
         <li>150–200 word opinion-writing task</li>
         <li>Teacher guide and complete answer key</li>
