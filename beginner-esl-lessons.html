@@ -451,6 +451,31 @@
   color: #fff;
 }
 </style>
+<style>
+/* Readable, balanced benefit list: two generous columns beside the book cover */
+.volume1-promo .volume1-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 26px;
+  max-width: 720px;
+  margin-top: 22px;
+  font-size: 14px;
+}
+.volume1-promo .volume1-meta span {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  line-height: 1.5;
+}
+.volume1-promo .volume1-meta span::before {
+  flex: 0 0 auto;
+  margin-right: 0;
+}
+@media (max-width: 560px) {
+  .volume1-promo .volume1-meta { grid-template-columns: 1fr; gap: 10px; }
+}
+</style>
 </head>
 <body>
 <header class="site-header">
@@ -521,7 +546,7 @@
 <h2>Volume One</h2>
 <p>Twenty complete, ready-to-teach English lessons in one premium classroom collection. Includes a beautifully designed Student Book with a vocabulary reference section at the back, a comprehensive Teacher's Edition with answer keys, plus individual lesson PDFs, PowerPoint presentations and article audio.</p>
 <div class="volume1-meta" aria-label="Volume One includes">
-<span>20 complete lessons · CEFR A1–A2</span>
+<span>20 lessons · A1–A2</span>
 <span>Student Book</span>
 <span>Teacher's Edition</span>
 <span>Vocabulary reference</span>
