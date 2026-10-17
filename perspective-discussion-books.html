@@ -144,26 +144,42 @@
     }
 
     .volume-card.beginner { border-top: 5px solid #176B6B; }
+    .volume-card.intermediate { border-top: 5px solid #1a4e9a; }
     .volume-card.advanced { border-top: 5px solid #451A2A; }
     .volume-card.beginner h2,
     .volume-card.beginner .volume-meta { color: #176B6B; }
+    .volume-card.intermediate h2,
+    .volume-card.intermediate .volume-meta { color: #1a4e9a; }
     .volume-card.advanced h2,
     .volume-card.advanced .volume-meta { color: #451A2A; }
     .volume-card.beginner .volume-actions a { border-color: #176B6B; }
     .volume-card.advanced .volume-actions a { border-color: #451A2A; }
+    .volume-card.intermediate .volume-actions a { border-color: #1a4e9a; }
     .volume-card.beginner .volume-actions .primary { background: #176B6B; color: #fff; }
     .volume-card.advanced .volume-actions .primary { background: #451A2A; color: #fff; }
+    .volume-card.intermediate .volume-actions .primary { background: #1a4e9a; color: #fff; }
     .volume-card.beginner .volume-actions .secondary { color: #176B6B; }
     .volume-card.advanced .volume-actions .secondary { color: #451A2A; }
+    .volume-card.intermediate .volume-actions .secondary { color: #1a4e9a; }
 
     .volume-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px 12px;
       margin: 18px 0;
       color: #0b2c5f;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
+    }
+
+    .volume-meta span { min-width: 0; line-height: 1.4; }
+
+    @media (max-width: 1250px) {
+      .volume-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 380px) {
+      .volume-meta { grid-template-columns: 1fr; }
     }
 
     .volume-meta span:before {
@@ -288,8 +304,8 @@
 
       <p>
         Ready-to-teach discussion lessons, collected in complete classroom volumes.
-        Each book brings together Perspective lessons with student materials,
-        teacher support, presentations and audio.
+        Each volume includes a Student Book with a vocabulary reference section at the back,
+        a complete Teacher's Edition, individual lesson PDFs, PowerPoint presentations and article audio.
       </p>
 
     </div>
@@ -321,10 +337,12 @@
             </p>
 
             <div class="volume-meta">
-              <span>20 lessons</span>
-              <span>CEFR A1-A2</span>
+              <span>20 Complete Lessons</span>
+              <span>Student Book</span>
               <span>Teacher's Edition</span>
-              <span>Slides + audio</span>
+              <span>Vocabulary Reference</span>
+              <span>Individual Lesson PDFs</span>
+              <span>PowerPoint Slides + Audio</span>
             </div>
 
             <div class="volume-actions">
@@ -350,7 +368,7 @@
           </div>
         </article>
 
-        <article class="volume-card">
+        <article class="volume-card intermediate">
 
           <img
             src="images/volume1-image.webp"
@@ -371,10 +389,12 @@
             </p>
 
             <div class="volume-meta">
-              <span>20 lessons</span>
-              <span>CEFR B1-B2</span>
+              <span>20 Complete Lessons</span>
+              <span>Student Book</span>
               <span>Teacher's Edition</span>
-              <span>Slides + audio</span>
+              <span>Vocabulary Reference</span>
+              <span>Individual Lesson PDFs</span>
+              <span>PowerPoint Slides + Audio</span>
             </div>
 
             <div class="volume-actions">
@@ -400,7 +420,7 @@
           </div>
         </article>
 
-        <article class="volume-card">
+        <article class="volume-card intermediate">
 
           <img
             src="images/volume2-image.webp"
@@ -421,10 +441,12 @@
             </p>
 
             <div class="volume-meta">
-              <span>20 lessons</span>
-              <span>CEFR B1-B2</span>
+              <span>20 Complete Lessons</span>
+              <span>Student Book</span>
               <span>Teacher's Edition</span>
-              <span>Slides + audio</span>
+              <span>Vocabulary Reference</span>
+              <span>Individual Lesson PDFs</span>
+              <span>PowerPoint Slides + Audio</span>
             </div>
 
             <div class="volume-actions">
@@ -471,10 +493,12 @@
             </p>
 
             <div class="volume-meta">
-              <span>20 lessons</span>
-              <span>CEFR C1-C2</span>
+              <span>20 Complete Lessons</span>
+              <span>Student Book</span>
               <span>Teacher's Edition</span>
-              <span>Slides + audio</span>
+              <span>Vocabulary Reference</span>
+              <span>Individual Lesson PDFs</span>
+              <span>PowerPoint Slides + Audio</span>
             </div>
 
             <div class="volume-actions">
@@ -509,8 +533,8 @@
         </h2>
 
         <p>
-          Each volume contains 20 self-contained discussion lessons,
-          a complete Teacher's Edition, classroom presentations and article audio.
+          Each volume contains 20 self-contained lessons, a Student Book with vocabulary reference,
+          a complete Teacher's Edition, individual lesson PDFs, PowerPoint presentations and article audio.
           Use the books in order or choose the topic that fits your class.
         </p>
 

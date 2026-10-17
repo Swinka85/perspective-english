@@ -404,6 +404,28 @@
     }
 
 
+
+/* Six clear benefits in the Volume One promotion */
+.volume1-promo .volume1-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 18px;
+  align-items: start;
+}
+.volume1-promo .volume1-meta span {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  line-height: 1.45;
+}
+.volume1-promo .volume1-meta span::before { flex: 0 0 auto; }
+@media (max-width: 1050px) {
+  .volume1-promo .volume1-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 540px) {
+  .volume1-promo .volume1-meta { grid-template-columns: 1fr; }
+}
+
     /* LEVEL NAVIGATION */
     .level-switcher {
       display: flex;
@@ -622,42 +644,28 @@
     </aside>
 
     <!-- DISCUSSION BOOKS PROMO -->
-    <aside class="volume1-promo" aria-label="Perspective Discussion Books">
+    <aside class="volume1-promo" aria-label="Perspective Discussion Book Volume One">
       <div class="volume1-promo-inner">
-
         <div class="volume1-promo-copy">
-          <p class="volume1-kicker">PERSPECTIVE DISCUSSION BOOKS</p>
-
-          <h2>Perspective: The Discussion Book</h2>
-
-          <p>
-            Complete collections of ready-to-teach Perspective lessons in professionally designed volumes.
-            Each book includes a Student Book, complete Teacher’s Edition, PowerPoint presentations and article audio.
-          </p>
-
-          <div class="volume1-meta">
-            <span>Ready-to-teach lessons</span>
-            <span>CEFR B1–B2</span>
-            <span>Teacher’s Editions</span>
-            <span>Slides + audio</span>
+          <p class="volume1-kicker">PERSPECTIVE: THE DISCUSSION BOOK</p>
+          <h2>Volume One</h2>
+          <p>Twenty complete, ready-to-teach B1–B2 English lessons in one classroom-ready collection. Includes a Student Book with a vocabulary reference section, a complete Teacher's Edition, individual lesson PDFs, PowerPoint presentations and article audio. Download, open and teach.</p>
+          <div class="volume1-meta" aria-label="Volume One includes">
+            <span>20 complete lessons · CEFR B1–B2</span>
+            <span>Student Book</span>
+            <span>Teacher's Edition</span>
+            <span>Vocabulary reference</span>
+            <span>Individual lesson PDFs</span>
+            <span>PowerPoint slides + audio</span>
           </div>
-
           <div class="volume1-actions">
-            <a class="volume1-button" href="perspective-discussion-books.html">
-              Explore the Volumes →
-            </a>
+            <a class="volume1-button" href="perspective-discussion-books.html">Explore the Volumes →</a>
           </div>
         </div>
-
         <div class="volume1-cover-wrap volume-books-covers">
-          <img class="volume1-cover volume-book-one"
-               src="images/volume1-image.webp"
-               alt="Perspective The Discussion Book Volume One">
-          <img class="volume1-cover volume-book-two"
-               src="images/volume2-image.webp"
-               alt="Perspective The Discussion Book Volume Two">
+          <img class="volume1-cover volume-book-one" src="images/volume1-image.webp" alt="Perspective The Discussion Book Volume One cover">
+          <img class="volume1-cover volume-book-two" src="images/volume2-image.webp" alt="Perspective The Discussion Book Volume Two cover">
         </div>
-
       </div>
     </aside>
 
