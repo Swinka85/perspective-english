@@ -287,6 +287,15 @@
 @media (max-width: 390px) {
   .volume-card > .volume-meta { grid-template-columns: 1fr; }
 }
+
+/* Standardized four-volume cards: consistent spacing, benefits, and CTA alignment. */
+.volumes-grid { align-items: stretch; }
+.volume-card { grid-template-rows: auto 1fr auto; align-content: start; }
+.volume-card > div:not(.volume-meta) { display: flex; flex-direction: column; min-width: 0; }
+.volume-card > div:not(.volume-meta) > p:not(.volume-label) { margin-bottom: 18px; }
+.volume-card .volume-actions { margin-top: auto; padding-top: 18px; }
+.volume-card > .volume-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; }
+@media (max-width: 390px) { .volume-card > .volume-meta { grid-template-columns: 1fr; } }
 </style>
 </head>
 
@@ -354,10 +363,7 @@
 
             <h2>Volume One</h2>
 
-            <p>
-              Twenty accessible, ready-to-teach discussions designed for beginner
-              learners, with clear language and engaging real-world topics.
-            </p>
+            <p>Twenty ready-to-teach English discussion lessons for A1–A2 learners, built around the topics people actually want to talk about. Includes a professionally designed Student Book with a vocabulary reference at the back, a complete Teacher's Edition, individual lesson PDFs, 20 PowerPoint presentations and article audio.</p>
 <div class="volume-actions">
 
               <a
@@ -380,13 +386,14 @@
           </div>
 
 
-            <div class="volume-meta">
-              <span>20 Complete Lessons</span>
-              <span>Student Book</span>
-              <span>Teacher's Edition</span>
-              <span>Vocabulary Reference</span>
-              <span>Individual Lesson PDFs</span>
-              <span>PowerPoint Slides + Audio</span>
+            <div class="volume-meta" aria-label="Each volume includes">
+              <span>20 complete lessons</span>
+              <span>CEFR A1–A2</span>
+              <span>45–60 minutes each</span>
+              <span>Student Book + vocabulary reference</span>
+              <span>Teacher’s Edition included</span>
+              <span>Individual lesson PDFs</span>
+              <span>20 PowerPoint presentations + audio</span>
             </div>
         </article>
 
@@ -405,10 +412,7 @@
 
             <h2>Volume One</h2>
 
-            <p>
-              Twenty ready-to-teach discussions covering technology,
-              work, society, culture and global issues.
-            </p>
+            <p>Twenty ready-to-teach English discussion lessons for B1–B2 learners, built around the topics people actually want to talk about. Includes a professionally designed Student Book with a vocabulary reference at the back, a complete Teacher's Edition, individual lesson PDFs, 20 PowerPoint presentations and article audio.</p>
 <div class="volume-actions">
 
               <a
@@ -431,13 +435,14 @@
           </div>
 
 
-            <div class="volume-meta">
-              <span>20 Complete Lessons</span>
-              <span>Student Book</span>
-              <span>Teacher's Edition</span>
-              <span>Vocabulary Reference</span>
-              <span>Individual Lesson PDFs</span>
-              <span>PowerPoint Slides + Audio</span>
+            <div class="volume-meta" aria-label="Each volume includes">
+              <span>20 complete lessons</span>
+              <span>CEFR B1–B2</span>
+              <span>45–60 minutes each</span>
+              <span>Student Book + vocabulary reference</span>
+              <span>Teacher’s Edition included</span>
+              <span>Individual lesson PDFs</span>
+              <span>20 PowerPoint presentations + audio</span>
             </div>
         </article>
 
@@ -456,10 +461,7 @@
 
             <h2>Volume Two</h2>
 
-            <p>
-              Twenty more conversations exploring media, modern life,
-              education, money, culture and the pressures shaping society.
-            </p>
+            <p>Twenty ready-to-teach English discussion lessons for B1–B2 learners, built around the topics people actually want to talk about. Includes a professionally designed Student Book with a vocabulary reference at the back, a complete Teacher's Edition, individual lesson PDFs, 20 PowerPoint presentations and article audio.</p>
 <div class="volume-actions">
 
               <a
@@ -482,13 +484,14 @@
           </div>
 
 
-            <div class="volume-meta">
-              <span>20 Complete Lessons</span>
-              <span>Student Book</span>
-              <span>Teacher's Edition</span>
-              <span>Vocabulary Reference</span>
-              <span>Individual Lesson PDFs</span>
-              <span>PowerPoint Slides + Audio</span>
+            <div class="volume-meta" aria-label="Each volume includes">
+              <span>20 complete lessons</span>
+              <span>CEFR B1–B2</span>
+              <span>45–60 minutes each</span>
+              <span>Student Book + vocabulary reference</span>
+              <span>Teacher’s Edition included</span>
+              <span>Individual lesson PDFs</span>
+              <span>20 PowerPoint presentations + audio</span>
             </div>
         </article>
 
@@ -507,10 +510,7 @@
 
             <h2>Volume One</h2>
 
-            <p>
-              Twenty challenging, ready-to-teach discussions for advanced learners,
-              built around nuanced language, critical thinking and real-world issues.
-            </p>
+            <p>Twenty ready-to-teach English discussion lessons for C1–C2 learners, built around the topics people actually want to talk about. Includes a professionally designed Student Book with a vocabulary reference at the back, a complete Teacher's Edition, individual lesson PDFs, 20 PowerPoint presentations and article audio.</p>
 <div class="volume-actions">
 
               <a
@@ -533,13 +533,14 @@
           </div>
 
 
-            <div class="volume-meta">
-              <span>20 Complete Lessons</span>
-              <span>Student Book</span>
-              <span>Teacher's Edition</span>
-              <span>Vocabulary Reference</span>
-              <span>Individual Lesson PDFs</span>
-              <span>PowerPoint Slides + Audio</span>
+            <div class="volume-meta" aria-label="Each volume includes">
+              <span>20 complete lessons</span>
+              <span>CEFR C1–C2</span>
+              <span>45–60 minutes each</span>
+              <span>Student Book + vocabulary reference</span>
+              <span>Teacher’s Edition included</span>
+              <span>Individual lesson PDFs</span>
+              <span>20 PowerPoint presentations + audio</span>
             </div>
         </article>
 
