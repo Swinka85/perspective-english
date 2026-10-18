@@ -1,8 +1,8 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <ns0:urlset xmlns:ns0="http://www.sitemaps.org/schemas/sitemap/0.9">
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/</ns0:loc>
-    <ns0:lastmod>2026-10-11</ns0:lastmod>
+    <ns0:lastmod>2026-10-18</ns0:lastmod>
     <ns0:changefreq>weekly</ns0:changefreq>
     <ns0:priority>1.00</ns0:priority>
   </ns0:url>
@@ -356,7 +356,7 @@
   </ns0:url>
   <ns0:url>
     <ns0:loc>https://perspectiveenglish.com/perspective-discussion-books.html</ns0:loc>
-    <ns0:lastmod>2026-10-03</ns0:lastmod>
+    <ns0:lastmod>2026-10-18</ns0:lastmod>
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.95</ns0:priority>
   </ns0:url>
@@ -1158,82 +1158,4 @@
     <ns0:changefreq>monthly</ns0:changefreq>
     <ns0:priority>0.90</ns0:priority>
   </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/school-daze-esl-lesson-a1-a2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/school-daze-esl-lesson-c1-c2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/seasons-esl-lesson-a1-a2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/seasons-esl-lesson-c1-c2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/dynamic-pricing-esl-lesson-a1-a2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/dynamic-pricing-esl-lesson-c1-c2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/coffee-tea-esl-lesson-a1-a2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/coffee-tea-esl-lesson-c1-c2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/moon-festival-esl-lesson-a1-a2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/moon-festival-esl-lesson-c1-c2.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/school-daze-esl-discussion-questions.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/seasons-esl-discussion-questions.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-  <ns0:url>
-    <ns0:loc>https://perspectiveenglish.com/dynamic-pricing-esl-discussion-questions.html</ns0:loc>
-    <ns0:lastmod>2026-10-18</ns0:lastmod>
-    <ns0:changefreq>monthly</ns0:changefreq>
-    <ns0:priority>0.90</ns0:priority>
-  </ns0:url>
-</ns0:urlset>
+<ns0:url><ns0:loc>https://perspectiveenglish.com/school-daze-esl-lesson-a1-a2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/school-daze-esl-lesson-c1-c2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/seasons-esl-lesson-a1-a2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/seasons-esl-lesson-c1-c2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/dynamic-pricing-esl-lesson-a1-a2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/dynamic-pricing-esl-lesson-c1-c2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/coffee-tea-esl-lesson-a1-a2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/coffee-tea-esl-lesson-c1-c2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/moon-festival-esl-lesson-a1-a2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/moon-festival-esl-lesson-c1-c2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/school-daze-esl-discussion-questions.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/seasons-esl-discussion-questions.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/dynamic-pricing-esl-discussion-questions.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.90</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/perspective-discussion-book-volume-two-a1-a2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.95</ns0:priority></ns0:url><ns0:url><ns0:loc>https://perspectiveenglish.com/perspective-discussion-book-volume-two-c1-c2.html</ns0:loc><ns0:lastmod>2026-10-18</ns0:lastmod><ns0:changefreq>monthly</ns0:changefreq><ns0:priority>0.95</ns0:priority></ns0:url></ns0:urlset>
