@@ -948,6 +948,23 @@
       }
     }
 
+
+    /* Homepage lesson search */
+    .lesson-search { background: #F4F1E9; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 34px 0; }
+    .lesson-search h2 { margin: 0 0 8px; color: var(--navy); font: 700 clamp(25px,3vw,36px) "Playfair Display",Georgia,serif; }
+    .lesson-search p { margin: 0 0 17px; color: var(--muted); font-size: 12px; }
+    .search-input { width: 100%; padding: 15px; border: 1px solid #B8B4AC; border-radius: 3px; font: 14px "DM Sans",sans-serif; background: white; }
+    .search-input:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .search-filters { display: flex; gap: 7px; flex-wrap: wrap; margin: 13px 0; }
+    .search-filters button { cursor: pointer; border: 1px solid var(--navy); background: transparent; color: var(--navy); padding: 8px 13px; font: 700 10px "DM Sans",sans-serif; }
+    .search-filters button[aria-pressed="true"] { background: var(--navy); color: white; }
+    .search-results { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 10px; }
+    .search-results a { display: block; padding: 14px; background: white; border: 1px solid var(--line); text-decoration: none; }
+    .search-results a:hover { border-color: var(--gold); }
+    .search-results strong { display: block; color: var(--navy); font: 700 18px "Playfair Display",Georgia,serif; }
+    .search-results small { color: var(--muted); font-size: 10px; }
+    .search-status { margin-top: 10px; font-size: 11px; color: var(--muted); }
+
   </style>
 </head>
 
@@ -1029,6 +1046,25 @@
   </div>
 </section>
 
+
+
+<!-- Lesson search: reads the existing level catalogs without changing editorial titles -->
+<section class="lesson-search" id="lesson-search" aria-labelledby="lesson-search-heading">
+  <div class="container">
+    <h2 id="lesson-search-heading">Find Your Next Lesson</h2>
+    <p>Search lesson titles and topics, then choose your English level.</p>
+    <label for="lesson-search-input" class="eyebrow">Search lessons</label>
+    <input id="lesson-search-input" class="search-input" type="search" placeholder="Try Halloween, travel, food, or Issue 055" autocomplete="off">
+    <div class="search-filters" role="group" aria-label="Filter by level">
+      <button type="button" data-search-level="all" aria-pressed="true">All levels</button>
+      <button type="button" data-search-level="a" aria-pressed="false">A1–A2</button>
+      <button type="button" data-search-level="b" aria-pressed="false">B1–B2</button>
+      <button type="button" data-search-level="c" aria-pressed="false">C1–C2</button>
+    </div>
+    <div id="lesson-search-results" class="search-results" aria-live="polite"></div>
+    <div id="lesson-search-status" class="search-status" role="status">Loading lesson catalogs…</div>
+  </div>
+</section>
 
 <main>
 
@@ -1568,6 +1604,74 @@
 
 </footer>
 
+
+
+<script>
+(() => {
+  const input = document.getElementById('lesson-search-input');
+  const results = document.getElementById('lesson-search-results');
+  const status = document.getElementById('lesson-search-status');
+  const buttons = [...document.querySelectorAll('[data-search-level]')];
+  let level = 'all';
+  const entries = new Map();
+  const catalogs = [
+    ['a', 'beginner-esl-lessons'],
+    ['b', 'intermediate-esl-lessons'],
+    ['c', 'advanced-esl-lessons']
+  ];
+  const known = [
+    ['Trick or Treat!', 'halloween-esl-lesson', '055', 'Halloween costumes Celtic traditions'],
+    ['Stay in Your Lane!', 'stay-in-your-lane-esl-lesson', '054', 'driving left right history'],
+    ['No Place Like Home!', 'no-place-like-home-esl-lesson', '053', 'neighborhood community change']
+  ];
+  const suffix = {a:'-a1-a2.html', b:'.html', c:'-c1-c2.html'};
+  const labels = {a:'A1–A2 Beginner',b:'B1–B2 Intermediate',c:'C1–C2 Advanced'};
+  function add(item) { entries.set(item.level + ':' + item.url, item); }
+  known.forEach(([title,slug,issue,keywords]) => catalogs.forEach(([l]) => add({
+    title, level:l, url:slug + suffix[l], keywords:issue+' issue '+issue+' '+keywords
+  })));
+  function render() {
+    const query = input.value.trim().toLocaleLowerCase();
+    results.replaceChildren();
+    if (!query) { status.textContent = 'Type a keyword or issue number to find lessons.'; return; }
+    const matches = [...entries.values()].filter(x =>
+      (level === 'all' || x.level === level) &&
+      (x.title+' '+x.keywords+' '+x.url).toLocaleLowerCase().includes(query)
+    ).sort((a,b) => a.title.localeCompare(b.title) || a.level.localeCompare(b.level)).slice(0,36);
+    matches.forEach(item => {
+      const a = document.createElement('a'); a.href = item.url;
+      const title = document.createElement('strong'); title.textContent = item.title;
+      const sub = document.createElement('small'); sub.textContent = labels[item.level];
+      a.append(title,sub); results.append(a);
+    });
+    status.textContent = matches.length ? `Showing ${matches.length} matching lessons${matches.length===36?' (first 36)':''}.` : 'No matching lessons found. Try another keyword.';
+  }
+  buttons.forEach(b => b.addEventListener('click', () => {
+    level = b.dataset.searchLevel;
+    buttons.forEach(x => x.setAttribute('aria-pressed',String(x===b)));
+    render();
+  }));
+  input.addEventListener('input',render);
+  // Populate from the actual published lesson listings, preserving their titles and URLs.
+  Promise.allSettled(catalogs.map(async ([l,path]) => {
+    const response = await fetch('/'+path, {cache:'no-cache'});
+    if (!response.ok) throw new Error('Catalog unavailable');
+    const doc = new DOMParser().parseFromString(await response.text(),'text/html');
+    doc.querySelectorAll('a[href]').forEach(a => {
+      const url = new URL(a.getAttribute('href'), location.origin);
+      if (url.origin !== location.origin || !/-esl-lesson(?:-a1-a2|-c1-c2)?\.html$/.test(url.pathname)) return;
+      const title = (a.querySelector('h2,h3,h4')?.textContent || a.textContent || '').replace(/\s+/g,' ').trim();
+      if (!title || title.length > 110) return;
+      const keywords = (a.closest('article,.lesson-card,.story-card,.issue-card')?.textContent || a.textContent || '').replace(/\s+/g,' ').slice(0,500);
+      add({title,level:l,url:url.pathname,keywords});
+    });
+  })).then(outcomes => {
+    const failed = outcomes.filter(x=>x.status==='rejected').length;
+    render();
+    if (!input.value.trim()) status.textContent = failed ? 'Search ready. Some catalogs could not load; results may be incomplete.' : 'Search ready. Type a keyword or issue number.';
+  });
+})();
+</script>
 
 </body>
 </html>
