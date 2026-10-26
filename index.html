@@ -1620,7 +1620,9 @@
       const a = document.createElement('a'); a.href = item.url;
       const title = document.createElement('strong'); title.textContent = item.title;
       const sub = document.createElement('small');
-      sub.textContent = (item.issue ? 'ISSUE '+item.issue+' · ' : '') + (item.description || 'Explore lesson');
+      // The catalog description can itself begin with ISSUE 035; don't display it twice.
+      const description = (item.description || '').replace(/^\s*ISSUE\s*#?\s*\d{1,3}\b\s*[·|:–—-]?\s*/i, '').trim();
+      sub.textContent = (item.issue ? 'ISSUE ' + item.issue : '') + (description ? (item.issue ? ' · ' : '') + description : '');
       a.append(title,sub); results.append(a);
     });
     status.textContent = matches.length ? `Showing ${matches.length} matching topics.` : 'No matching topics found. Try another keyword.';
