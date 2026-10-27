@@ -513,6 +513,34 @@
   .volume1-promo .volume1-meta { grid-template-columns: 1fr; gap: 10px; }
 }
 </style>
+<style>
+
+/* Intermediate teaching-pack hero */
+.teaching-pack-visual {
+  margin: 0 auto 30px;
+  max-width: 1100px;
+}
+.teaching-pack-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.teaching-pack-includes {
+  margin: 15px 0 0;
+  color: #1a2a5e;
+  text-align: center;
+  font-size: clamp(12px, 1.6vw, 15px);
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: .025em;
+}
+@media (max-width: 600px) {
+  .teaching-pack-visual { margin-bottom: 24px; }
+  .teaching-pack-visual img { border-radius: 5px; }
+  .teaching-pack-includes { padding: 0 5px; }
+}
+</style>
 </head>
 
 <body>
@@ -554,6 +582,14 @@
 <section class="hero">
 
   <div class="container">
+
+    <div class="teaching-pack-visual">
+      <img src="images/intermediate-esl-teaching-pack.webp"
+           alt="Perspective English B1–B2 teaching pack with student worksheets, teacher guide, PowerPoint presentation and MP3 audio"
+           width="1600" height="900"
+           fetchpriority="high" decoding="async">
+      <p class="teaching-pack-includes">Student Worksheets · Teacher Guide · PowerPoint · MP3 Audio</p>
+    </div>
 
     <h1>
       Intermediate English Lessons<br>
