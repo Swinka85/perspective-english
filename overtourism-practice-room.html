@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Overtourism Practice Room</title>
+<title>Overtourism Practice Room B1–B2</title>
 <meta name="description" content="Free interactive practice for the Perspective English Overtourism lesson (Issue 001, B1–B2): flashcards, matching, gap-fill, true or false, and a town council simulation.">
+<meta name="theme-color" content="#1a2a5e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap">
@@ -221,6 +222,32 @@ nav button{font-weight:700}
 .cta h2{color:#0b2c5f}
 @media(max-width:850px){.brand{font-size:38px}.brand-tagline{letter-spacing:4px}}
 @media(max-width:520px){.mast{align-items:flex-start}.issue{padding-top:6px}.panel{padding:17px}.brand{font-size:clamp(27px,8vw,38px)}.brand-tagline{font-size:8px;letter-spacing:clamp(1px,.8vw,4px)}}
+
+/* LEVEL COLOR — the only part that changes between A, B and C */
+:root{--navy:#1a2a5e;--focus:#1a2a5e}
+.mast{border-bottom-color:#1a2a5e}
+.brand-link,.brand-tagline{color:#1a2a5e}
+header:has(.mast) h1,h2,.cta h2{color:#1a2a5e}
+.level{background:#1a2a5e}
+.levels a[aria-current="page"]{background:#1a2a5e;border-color:#1a2a5e;color:#fff}
+
+/* Level links, assumption marker and result details (shared) */
+.level{display:none} /* the level links below show the current level */
+.levels{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.levels a{display:inline-flex;align-items:center;padding:6px 12px;border:1px solid rgba(11,44,95,.22);border-radius:999px;text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.2px;color:#0b2c5f;background:#fff}
+.mtxt .fix b{font-weight:700}
+.mtxt .fix.quote{font-style:italic}
+.mtxt .fix.quote b{font-style:normal}
+.mtxt .pay.assume{color:var(--muted-strong)}
+.weakrow{padding:0 12px 12px 48px}
+.weak{border:1.5px dashed var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.82rem;font-weight:700;color:var(--muted-strong);min-height:34px}
+.weak.on{border-style:solid;border-color:#b79a4e;background:#f7efd6;color:#5c4710}
+.mwrap.is-weak{border-color:#b79a4e}
+.verdict .eff b{font-weight:700}
+.effs{display:flex;flex-direction:column;gap:4px}
+.verdict .link{background:rgba(255,255,255,.12);border-radius:6px;padding:8px 10px}
+.is-class .weak{font-size:.95rem;min-height:42px}
+@media(max-width:520px){.weakrow{padding-left:12px}}
 </style>
 
 </head>
@@ -231,6 +258,7 @@ nav button{font-weight:700}
     <h1 id="issueTitle"></h1>
     <p class="dek" id="issueDek"></p>
     <span class="level" id="issueLevel"></span>
+    <div class="levels" id="levelSwitch" role="navigation" aria-label="Practice Room levels"></div>
   </header>
 
   <div class="modebar">
@@ -258,8 +286,8 @@ nav button{font-weight:700}
 
 <script>
 /* =========================================================================
-   ISSUE CONTENT — edit this block to make a Practice Room for another issue.
-   Everything below the line "PRACTICE ROOM ENGINE" stays the same.
+   ISSUE CONTENT — edit this block to make a Practice Room for another issue
+   or level. Everything below "PRACTICE ROOM ENGINE" stays the same.
    ========================================================================= */
 const ISSUE = {
   number: "001",
@@ -267,85 +295,129 @@ const ISSUE = {
   level: "B1–B2",
   dek: "Can tourism become too successful? Practice the key words from the article, check your understanding, then run your own town council.",
   lessonUrl: "https://perspectiveenglish.com/overtourism-esl-lesson.html",
+  levels: [
+    { label: "A1–A2", name: "Beginner",     href: "overtourism-practice-room-a1-a2.html" },
+    { label: "B1–B2", name: "Intermediate", href: "overtourism-practice-room.html" },
+    { label: "C1–C2", name: "Advanced",     href: "overtourism-practice-room-c1-c2.html" }
+  ],
 
-  // Activity 1 + 2: vocabulary (used for flashcards and matching)
+  // Activity 1 + 2: vocabulary (flashcards and matching). Examples are quoted from the article.
   vocab: [
-    { word: "surge",       pos: "noun",      def: "a sudden, large increase",                              ex: "A sudden surge in arrivals can crowd the streets." },
-    { word: "strain",      pos: "noun",      def: "pressure caused by too much demand",                    ex: "Venice, Amsterdam and Kyoto have all felt the strain." },
-    { word: "resident",    pos: "noun",      def: "a person who lives in a particular place",              ex: "The neighborhood no longer feels like home to its residents." },
-    { word: "regulate",    pos: "verb",      def: "to control an activity using rules",                    ex: "Some call for stricter rules to regulate visitor numbers." },
-    { word: "sustainable", pos: "adjective", def: "able to continue for a long time without causing harm", ex: "Others believe the answer is smarter, more sustainable travel." }
+    { word: "surge",       pos: "noun",      def: "a sudden, large increase",                              ex: "A sudden surge in arrivals can crowd the streets…" },
+    { word: "strain",      pos: "noun",      def: "pressure caused by too much demand",                    ex: "Cities like Venice, Amsterdam, and Kyoto have all felt the strain." },
+    { word: "resident",    pos: "noun",      def: "a person who lives in a particular place",              ex: "…until it no longer feels like home to its residents." },
+    { word: "regulate",    pos: "verb",      def: "to control an activity using rules",                    ex: "Some call for stricter rules to regulate visitor numbers…" },
+    { word: "sustainable", pos: "adjective", def: "able to continue for a long time without causing harm", ex: "…others believe the answer is smarter, more sustainable travel." }
   ],
 
   // Activity 3: fill the gap (word box shows these in the order given)
   gapWords: ["surge", "strain", "residents", "regulate", "sustainable"],
   gaps: [
-    { before: "A sudden",                    answer: "surge",       after: "in tourists can change a city overnight." },
+    { before: "A sudden",                     answer: "surge",       after: "in tourists can change a city overnight." },
     { before: "Too many visitors put a real", answer: "strain",      after: "on local life." },
-    { before: "I think",                     answer: "residents",   after: "should matter more than tourists." },
-    { before: "Cities should",               answer: "regulate",    after: "tourism before it gets out of control." },
-    { before: "For me,",                     answer: "sustainable", after: "travel is the only kind worth doing." }
+    { before: "I think",                      answer: "residents",   after: "should matter more than tourists." },
+    { before: "Cities should",                answer: "regulate",    after: "tourism before it gets out of control." },
+    { before: "For me,",                      answer: "sustainable", after: "travel is the only kind worth doing." }
   ],
 
   // Activity 4: true or false (why = evidence from the article)
   truefalse: [
-    { s: "Too many visitors can overwhelm a place.",       a: true,  why: "Overtourism happens when a destination attracts more visitors than it can comfortably handle." },
-    { s: "Venice charges day-trippers a five-euro fee.",   a: true,  why: "Venice recently introduced a five-euro entry fee for day-trippers, the first of its kind." },
-    { s: "The article says tourism is only harmful.",      a: false, why: "The article says tourism also creates jobs, supports small businesses and connects cultures." },
-    { s: "Everest has seen crowds near the summit.",       a: true,  why: "Mount Everest now sees traffic jams of climbers waiting near the summit." },
-    { s: "There is one simple solution to overtourism.",   a: false, why: "The article ends by saying there is no easy answer in sight." }
+    { s: "Too many visitors can overwhelm a place.",     a: true,  why: "Overtourism happens when a destination attracts more visitors than it can comfortably handle." },
+    { s: "Venice charges day-trippers a five-euro fee.", a: true,  why: "Venice recently introduced a five-euro entry fee for day-trippers, the first of its kind in the world." },
+    { s: "The article says tourism is only harmful.",    a: false, why: "The article says tourism also creates jobs, supports small businesses, and connects cultures." },
+    { s: "Everest has seen crowds near the summit.",     a: true,  why: "Mount Everest now sees traffic jams of climbers waiting near the summit." },
+    { s: "There is one simple solution to overtourism.", a: false, why: "The article ends by saying no easy answer is in sight." }
   ],
 
   // Activity 5: council simulation
   council: {
     stats: [ { value: "40,000", label: "residents" }, { value: "3 million", label: "visitors a year" } ],
-    intro: "Your town has 40,000 residents and three million visitors a year. Every measure costs somebody something.",
+    passedLabel: "measures passed",
+    aLabel: null,          // first line of each measure (no label)
+    bLabel: "Who pays",    // second line of each measure
+    effectLabels: ["Possible benefit", "Possible drawback"],
     measures: [
       { name: "A tourist tax",
-        fixes: "Raises money to repair the damage crowds cause.",
-        pays: "Budget travelers, and the cheap hotels they use.",
-        benefit: "could raise money for cleaning, repairs and local services",
-        cost: "might discourage budget travelers and hurt smaller, cheaper hotels",
+        a: "Raises money to repair the damage crowds cause.",
+        b: "Budget travelers, and the cheap hotels they use.",
+        effects: ["It could raise money for cleaning, repairs and local services.", "It might discourage budget travelers and hurt smaller, cheaper hotels."],
         group: "budget travelers and cheap hotels" },
       { name: "Cap the cruise ships",
-        fixes: "Removes the daily surge of thousands at once.",
-        pays: "Port workers, guides, and every shop near the harbor.",
-        benefit: "could reduce the sudden crowds that arrive when ships dock",
-        cost: "may mean less work for port workers, tour guides and harbor shops",
+        a: "Removes the daily surge of thousands at once.",
+        b: "Port workers, guides, and every shop near the harbor.",
+        effects: ["It could reduce the sudden crowds that arrive when ships dock.", "It may mean less work for port workers, tour guides and harbor shops."],
         group: "port workers, guides and harbor shops" },
       { name: "Ban new hotels",
-        fixes: "Stops visitor numbers climbing every year.",
-        pays: "Construction jobs now, and hotel jobs later.",
-        benefit: "could slow the growth in visitor numbers",
-        cost: "might cost construction jobs now and hotel jobs later, and room prices may rise",
+        a: "Stops visitor numbers climbing every year.",
+        b: "Construction jobs now, and hotel jobs later.",
+        effects: ["It could slow the growth in visitor numbers.", "It might cost construction jobs now and hotel jobs later, and room prices may rise."],
         group: "construction and hotel workers" },
       { name: "Rent only to residents",
-        fixes: "Brings rents down so local families can stay.",
-        pays: "Owners who rent short-term, some of them your neighbors.",
-        benefit: "could make homes more affordable so local families can stay",
-        cost: "may reduce income for owners who rent to visitors, including some neighbors",
+        a: "Brings rents down so local families can stay.",
+        b: "Owners who rent short-term — some of them your neighbors.",
+        effects: ["It could make homes more affordable so local families can stay.", "It may reduce income for owners who rent to visitors, including some neighbors."],
         group: "short-term rental owners" },
       { name: "Timed entry to the old town",
-        fixes: "Spreads crowds across the day; streets stay walkable.",
-        pays: "Anyone who arrives without booking, residents included.",
-        benefit: "could spread crowds across the day and keep streets walkable",
-        cost: "might frustrate visitors and residents who arrive without booking",
+        a: "Spreads crowds across the day; streets stay walkable.",
+        b: "Anyone who arrives without booking — residents included.",
+        effects: ["It could spread crowds across the day and keep streets walkable.", "It might frustrate visitors and residents who arrive without booking."],
         group: "anyone who arrives without booking, residents included" }
     ],
     statusQuo: {
       name: "Change nothing",
-      fixes: "Keeps every job and every euro the visitors bring.",
-      pays: "The residents who leave, quietly, one family at a time.",
-      benefit: "could protect tourism jobs and income in the short term",
-      cost: "may mean rents keep rising and more residents leave over time",
+      a: "Keeps every job and every euro the visitors bring.",
+      b: "The residents who leave, quietly, one family at a time.",
+      effects: ["It could protect tourism jobs and income in the short term.", "It may mean rents keep rising and more residents leave over time."],
       group: "residents who may be priced out of their homes"
     },
-    reflection: "Would you still vote this way if your own job depended on tourism?",
-    classQuestions: [
-      "Would you still vote this way if your own job depended on tourism?",
-      "Compare with another team. Who protected residents most, and who kept the most jobs?",
-      "Which group might feel most ignored by this decision? What could the council say to them?"
-    ]
+    verdict: {
+      noneTitle: "No decision yet",
+      noneText: "A council has to decide something. Select at least one measure, or choose Change nothing.",
+      votedTitle: "The council has voted",
+      nothingTitle: "The council voted to change nothing",
+      passedIntro: "You passed {n} of {m} measures:",
+      groupLabel: "Groups who may be unhappy",
+      linkLabel: "Watch out",
+      notes: [
+        "A cautious first step. It may not be enough on its own if visitor numbers keep rising.",
+        "A mixed package that shares the costs between several groups. Each group might still ask why it should be the one to pay.",
+        "A strong package that could ease pressure on residents quickly. Businesses and workers who depend on visitors may push back hard."
+      ],
+      caveat: "These are possible effects, not certain outcomes. Real cities that tried similar measures have seen mixed results.",
+      soloLabel: "Think about it",
+      reflection: "Would you still vote this way if your own job depended on tourism?",
+      classLabel: "Discuss in your teams",
+      classQuestions: [
+        "Would you still vote this way if your own job depended on tourism?",
+        "Compare with another council. Who protected residents most, and who kept the most jobs?",
+        "Which group might feel most ignored by this decision? What could the council say to them?"
+      ]
+    }
+  },
+
+  // Wording for each activity: solo = Solo Practice, cls = Classroom Mode, team = team prompt
+  ui: {
+    tabs: { cards: "Flashcards", match: "Match", gap: "Fill the gap", tf: "True or false", council: "You are the council" },
+    cards: { kicker: "Vocabulary", soloTitle: "Tap the card to flip it", classTitle: "Flashcards", tap: "Tap to see the meaning",
+      solo: "Read the word and guess its meaning. Then tap the card to check.",
+      cls: "Show the word. When the class is ready, reveal the meaning. Use the arrow keys to move between cards.",
+      team: "Agree on what the word means and write one example sentence before the reveal." },
+    match: { kicker: "Vocabulary", title: "Match each word with its meaning",
+      solo: "Tap a word, then tap its meaning. You will see straight away if you are right.",
+      cls: "Tap a word, then a meaning, to record the class's choice. Nothing is marked until you press Check matches.",
+      team: "Discuss each pair and agree before anyone taps the board." },
+    gap: { kicker: "Language in context", title: "Complete each sentence",
+      solo: "Choose the best word for each gap. Each word is used once. Then check your answers.",
+      cls: "Choose the class's answer in each gap if you like, then reveal the answers one at a time or all together.",
+      team: "Agree on the missing word for each sentence and be ready to explain why." },
+    tf: { kicker: "Reading check", title: "True or false?",
+      solo: "Decide if each statement matches the article. You will see the answer and the evidence straight away.",
+      cls: "Read each statement aloud. Tap T or F to record the class's choice, then reveal when you are ready.",
+      team: "Find the sentence in the article that proves your answer." },
+    council: { kicker: "Critical thinking", title: "You are the council",
+      solo: "Your town has 40,000 residents and three million visitors a year. Every measure costs somebody something. Choose the measures you will pass, or choose to change nothing. Then hold the vote.",
+      cls: "Your town has 40,000 residents and three million visitors a year. Every measure costs somebody something. Teams debate each measure. Select the measures the class agrees to pass, then hold the vote.",
+      team: "Each team must agree on its own plan first. Then the class votes measure by measure." }
   },
 
   cta: {
@@ -357,23 +429,21 @@ const ISSUE = {
 };
 
 /* =========================================================================
-   PRACTICE ROOM ENGINE — shared by every issue. No need to edit below.
+   PRACTICE ROOM ENGINE — shared by every issue and every level.
+   No need to edit below. All wording comes from the ISSUE block above.
    ========================================================================= */
 (function(){
 "use strict";
 
-const TABS = [
-  { id: "cards",   label: "Flashcards" },
-  { id: "match",   label: "Match" },
-  { id: "gap",     label: "Fill the gap" },
-  { id: "tf",      label: "True or false" },
-  { id: "council", label: "You are the council" }
-];
+const UI = ISSUE.ui;
+const TABS = ["cards", "match", "gap", "tf", "council"].map(id => ({ id, label: UI.tabs[id] }));
 const LETTERS = "ABCDEFGHIJ";
 const MAX_TEAMS = 10;
+const SQ = "sq"; // id used for the "Change nothing" option
 
 const $ = id => document.getElementById(id);
 const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const fill = (s, vars) => s.replace(/\{(\w+)\}/g, (_, k) => vars[k]);
 
 /* Small DOM helper: el("button", {class:"btn", text:"Go", onclick: fn}, child, ...) */
 function el(tag, props, ...kids){
@@ -406,7 +476,7 @@ const state = {
   match: null,
   gap: null,
   tf: null,
-  council: { sel: new Set(), statusQuo: false, teams: ISSUE.council.measures.map(() => 0), voted: false }
+  council: { sel: new Set(), statusQuo: false, weak: null, teams: ISSUE.council.measures.map(() => 0), voted: false }
 };
 const isClass = () => state.mode === "class";
 
@@ -419,16 +489,16 @@ function resetTF(){ state.tf = { ans: ISSUE.truefalse.map(() => null), revealed:
 function resetCouncil(full){
   const C = state.council;
   C.voted = false;
-  if (full) { C.sel.clear(); C.statusQuo = false; C.teams = ISSUE.council.measures.map(() => 0); }
+  if (full) { C.sel.clear(); C.statusQuo = false; C.weak = null; C.teams = ISSUE.council.measures.map(() => 0); }
 }
 
 /* ---------------- shared pieces ---------------- */
-function head(n, kicker, title, solo, cls, team){
+function head(n, t, title){
   return el("div", { class: "p-head" },
-    el("span", { class: "kicker", text: "Activity " + n + " · " + kicker }),
-    el("h2", { text: title }),
-    el("p", { class: "hint", text: isClass() ? cls : solo }),
-    isClass() && team ? el("p", { class: "team" }, el("b", { text: "In teams: " }), team) : null
+    el("span", { class: "kicker", text: "Activity " + n + " · " + t.kicker }),
+    el("h2", { text: title || t.title }),
+    el("p", { class: "hint", text: isClass() ? t.cls : t.solo }),
+    isClass() && t.team ? el("p", { class: "team" }, el("b", { text: "In teams: " }), t.team) : null
   );
 }
 function panelNav(id){
@@ -442,12 +512,12 @@ function panelNav(id){
 
 /* ================= Activity 1: Flashcards ================= */
 function renderCards(){
-  const S = state.cards, V = ISSUE.vocab, v = V[S.i], cls = isClass();
+  const S = state.cards, V = ISSUE.vocab, v = V[S.i], cls = isClass(), t = UI.cards;
   paint("p-cards", () => {
     const front = el("span", { class: "face front", id: "cardFront", "aria-hidden": S.shown ? "true" : "false" },
       el("span", { class: "pos", text: v.pos }),
       el("span", { class: "w", text: v.word }),
-      cls ? null : el("span", { class: "tap", text: "Tap to see the meaning" }));
+      cls ? null : el("span", { class: "tap", text: t.tap }));
     const back = el("span", { class: "face back", id: "cardBack", "aria-hidden": S.shown ? "false" : "true" },
       el("span", { class: "w-small", text: v.word }),
       el("span", { class: "def", text: v.def }),
@@ -458,10 +528,7 @@ function renderCards(){
       : el("button", { type: "button", class: "card" + (S.shown ? " flip" : ""), id: "card", "data-fid": "card",
           "aria-label": "Flashcard: " + v.word + ". Press to flip.", onclick: flipCard }, inner);
     return [
-      head(1, "Vocabulary", cls ? "Flashcards" : "Tap the card to flip it",
-        "Read the word and guess its meaning. Then tap the card to check.",
-        "Show the word. When the class is ready, reveal the meaning. Use the arrow keys to move between cards.",
-        "Agree on what the word means and write one example sentence before the reveal."),
+      head(1, t, cls ? t.classTitle : t.soloTitle),
       card,
       el("div", { class: "row split" },
         el("button", { type: "button", class: "btn ghost", "data-fid": "cprev", onclick: () => moveCard(-1), text: "← Back" }),
@@ -558,10 +625,7 @@ function renderMatch(){
     }
 
     return [
-      head(2, "Vocabulary", "Match each word with its meaning",
-        "Tap a word, then tap its meaning. You will see straight away if you are right.",
-        "Tap a word, then a meaning, to record the class's choice. Nothing is marked until you press Check matches.",
-        "Discuss each pair and agree before anyone taps the board."),
+      head(2, UI.match),
       el("div", { class: "match" }, el("div", { class: "col" }, words), el("div", { class: "col" }, defs)),
       el("p", { class: "status" + (win ? " win" : ""), "aria-live": "polite", text: status }),
       el("div", { class: "row" },
@@ -583,6 +647,7 @@ function renderMatch(){
 /* ================= Activity 3: Fill the gap ================= */
 function renderGap(){
   const G = state.gap, cls = isClass(), n = ISSUE.gaps.length;
+  const shown = g => g.form || g.answer; // the word as it appears in the sentence
   paint("p-gap", () => {
     const items = ISSUE.gaps.map((g, i) => {
       const val = G.vals[i], rev = G.revealed.has(i);
@@ -595,8 +660,8 @@ function renderGap(){
         ISSUE.gapWords.map(w => el("option", { value: w, text: w, selected: val === w })));
       return el("li", {},
         el("span", { class: "num", text: (i + 1) + "" }),
-        el("p", { class: "sent" }, g.before + " ", sel, " " + g.after,
-          rev ? el("span", { class: "answer", text: "Answer: " + g.answer }) : null),
+        el("p", { class: "sent" }, g.before + " ", sel, (/^[.,?!;:]/.test(g.after) ? "" : " ") + g.after,
+          rev ? el("span", { class: "answer", text: "Answer: " + shown(g) }) : null),
         cls && !rev ? el("button", { type: "button", class: "mini", "data-fid": "grev" + i,
           onclick: () => { G.revealed.add(i); renderGap(); }, text: "Reveal" }) : null);
     });
@@ -610,13 +675,10 @@ function renderGap(){
     const allRight = !cls && G.checked && ISSUE.gaps.every((g, i) => G.vals[i] === g.answer);
 
     return [
-      head(3, "Language in context", "Complete each sentence",
-        "Choose the best word for each gap. Each word is used once. Then check your answers.",
-        "Choose the class's answer in each gap if you like, then reveal the answers one at a time or all together.",
-        "Agree on the missing word for each sentence and be ready to explain why."),
+      head(3, UI.gap),
       el("div", { class: "wordbox", "aria-label": "Word box" }, ISSUE.gapWords.map(w => el("span", { class: "chip", text: w }))),
       el("ol", { class: "gaps" }, items),
-      status ? el("p", { class: "status" + (allRight ? " win" : ""), "aria-live": "polite", text: status }) : el("p", { class: "status", "aria-live": "polite" }),
+      el("p", { class: "status" + (allRight ? " win" : ""), "aria-live": "polite", text: status }),
       el("div", { class: "row" },
         !cls ? el("button", { type: "button", class: "btn", "data-fid": "gcheck", onclick: () => { G.checked = true; renderGap(); }, text: "Check answers" }) : null,
         !cls && G.checked && !allRight ? el("button", { type: "button", class: "btn ghost", "data-fid": "gshow",
@@ -672,10 +734,7 @@ function renderTF(){
     } else status = "Revealed: " + T.revealed.size + " of " + n;
 
     return [
-      head(4, "Reading check", "True or false?",
-        "Decide if each statement matches the article. You will see the answer and the evidence straight away.",
-        "Read each statement aloud. Tap T or F to record the class's choice, then reveal when you are ready.",
-        "Find the sentence in the article that proves your answer."),
+      head(4, UI.tf),
       el("ol", { class: "tf" }, items),
       el("p", { class: "status" + (win ? " win" : ""), "aria-live": "polite", text: status }),
       el("div", { class: "row" },
@@ -687,7 +746,7 @@ function renderTF(){
   });
 }
 
-/* ================= Activity 5: You are the council ================= */
+/* ================= Activity 5: Council ================= */
 function toggleMeasure(i){
   const C = state.council;
   C.statusQuo = false;
@@ -700,53 +759,56 @@ function toggleStatusQuo(){
   if (C.statusQuo) C.sel.clear();
   C.voted = false; renderCouncil();
 }
+function toggleWeak(id){
+  const C = state.council;
+  C.weak = C.weak === id ? null : id;
+  C.voted = false; renderCouncil();
+}
 function setTeams(i, d){
   const C = state.council;
   C.teams[i] = Math.max(0, Math.min(MAX_TEAMS, C.teams[i] + d));
   renderCouncil();
 }
-function overallNote(n){
-  if (n === 1) return "A cautious first step. It may not be enough on its own if visitor numbers keep rising.";
-  if (n <= 3) return "A mixed package that shares the costs between several groups. Each group might still ask why it should be the one to pay.";
-  return "A strong package that could ease pressure on residents quickly. Businesses and workers who depend on visitors may push back hard.";
-}
 function renderCouncil(){
   const C = state.council, K = ISSUE.council, cls = isClass(), M = K.measures;
   paint("p-council", () => {
     const passedLabel = C.statusQuo ? "None" : C.sel.size + " of " + M.length;
-    const tile = (m, on, onclick, fid, sq) => el("button", { type: "button", class: "measure", "data-fid": fid, "aria-pressed": on ? "true" : "false", onclick },
+    const tile = (m, on, onclick, fid) => el("button", { type: "button", class: "measure", "data-fid": fid, "aria-pressed": on ? "true" : "false", onclick },
       el("span", { class: "box", "aria-hidden": "true", text: on ? "✓" : "" }),
       el("span", { class: "mtxt" },
         el("strong", { text: m.name }),
-        el("span", { class: "fix", text: m.fixes }),
-        el("span", { class: "pay", text: "Who pays: " + m.pays })));
+        el("span", { class: "fix" + (K.aStyle ? " " + K.aStyle : "") }, K.aLabel ? el("b", { text: K.aLabel + ": " }) : null, m.a),
+        el("span", { class: "pay" + (K.bStyle ? " " + K.bStyle : "") }, K.bLabel + ": " + m.b)));
+    const weakBtn = (id, name) => K.weakest ? el("div", { class: "weakrow" },
+      el("button", { type: "button", class: "weak" + (C.weak === id ? " on" : ""), "data-fid": "wk-" + id,
+        "aria-pressed": C.weak === id ? "true" : "false", "aria-label": K.weakest.button + ": " + name,
+        onclick: () => toggleWeak(id), text: (C.weak === id ? "✓ " : "") + K.weakest.button })) : null;
 
     const list = M.map((m, i) => {
       const on = C.sel.has(i);
-      return el("div", { class: "mwrap" + (on ? " on" : "") },
+      return el("div", { class: "mwrap" + (on ? " on" : "") + (C.weak === i ? " is-weak" : "") },
         tile(m, on, () => toggleMeasure(i), "m" + i),
         cls ? el("div", { class: "tally" },
           el("span", { text: "Teams in favor" }),
           el("button", { type: "button", "data-fid": "tm" + i, "aria-label": "One fewer team in favor of " + m.name, disabled: C.teams[i] === 0, onclick: () => setTeams(i, -1), text: "−" }),
           el("output", { "aria-live": "polite", "aria-label": "Teams in favor of " + m.name, text: String(C.teams[i]) }),
-          el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + m.name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null);
+          el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + m.name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null,
+        weakBtn(i, m.name));
     });
-    const sq = el("div", { class: "mwrap sq" + (C.statusQuo ? " on" : "") }, tile(K.statusQuo, C.statusQuo, toggleStatusQuo, "msq"));
+    const sq = el("div", { class: "mwrap sq" + (C.statusQuo ? " on" : "") + (C.weak === SQ ? " is-weak" : "") },
+      tile(K.statusQuo, C.statusQuo, toggleStatusQuo, "msq"), weakBtn(SQ, K.statusQuo.name));
 
     return [
-      head(5, "Critical thinking", "You are the council",
-        K.intro + " Choose the measures you will pass, or choose to change nothing. Then hold the vote.",
-        K.intro + " Teams debate each measure. Select the measures the class agrees to pass, then hold the vote.",
-        "Each team must agree on its own plan first. Then the class votes measure by measure."),
+      head(5, UI.council),
       el("div", { class: "town" },
         K.stats.map(s => el("div", { class: "stat" }, el("b", { text: s.value }), el("small", { text: s.label }))),
-        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: passedLabel }), el("small", { text: "measures passed" }))),
+        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: passedLabel }), el("small", { text: K.passedLabel }))),
       el("div", { class: "measures" }, list),
       el("p", { class: "or", text: "or" }),
       sq,
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: holdVote, text: "Hold the vote" }),
-        (C.sel.size || C.statusQuo) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+        (C.sel.size || C.statusQuo || C.weak !== null) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
           onclick: () => { resetCouncil(true); renderCouncil(); }, text: "Clear choices" }) : null),
       C.voted ? verdict() : null,
       panelNav("council")
@@ -758,43 +820,55 @@ function holdVote(){
   const v = $("verdict");
   if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
 }
+function effects(m){
+  const L = ISSUE.council.effectLabels;
+  return m.effects.map((t, i) => el("span", { class: "eff" }, el("b", { text: L[i] + ": " }), t));
+}
 function verdict(){
-  const C = state.council, K = ISSUE.council, cls = isClass();
+  const C = state.council, K = ISSUE.council, V = K.verdict, cls = isClass();
   const box = (...kids) => el("div", { class: "verdict", id: "verdict", tabindex: "-1", role: "region", "aria-label": "Vote result" }, ...kids);
   const again = el("button", { type: "button", class: "btn ghost", "data-fid": "vagain", onclick: () => { resetCouncil(true); renderCouncil(); $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
   const think = cls
-    ? el("div", { class: "think" }, el("span", { class: "kicker", text: "Discuss in your teams" }), el("ol", {}, K.classQuestions.map(q => el("li", { text: q }))))
-    : el("div", { class: "think" }, el("span", { class: "kicker", text: "Think about it" }), el("p", { text: K.reflection }));
-  const caveat = el("p", { class: "small", text: "These are possible effects, not certain outcomes. Real cities that tried similar measures have seen mixed results." });
+    ? el("div", { class: "think" }, el("span", { class: "kicker", text: V.classLabel }), el("ol", {}, V.classQuestions.map(q => el("li", { text: q }))))
+    : el("div", { class: "think" }, el("span", { class: "kicker", text: V.soloLabel }), el("p", { text: V.reflection }));
+  const caveat = el("p", { class: "small", text: V.caveat });
+  let weakLine = null;
+  if (K.weakest) {
+    if (C.weak === null) weakLine = el("p", {}, el("b", { text: K.weakest.resultLabel + ": " }), K.weakest.missing);
+    else {
+      const m = C.weak === SQ ? K.statusQuo : K.measures[C.weak];
+      weakLine = el("p", {}, el("b", { text: K.weakest.resultLabel + ": " }), m.name + ". " + fill(K.weakest.sentence, { b: m.b }));
+    }
+  }
 
   if (!C.sel.size && !C.statusQuo) {
-    return box(el("h3", { text: "No decision yet" }), el("p", { text: "A council has to decide something. Select at least one measure, or choose Change nothing." }));
+    return box(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
   }
   if (C.statusQuo) {
     const q = K.statusQuo;
     return box(
-      el("h3", { text: "The council voted to change nothing" }),
-      el("ul", {},
-        el("li", {}, el("b", { text: "Possible benefit: " }), "it " + q.benefit + "."),
-        el("li", {}, el("b", { text: "Possible drawback: " }), "it " + q.cost + ".")),
-      el("p", {}, el("b", { text: "Who may be unhappy: " }), q.group + "."),
-      caveat, think, again);
+      el("h3", { text: V.nothingTitle }),
+      el("div", { class: "effs" }, effects(q)),
+      q.group && V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), q.group + ".") : null,
+      weakLine, caveat, think, again);
   }
   const passed = [...C.sel].sort((a, b) => a - b);
+  const extra = (K.links || []).filter(l => l.when.every(i => C.sel.has(i)) && !(l.without || []).some(i => C.sel.has(i)));
+  const note = passed.length === 1 ? V.notes[0] : passed.length <= 3 ? V.notes[1] : V.notes[2];
   return box(
-    el("h3", { text: "The council has voted" }),
-    el("p", { text: "You passed " + passed.length + " of " + K.measures.length + " measures:" }),
+    el("h3", { text: V.votedTitle }),
+    el("p", { text: fill(V.passedIntro, { n: passed.length, m: K.measures.length }) }),
     el("ul", {}, passed.map(i => {
       const m = K.measures[i];
       return el("li", {},
         el("b", { text: m.name }),
         cls && C.teams[i] ? " (" + C.teams[i] + (C.teams[i] === 1 ? " team" : " teams") + " in favor)" : null,
-        el("span", { class: "eff", text: "Possible benefit: it " + m.benefit + "." }),
-        el("span", { class: "eff", text: "Possible drawback: it " + m.cost + "." }));
+        effects(m));
     })),
-    el("p", {}, el("b", { text: "Groups who may be unhappy: " }), passed.map(i => K.measures[i].group).join("; ") + "."),
-    el("p", { text: overallNote(passed.length) }),
-    caveat, think, again);
+    V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), passed.map(i => K.measures[i].group).join("; ") + ".") : null,
+    extra.map(l => el("p", { class: "link" }, el("b", { text: V.linkLabel + ": " }), l.text)),
+    el("p", { text: note }),
+    weakLine, caveat, think, again);
 }
 
 /* ---------------- tabs ---------------- */
@@ -870,6 +944,9 @@ function start(){
   $("issueTitle").textContent = ISSUE.title;
   $("issueDek").textContent = ISSUE.dek;
   $("issueLevel").textContent = ISSUE.level;
+  const ls = $("levelSwitch");
+  if (ls && ISSUE.levels) ls.replaceChildren(...ISSUE.levels.map(l =>
+    el("a", { href: l.href, "aria-current": l.label === ISSUE.level ? "page" : null, text: l.label + " " + l.name })));
   const c = ISSUE.cta;
   $("cta").replaceChildren(
     el("span", { class: "kicker", text: "The full lesson" }),
