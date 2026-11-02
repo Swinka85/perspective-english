@@ -426,6 +426,7 @@ const ISSUE = {
         omits: "Paying guests want to feel it worked." },
       { headline: "In a randomized trial, halving use improved sleep.",
         omits: "This is the only finding that tests cause and effect directly, because phone use was changed at random.",
+        pushLabel: "Good point",
         push: "You rated finding 6 as strong support. A randomized trial can test cause and effect, which the other findings cannot." }
     ],
     verdict: {
@@ -1183,7 +1184,7 @@ function ratingPushes(H){
     const hit = K.items.map((x, i) => i).filter(i => H.rates[k][i] === P.rating);
     const own = hit.filter(i => K.items[i].push), rest = hit.filter(i => !K.items[i].push);
     return [
-      ...own.map(i => el("p", { class: "link" }, el("b", { text: "Push back: " }), K.items[i].push)),
+      ...own.map(i => el("p", { class: "link" }, el("b", { text: (K.items[i].pushLabel || "Push back") + ": " }), K.items[i].push)),
       rest.length ? el("p", { class: "link" }, el("b", { text: "Push back: " }), fill(P.text, { items: rest.map(i => "“" + K.items[i].headline + "”").join(", ") })) : null
     ];
   });
