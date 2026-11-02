@@ -527,7 +527,7 @@ function resetMatch(){
 function resetGap(){ state.gap = { vals: ISSUE.gaps.map(() => ""), checked: false, revealed: new Set() }; }
 function resetTF(){ state.tf = { ans: ISSUE.truefalse.map(() => null), revealed: new Set() }; }
 function freshThink(){
-  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", num: "", nums: [], shown: new Set(), voted: false };
+  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", text: "", num: "", nums: [], shown: new Set(), voted: false };
   if (TYPE === "allocate") return { judge: K.items.map(() => null), pts: K.items.map(() => 0), hard: null, shown: new Set(), voted: false };
   if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
   return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0), voted: false };
@@ -978,6 +978,11 @@ function renderSort(){
           f.options.map(o => el("button", { type: "button", class: "schoice c-j" + (S.finals[f.id] === o.id ? " on" : ""), "data-fid": "f" + f.id + o.id,
             "aria-pressed": S.finals[f.id] === o.id ? "true" : "false",
             onclick: () => { S.finals[f.id] = S.finals[f.id] === o.id ? null : o.id; S.voted = false; renderSort(); }, text: o.label }))))) : null,
+      K.textField ? el("label", { class: "field rule" },
+        el("span", { class: "kicker", text: K.textField.kicker }),
+        el("span", { text: K.textField.prompt }),
+        el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: S.text, maxlength: "200", autocomplete: "off",
+          oninput: e => { S.text = e.target.value; } })) : null,
       K.ruleStem ? el("label", { class: "field rule" },
         el("span", { class: "kicker", text: "Your rule" }),
         el("span", { text: "Finish the sentence: " + K.ruleStem + "…" }),
@@ -985,7 +990,7 @@ function renderSort(){
           oninput: e => { S.rule = e.target.value; } })) : null,
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderSort), text: K.resultButton }),
-        done || S.rule || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+        done || S.rule || S.text || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
           onclick: () => { resetCouncil(true); renderSort(); }, text: "Clear choices" }) : null),
       S.voted ? sortVerdict() : null,
       panelNav("council")
@@ -1016,7 +1021,12 @@ function sortVerdict(){
   return verdictBox(
     el("h3", { text: V.title }),
     done < n ? el("p", { text: fill(V.unanswered, { n: n - done }) }) : null,
-    K.total ? el("p", { class: "total" }, fill(K.total.text, { n: S.picks.filter(p => p === K.total.cat).length, m: n })) : null,
+    K.total ? el("p", { class: "total" }, K.total.sum
+      ? fill(K.total.text, { n: dur(K.items.reduce((a, it, i) => a + (S.picks[i] === K.total.cat ? it.mins || 0 : 0), 0)), m: dur(K.items.reduce((a, it) => a + (it.mins || 0), 0)) })
+      : fill(K.total.text, { n: S.picks.filter(p => p === K.total.cat).length, m: n })) : null,
+    K.textField ? (S.text.trim()
+      ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), S.text.trim())
+      : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
     groups,
     K.number ? numberResult(S) : null,
     K.finals ? K.finals.map(f => el("p", {}, el("b", { text: f.label + " " }), ((f.options.find(o => o.id === S.finals[f.id]) || {}).label) || V.noFinal)) : null,
@@ -1028,6 +1038,9 @@ function sortVerdict(){
     V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
     thinkBox(V), againBtn(renderSort));
 }
+
+/* Minutes as "18 hrs 40 min" (used by summed totals). */
+function dur(m){ const h = Math.floor(m / 60), r = m % 60; return (h ? h + (h === 1 ? " hr" : " hrs") : "") + (h && r ? " " : "") + (r || !h ? r + " min" : ""); }
 
 /* Optional "your number" for sort activities (e.g. the most you would pay). */
 const money = v => { const n = parseFloat(String(v).replace(/[^0-9.]/g, "")); return isFinite(n) ? Math.round(n * 100) / 100 : null; };
@@ -1272,7 +1285,7 @@ function setMode(m, initial){
   $("fsMsg").hidden = true;
   // Answers are cleared on every switch, so scores and feedback always match the mode.
   state.cards.shown = false;
-  resetMatch(); resetGap(); resetTF(); resetCouncil(false);
+  resetMatch(); resetGap(); resetTF(); resetCouncil(true);
   renderAll();
   try { localStorage.setItem("pe-practice-mode", m); } catch (e) {}
   try { history.replaceState(null, "", m === "class" ? "#classroom" : "#solo"); } catch (e) {}
