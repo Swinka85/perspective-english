@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Overtourism Practice Room A1–A2</title>
 <meta name="description" content="Free interactive practice for the Perspective English Overtourism lesson (Issue 001, A1–A2): flashcards, matching, gap-fill, true or false, and a town council activity.">
-<meta name="theme-color" content="#177b79">
+<meta name="theme-color" content="#176b6b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap">
@@ -224,12 +224,12 @@ nav button{font-weight:700}
 @media(max-width:520px){.mast{align-items:flex-start}.issue{padding-top:6px}.panel{padding:17px}.brand{font-size:clamp(27px,8vw,38px)}.brand-tagline{font-size:8px;letter-spacing:clamp(1px,.8vw,4px)}}
 
 /* LEVEL COLOR — the only part that changes between A, B and C */
-:root{--navy:#177b79;--focus:#177b79}
-.mast{border-bottom-color:#177b79}
-.brand-link,.brand-tagline{color:#177b79}
-header:has(.mast) h1,h2,.cta h2{color:#177b79}
-.level{background:#177b79}
-.levels a[aria-current="page"]{background:#177b79;border-color:#177b79;color:#fff}
+:root{--navy:#176b6b;--focus:#176b6b}
+.mast{border-bottom-color:#176b6b}
+.brand-link,.brand-tagline{color:#176b6b}
+header:has(.mast) h1,h2,.cta h2{color:#176b6b}
+.level{background:#176b6b}
+.levels a[aria-current="page"]{background:#176b6b;border-color:#176b6b;color:#fff}
 
 /* Level links, assumption marker and result details (shared) */
 .level{display:none} /* the level links below show the current level */
@@ -247,7 +247,40 @@ header:has(.mast) h1,h2,.cta h2{color:#177b79}
 .effs{display:flex;flex-direction:column;gap:4px}
 .verdict .link{background:rgba(255,255,255,.12);border-radius:6px;padding:8px 10px}
 .is-class .weak{font-size:.95rem;min-height:42px}
-@media(max-width:520px){.weakrow{padding-left:12px}}
+.town{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+/* Activity 5: sort ("Where is the line?") */
+.sort,.heads{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.srow,.hrow{display:flex;flex-direction:column;gap:8px;border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--surface)}
+.srow.picked,.hrow.on{border-color:var(--navy);background:var(--tint)}
+.stext,.shint,.stress,.study{margin:0}
+.stext{font-weight:700}
+.shint,.stress{font-size:.9rem;color:var(--muted-strong)}
+.schoices{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.schoice{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.88rem;min-height:40px}
+.schoice.on{background:var(--navy);border-color:var(--navy);color:var(--onnavy)}
+.schoice.c-cheat.on{background:var(--bad);border-color:var(--bad);color:#fff}
+.schoice.c-fine.on,.schoice.c-ok.on{background:var(--good);border-color:var(--good);color:#fff}
+.schoice.c-gray.on,.schoice.c-unsure.on{background:#6b7280;border-color:#6b7280;color:#fff}
+.field{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--muted-strong)}
+.field input{font:inherit;font-size:1rem;color:var(--ink);border:1.5px solid var(--line);border-radius:6px;padding:9px 11px;background:#fff;min-height:42px;width:100%}
+.field input:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.field.rule{background:var(--tint);border-radius:8px;padding:12px 14px}
+.sgroup{display:flex;flex-direction:column;gap:4px}
+.sgroup ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+/* Activity 5: headlines */
+.study{background:var(--tint);border-left:4px solid #b79a4e;padding:10px 14px;border-radius:0 6px 6px 0}
+.htop{display:flex;gap:12px;align-items:flex-start}
+.hnum{flex:0 0 auto;font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--navy);min-width:1.2em}
+.hbody{min-width:0;display:flex;flex-direction:column;gap:4px}
+.headline{margin:0;font-family:var(--display);font-weight:800;font-size:1.2rem;line-height:1.25;color:var(--ink)}
+.pick{border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);border-radius:6px;padding:7px 12px;font-weight:700;font-size:.88rem;min-height:40px}
+.pick.on{background:var(--navy);color:var(--onnavy)}
+.tally.inline{padding:0;margin-left:auto}
+.verdict .front{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1.2;background:#fff;color:var(--ink);border-radius:6px;padding:14px 16px;margin:0}
+.is-class .stext,.is-class .headline{font-size:1.2rem}
+.is-class .schoice,.is-class .pick{font-size:1rem;min-height:48px;padding:9px 18px}
+.is-class .field input{font-size:1.1rem;min-height:50px}
+@media(max-width:520px){.weakrow{padding-left:12px}.tally.inline{margin-left:0}}
 </style>
 
 </head>
@@ -431,6 +464,8 @@ const ISSUE = {
 "use strict";
 
 const UI = ISSUE.ui;
+const K = ISSUE.thinking || ISSUE.council;   // Activity 5 content
+const TYPE = (K && K.type) || "council";    // "council", "sort" or "headlines"
 const TABS = ["cards", "match", "gap", "tf", "council"].map(id => ({ id, label: UI.tabs[id] }));
 const LETTERS = "ABCDEFGHIJ";
 const MAX_TEAMS = 10;
@@ -471,7 +506,7 @@ const state = {
   match: null,
   gap: null,
   tf: null,
-  council: { sel: new Set(), statusQuo: false, weak: null, teams: ISSUE.council.measures.map(() => 0), voted: false }
+  council: null
 };
 const isClass = () => state.mode === "class";
 
@@ -481,10 +516,17 @@ function resetMatch(){
 }
 function resetGap(){ state.gap = { vals: ISSUE.gaps.map(() => ""), checked: false, revealed: new Set() }; }
 function resetTF(){ state.tf = { ans: ISSUE.truefalse.map(() => null), revealed: new Set() }; }
+function freshThink(){
+  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), rule: "", shown: new Set(), voted: false };
+  if (TYPE === "headlines") return { notes: K.items.map(() => ""), choice: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
+  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0), voted: false };
+}
 function resetCouncil(full){
+  if (!state.council || full) state.council = freshThink();
   const C = state.council;
   C.voted = false;
-  if (full) { C.sel.clear(); C.statusQuo = false; C.weak = null; C.teams = ISSUE.council.measures.map(() => 0); }
+  if (C.revealed) C.revealed.clear();   // model answers stay hidden after a mode switch
+  if (C.shown) C.shown.clear();
 }
 
 /* ---------------- shared pieces ---------------- */
@@ -765,7 +807,7 @@ function setTeams(i, d){
   renderCouncil();
 }
 function renderCouncil(){
-  const C = state.council, K = ISSUE.council, cls = isClass(), M = K.measures;
+  const C = state.council, cls = isClass(), M = K.measures;
   paint("p-council", () => {
     const passedLabel = C.statusQuo ? "None" : C.sel.size + " of " + M.length;
     const tile = (m, on, onclick, fid) => el("button", { type: "button", class: "measure", "data-fid": fid, "aria-pressed": on ? "true" : "false", onclick },
@@ -816,16 +858,14 @@ function holdVote(){
   if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
 }
 function effects(m){
-  const L = ISSUE.council.effectLabels;
+  const L = K.effectLabels;
   return m.effects.map((t, i) => el("span", { class: "eff" }, el("b", { text: L[i] + ": " }), t));
 }
 function verdict(){
-  const C = state.council, K = ISSUE.council, V = K.verdict, cls = isClass();
+  const C = state.council, V = K.verdict, cls = isClass();
   const box = (...kids) => el("div", { class: "verdict", id: "verdict", tabindex: "-1", role: "region", "aria-label": "Vote result" }, ...kids);
   const again = el("button", { type: "button", class: "btn ghost", "data-fid": "vagain", onclick: () => { resetCouncil(true); renderCouncil(); $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
-  const think = cls
-    ? el("div", { class: "think" }, el("span", { class: "kicker", text: V.classLabel }), el("ol", {}, V.classQuestions.map(q => el("li", { text: q }))))
-    : el("div", { class: "think" }, el("span", { class: "kicker", text: V.soloLabel }), el("p", { text: V.reflection }));
+  const think = thinkBox(V);
   const caveat = el("p", { class: "small", text: V.caveat });
   let weakLine = null;
   if (K.weakest) {
@@ -864,6 +904,154 @@ function verdict(){
     extra.map(l => el("p", { class: "link" }, el("b", { text: V.linkLabel + ": " }), l.text)),
     el("p", { text: note }),
     weakLine, caveat, think, again);
+}
+
+
+/* ---------- shared pieces for Activity 5 ---------- */
+function renderThink(){ if (TYPE === "sort") return renderSort(); if (TYPE === "headlines") return renderHeadlines(); return renderCouncil(); }
+function thinkBox(V){
+  return isClass()
+    ? el("div", { class: "think" }, el("span", { class: "kicker", text: V.classLabel }), el("ol", {}, V.classQuestions.map(q => el("li", { text: q }))))
+    : el("div", { class: "think" }, el("span", { class: "kicker", text: V.soloLabel }), el("p", { text: V.reflection }));
+}
+function verdictBox(...kids){ return el("div", { class: "verdict", id: "verdict", tabindex: "-1", role: "region", "aria-label": "Result" }, ...kids); }
+function showResult(render){
+  state.council.voted = true; render();
+  const v = $("verdict");
+  if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
+}
+function againBtn(render){
+  return el("button", { type: "button", class: "btn ghost", "data-fid": "vagain",
+    onclick: () => { resetCouncil(true); render(); $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
+}
+function stats(list){
+  return el("div", { class: "town" }, list.map(s => el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: s[0] }), el("small", { text: s[1] }))));
+}
+
+/* ================= Activity 5 (type "sort"): sort each item into a category ================= */
+function renderSort(){
+  const S = state.council, cls = isClass(), n = K.items.length, V = K.verdict;
+  const done = S.picks.filter(Boolean).length;
+  paint("p-council", () => {
+    const rows = K.items.map((it, i) => {
+      const pick = S.picks[i];
+      const showConsider = it.consider && (cls ? S.shown.has(i) : !!pick);
+      return el("li", { class: "srow" + (pick ? " picked" : "") },
+        el("p", { class: "stext", text: (i + 1) + ". " + it.text }),
+        it.hint ? el("p", { class: "shint" }, K.hintLabel ? el("b", { text: K.hintLabel + ": " }) : null, it.hint) : null,
+        el("div", { class: "schoices", role: "group", "aria-label": "Your choice for line " + (i + 1) },
+          K.categories.map(c => el("button", { type: "button", class: "schoice c-" + c.id + (pick === c.id ? " on" : ""), "data-fid": "s" + i + c.id,
+            "aria-pressed": pick === c.id ? "true" : "false",
+            onclick: () => { S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: c.label })),
+          cls && it.consider && !S.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "sc" + i,
+            onclick: () => { S.shown.add(i); renderSort(); }, text: "Show a question" }) : null),
+        pick === K.dependsOn ? el("label", { class: "field" },
+          el("span", { text: K.dependsPrompt }),
+          el("input", { type: "text", id: "dep" + i, "data-fid": "dep" + i, value: S.depends[i], maxlength: "160", autocomplete: "off",
+            oninput: e => { S.depends[i] = e.target.value; } })) : null,
+        showConsider ? el("p", { class: "why" }, el("b", { text: "Think about it: " }), it.consider) : null);
+    });
+    return [
+      head(5, UI.council),
+      stats([[done + " of " + n, "lines marked"]].concat(K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
+      el("ol", { class: "sort" }, rows),
+      el("label", { class: "field rule" },
+        el("span", { class: "kicker", text: "Your rule" }),
+        el("span", { text: "Finish the sentence: " + K.ruleStem + "…" }),
+        el("input", { type: "text", id: "rule", "data-fid": "rule", value: S.rule, maxlength: "200", autocomplete: "off",
+          oninput: e => { S.rule = e.target.value; } })),
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderSort), text: K.resultButton }),
+        done || S.rule ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+          onclick: () => { resetCouncil(true); renderSort(); }, text: "Clear choices" }) : null),
+      S.voted ? sortVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function sortVerdict(){
+  const S = state.council, V = K.verdict, n = K.items.length;
+  const done = S.picks.filter(Boolean).length;
+  if (!done) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const groups = K.categories.map(c => {
+    const its = K.items.map((_, i) => i).filter(i => S.picks[i] === c.id);
+    return el("div", { class: "sgroup" },
+      el("b", { text: c.label + " (" + its.length + ")" }),
+      its.length ? el("ul", {}, its.map(i => el("li", {}, K.items[i].text,
+        c.id === K.dependsOn ? el("span", { class: "eff" }, el("b", { text: K.dependsPrompt + " " }), S.depends[i].trim() || V.noDepends) : null)))
+        : el("p", { class: "eff", text: V.emptyGroup }));
+  });
+  return verdictBox(
+    el("h3", { text: V.title }),
+    done < n ? el("p", { text: fill(V.unanswered, { n: n - done }) }) : null,
+    groups,
+    el("p", {}, el("b", { text: "Your rule: " }), S.rule.trim() ? K.ruleStem + " " + S.rule.trim().replace(/^\.\.\.|^…/, "") : V.noRule),
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderSort));
+}
+
+/* ================= Activity 5 (type "headlines"): compare framings, pick one ================= */
+function renderHeadlines(){
+  const H = state.council, cls = isClass(), n = K.items.length;
+  const written = H.notes.filter(x => x.trim()).length;
+  paint("p-council", () => {
+    const rows = K.items.map((it, i) => {
+      const rev = H.revealed.has(i), chosen = H.choice === i;
+      return el("li", { class: "hrow" + (chosen ? " on" : "") },
+        el("div", { class: "htop" },
+          el("span", { class: "hnum", text: String(i + 1) }),
+          el("div", { class: "hbody" },
+            el("p", { class: "headline", text: it.headline }),
+            el("p", { class: "stress" }, el("b", { text: K.stressLabel + ": " }), it.stresses))),
+        el("label", { class: "field" },
+          el("span", { text: K.omitLabel }),
+          el("input", { type: "text", id: "note" + i, "data-fid": "note" + i, value: H.notes[i], maxlength: "200", autocomplete: "off",
+            oninput: e => { H.notes[i] = e.target.value; const s = $("hWritten"); if (s) s.textContent = H.notes.filter(x => x.trim()).length + " of " + n; } })),
+        el("div", { class: "row" },
+          el("button", { type: "button", class: "pick" + (chosen ? " on" : ""), "data-fid": "pk" + i, "aria-pressed": chosen ? "true" : "false",
+            onclick: () => { H.choice = chosen ? null : i; H.voted = false; renderHeadlines(); }, text: chosen ? "✓ " + K.pickLabel : K.pickLabel }),
+          !rev ? el("button", { type: "button", class: "mini", "data-fid": "hr" + i, onclick: () => { H.revealed.add(i); renderHeadlines(); }, text: "Show a possible answer" }) : null,
+          cls ? el("span", { class: "tally inline" },
+            el("span", { text: K.tallyLabel }),
+            el("button", { type: "button", "data-fid": "hm" + i, "aria-label": "One fewer for headline " + (i + 1), disabled: H.teams[i] === 0, onclick: () => { H.teams[i]--; renderHeadlines(); }, text: "−" }),
+            el("output", { text: String(H.teams[i]) }),
+            el("button", { type: "button", "data-fid": "hp" + i, "aria-label": "One more for headline " + (i + 1), disabled: H.teams[i] === MAX_TEAMS, onclick: () => { H.teams[i]++; renderHeadlines(); }, text: "+" })) : null),
+        rev ? el("p", { class: "why" }, el("b", { text: "Possible answer: " }), it.omits) : null);
+    });
+    return [
+      head(5, UI.council),
+      el("p", { class: "study" }, el("b", { text: "The study: " }), K.study),
+      el("div", { class: "town" },
+        el("div", { class: "stat" }, el("b", { id: "hWritten", text: written + " of " + n }), el("small", { text: "notes written" })),
+        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: H.choice === null ? "–" : "No. " + (H.choice + 1) }), el("small", { text: "headline chosen" }))),
+      el("ol", { class: "heads" }, rows),
+      el("label", { class: "field rule" },
+        el("span", { text: K.wordPrompt }),
+        el("input", { type: "text", id: "hword", "data-fid": "hword", value: H.word, maxlength: "80", autocomplete: "off", oninput: e => { H.word = e.target.value; } })),
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderHeadlines), text: K.resultButton }),
+        H.revealed.size < n ? el("button", { type: "button", class: "btn ghost", "data-fid": "hrall",
+          onclick: () => { K.items.forEach((_, i) => H.revealed.add(i)); renderHeadlines(); }, text: "Show all possible answers" }) : null,
+        el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderHeadlines(); }, text: "Clear" })),
+      H.voted ? headlineVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function headlineVerdict(){
+  const H = state.council, V = K.verdict, cls = isClass();
+  if (H.choice === null) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const it = K.items[H.choice];
+  const top = cls ? K.items.map((x, i) => [i, H.teams[i]]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]) : [];
+  return verdictBox(
+    el("h3", { text: V.title }),
+    el("p", { class: "front", text: it.headline }),
+    el("p", {}, el("b", { text: K.wordResultLabel + ": " }), H.word.trim() || V.noWord),
+    el("p", {}, el("b", { text: "Your note on what it leaves out: " }), H.notes[H.choice].trim() || V.noNote),
+    el("p", {}, el("b", { text: "A possible answer: " }), it.omits),
+    top.length ? el("p", {}, el("b", { text: "Team votes: " }), top.map(x => "No. " + (x[0] + 1) + " (" + x[1] + ")").join(", ") + ".") : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderHeadlines));
 }
 
 /* ---------------- tabs ---------------- */
@@ -912,7 +1100,7 @@ function setMode(m, initial){
   try { localStorage.setItem("pe-practice-mode", m); } catch (e) {}
   try { history.replaceState(null, "", m === "class" ? "#classroom" : "#solo"); } catch (e) {}
 }
-function renderAll(){ renderCards(); renderMatch(); renderGap(); renderTF(); renderCouncil(); }
+function renderAll(){ renderCards(); renderMatch(); renderGap(); renderTF(); renderThink(); }
 
 /* ---------------- full screen ---------------- */
 function fsElement(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
