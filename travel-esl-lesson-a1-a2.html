@@ -208,7 +208,12 @@
 .level-selector-buttons a,.level-selector-buttons span{display:inline-flex;align-items:center;justify-content:center;min-width:82px;padding:9px 14px;border:1px solid #d4dbe5;border-radius:999px;background:#fff;color:#0b2140;font-size:.85rem;font-weight:700;text-decoration:none;box-sizing:border-box}
 .level-selector-buttons a:hover{border-color:var(--level-accent);color:var(--level-accent)}
 .level-selector-buttons .active{border-color:var(--level-accent);background:var(--level-accent);color:#fff}
-</style></head>
+</style><style>
+/* Beginner lesson index navigation */
+.back-to-level-lessons { display: inline-flex; align-items: center; gap: 0.45em; margin: 0 0 1.25rem; padding: 0.65rem 1rem; border: 1px solid currentColor; border-radius: 7px; color: #176b6b; font-weight: 600; font-size: 0.95rem; text-decoration: none; }
+.back-to-level-lessons:hover, .back-to-level-lessons:focus-visible { text-decoration: underline; }
+</style>
+</head>
 <body>
 <header class="site-header">
 <div class="container nav">
@@ -229,6 +234,8 @@
 <section class="issue-hero">
 <div class="container issue-hero-grid">
 <div class="issue-intro">
+<a class="back-to-level-lessons" href="beginner-esl-lessons.html" aria-label="Back to Beginner Lessons">← Back to Beginner Lessons</a>
+
 <p class="issue-number">ISSUE 038</p>
 <h1>Travel ESL Lesson</h1>
 <p class="issue-question">If you never leave the hotel, did you really visit the country?</p>
