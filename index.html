@@ -39,7 +39,7 @@
   <meta property="og:url"
         content="https://perspectiveenglish.com/">
   <meta property="og:image"
-        content="https://perspectiveenglish.com/images/issue055-image.webp">
+        content="https://perspectiveenglish.com/images/issue056-image.webp">
   <meta property="og:image:alt"
         content="Perspective English magazine-style ESL lessons">
 
@@ -49,7 +49,7 @@
   <meta name="twitter:description"
         content="Magazine-style ESL lessons for A1–A2, B1–B2 and C1–C2 learners.">
   <meta name="twitter:image"
-        content="https://perspectiveenglish.com/images/issue055-image.webp">
+        content="https://perspectiveenglish.com/images/issue056-image.webp">
 
   <script type="application/ld+json">
   {
@@ -962,6 +962,29 @@
     .search-results small { color: var(--muted); font-size: 10px; }
     .search-status { margin-top: 10px; font-size: 11px; color: var(--muted); }
 
+
+    /* Latest issue carousel: three cards on desktop, one on mobile */
+    .latest-carousel { position: relative; }
+    .latest-carousel .story-grid {
+      display: grid; grid-auto-flow: column;
+      grid-auto-columns: calc((100% - 40px) / 3);
+      grid-template-columns: none; gap: 20px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      scroll-behavior: smooth; scrollbar-width: none;
+      overscroll-behavior-inline: contain;
+    }
+    .latest-carousel .story-grid::-webkit-scrollbar { display: none; }
+    .latest-carousel .story-card { min-width: 0; scroll-snap-align: start; }
+    .latest-carousel-controls { display: flex; align-items: center; justify-content: flex-end; gap: 13px; margin-top: 19px; }
+    .latest-arrow { width: 36px; height: 36px; border: 1px solid var(--navy); background: white; color: var(--navy); cursor: pointer; font-size: 18px; }
+    .latest-arrow:hover, .latest-arrow:focus-visible { background: var(--navy); color: white; }
+    .latest-carousel-status { color: var(--muted); font-size: 11px; font-weight: 700; min-width: 38px; text-align: center; }
+    @media (max-width: 760px) {
+      .latest-carousel .story-grid { grid-template-columns: none; grid-auto-columns: 86%; gap: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .latest-carousel .story-grid { scroll-behavior: auto; }
+    }
   </style>
 </head>
 
@@ -1051,7 +1074,7 @@
     <h2 id="lesson-search-heading">Find Your Next Lesson</h2>
     <p>Search our lesson topics and discover your next classroom discussion.</p>
     <label for="lesson-search-input" class="eyebrow">Search lessons</label>
-    <input id="lesson-search-input" class="search-input" type="search" placeholder="Try Halloween, travel, food, or Issue 055" autocomplete="off">
+    <input id="lesson-search-input" class="search-input" type="search" placeholder="Try politics, travel, food, or Issue 056" autocomplete="off">
     <div id="lesson-search-results" class="search-results" aria-live="polite"></div>
     <div id="lesson-search-status" class="search-status" role="status">Loading lesson catalogs…</div>
   </div>
@@ -1065,73 +1088,26 @@
      ========================================================= -->
 
 <section class="feature">
-
   <div class="container">
-
-    <p class="eyebrow">
-      FEATURED ISSUE
-    </p>
-
+    <p class="eyebrow">FEATURED ISSUE</p>
     <div class="feature-grid">
-
-      <a class="feature-image"
-         href="halloween-esl-lesson.html"
-         aria-label="Explore Trick or Treat! Halloween Special">
-
-        <img src="images/issue055-image.webp"
-             alt="Trick or Treat! Halloween Special">
-
-        <p class="photo-note">
-          One topic. Three levels.
-        </p>
-
+      <a class="feature-image" href="red-vs-blue-american-politics-esl-lesson.html" aria-label="Explore Red vs. Blue — Issue 056">
+        <img src="images/issue056-image.webp" alt="Red vs. Blue — American political divide">
+        <p class="photo-note">One topic. Three levels.</p>
       </a>
-
-
       <div class="feature-copy">
-
-        <p class="issue-no">
-          ISSUE 055 · HALLOWEEN SPECIAL
-        </p>
-
-        <h1>
-          Trick or Treat!
-        </h1>
-
-        <p class="deck">
-          Why has Halloween become such a big deal?
-        </p>
-
-        <p>
-          From ancient Celtic traditions to elaborate costumes and trick-or-treating, discover how Halloween became a global celebration, and why not everyone embraces it.
-        </p>
-
-        <div class="level-buttons"
-             aria-label="Choose a lesson level">
-
-          <a class="level-button a"
-             href="halloween-esl-lesson-a1-a2.html">
-            A1–A2 Beginner
-          </a>
-
-          <a class="level-button b"
-             href="halloween-esl-lesson.html">
-            B1–B2 Intermediate
-          </a>
-
-          <a class="level-button c"
-             href="halloween-esl-lesson-c1-c2.html">
-            C1–C2 Advanced
-          </a>
-
+        <p class="issue-no">ISSUE 056 · POLITICS &amp; SOCIETY</p>
+        <h1>Red vs. Blue</h1>
+        <p class="deck">Understanding America's Political Divide</p>
+        <p>Why are Democrats and Republicans so divided? Explore America's two major parties, political identity and the challenges of finding common ground.</p>
+        <div class="level-buttons" aria-label="Choose a lesson level">
+          <a class="level-button a" href="red-vs-blue-american-politics-esl-lesson-a1-a2.html">A1–A2 Beginner</a>
+          <a class="level-button b" href="red-vs-blue-american-politics-esl-lesson.html">B1–B2 Intermediate</a>
+          <a class="level-button c" href="red-vs-blue-american-politics-esl-lesson-c1-c2.html">C1–C2 Advanced</a>
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </section>
 
 
@@ -1273,87 +1249,38 @@
     </div>
 
 
-    <div class="story-grid">
-
-
-      <a class="story-card"
-          href="halloween-esl-lesson.html">
-
-        <div class="story-image">
-
-          <img src="images/issue055-image.webp"
-               alt="Trick or Treat!"
-               loading="lazy">
-
-        </div>
-
-        <p class="story-meta">
-          ISSUE 055 · HALLOWEEN SPECIAL
-        </p>
-
-        <h3>
-          Trick or Treat!
-        </h3>
-
-        <p>
-          Why has Halloween become such a big deal?
-        </p>
-
+    <div class="latest-carousel" aria-label="Latest lessons carousel" role="region" aria-roledescription="carousel">
+      <div class="story-grid" id="latest-story-track">
+      <a class="story-card" href="red-vs-blue-american-politics-esl-lesson.html">
+        <div class="story-image"><img src="images/issue056-image.webp" alt="Red vs. Blue" loading="lazy"></div>
+        <p class="story-meta">ISSUE 056 · POLITICS &amp; SOCIETY</p>
+        <h3>Red vs. Blue</h3>
+        <p>Understanding America&#x27;s Political Divide</p>
       </a>
-
-
-      <a class="story-card"
-          href="stay-in-your-lane-esl-lesson.html">
-
-        <div class="story-image">
-
-          <img src="images/issue054-image.webp"
-               alt="Stay in Your Lane!"
-               loading="lazy">
-
-        </div>
-
-        <p class="story-meta">
-          ISSUE 054 · HISTORY & CULTURE
-        </p>
-
-        <h3>
-          Stay in Your Lane!
-        </h3>
-
-        <p>
-          Why do some countries drive on the left and others on the right?
-        </p>
-
+      <a class="story-card" href="halloween-esl-lesson.html">
+        <div class="story-image"><img src="images/issue055-image.webp" alt="Trick or Treat!" loading="lazy"></div>
+        <p class="story-meta">ISSUE 055 · HALLOWEEN SPECIAL</p>
+        <h3>Trick or Treat!</h3>
+        <p>Why has Halloween become such a big deal?</p>
       </a>
-
-
-      <a class="story-card"
-          href="no-place-like-home-esl-lesson.html">
-
-        <div class="story-image">
-
-          <img src="images/issue053-image.webp"
-               alt="No Place Like Home!"
-               loading="lazy">
-
-        </div>
-
-        <p class="story-meta">
-          ISSUE 053 · SOCIETY
-        </p>
-
-        <h3>
-          No Place Like Home!
-        </h3>
-
-        <p>
-          What makes a neighborhood feel like home, and how does it change?
-        </p>
-
+      <a class="story-card" href="stay-in-your-lane-esl-lesson.html">
+        <div class="story-image"><img src="images/issue054-image.webp" alt="Stay in Your Lane!" loading="lazy"></div>
+        <p class="story-meta">ISSUE 054 · HISTORY &amp; CULTURE</p>
+        <h3>Stay in Your Lane!</h3>
+        <p>Why do some countries drive on the left and others on the right?</p>
       </a>
-
-
+      <a class="story-card" href="no-place-like-home-esl-lesson.html">
+        <div class="story-image"><img src="images/issue053-image.webp" alt="No Place Like Home!" loading="lazy"></div>
+        <p class="story-meta">ISSUE 053 · SOCIETY</p>
+        <h3>No Place Like Home!</h3>
+        <p>What makes a neighborhood feel like home, and how does it change?</p>
+      </a>
+      </div>
+      <div class="latest-carousel-controls">
+        <button class="latest-arrow" type="button" id="latest-prev" aria-label="Previous latest lesson">&#8592;</button>
+        <span class="latest-carousel-status" id="latest-carousel-status" aria-live="off">1 / 4</span>
+        <button class="latest-arrow" type="button" id="latest-next" aria-label="Next latest lesson">&#8594;</button>
+      </div>
     </div>
 
   </div>
@@ -1604,6 +1531,7 @@
   const status = document.getElementById('lesson-search-status');
   const entries = new Map();
   const known = [
+    ['Red vs. Blue', 'red-vs-blue-american-politics-esl-lesson.html', '056', 'Democrats Republicans politics political divide two party', "Understanding America's Political Divide"],
     ['Trick or Treat!', 'halloween-esl-lesson.html', '055', 'Halloween costumes Celtic traditions', 'Why has Halloween become such a big deal?'],
     ['Stay in Your Lane!', 'stay-in-your-lane-esl-lesson.html', '054', 'driving left right history', 'Why do some countries drive on the left and others on the right?'],
     ['No Place Like Home!', 'no-place-like-home-esl-lesson.html', '053', 'neighborhood community change', 'What makes a neighborhood feel like home, and how does it change?']
@@ -1658,5 +1586,47 @@
 })();
 </script>
 
+
+<script>
+(() => {
+  const track = document.getElementById('latest-story-track');
+  if (!track) return;
+  const cards = [...track.querySelectorAll('.story-card')];
+  const status = document.getElementById('latest-carousel-status');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let current = 0;
+  let timer;
+  const step = () => cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : 0;
+  const maxIndex = () => Math.max(0, Math.ceil((track.scrollWidth - track.clientWidth) / (step() || 1)));
+  function go(index) {
+    const max = maxIndex();
+    current = index > max ? 0 : index < 0 ? max : index;
+    track.scrollTo({left: current * step(), behavior: reducedMotion.matches ? 'instant' : 'smooth'});
+    status.textContent = `${current + 1} / ${max + 1}`;
+  }
+  function stop() { window.clearInterval(timer); timer = undefined; }
+  function start() {
+    stop();
+    if (!reducedMotion.matches && maxIndex() > 0) timer = window.setInterval(() => go(current + 1), 5000);
+  }
+  document.getElementById('latest-prev').addEventListener('click', () => {go(current - 1); start();});
+  document.getElementById('latest-next').addEventListener('click', () => {go(current + 1); start();});
+  track.addEventListener('scroll', () => {
+    if (step()) current = Math.max(0, Math.min(maxIndex(), Math.round(track.scrollLeft / step())));
+    status.textContent = `${current + 1} / ${maxIndex() + 1}`;
+  }, {passive: true});
+  const section = track.closest('.latest-carousel');
+  section.addEventListener('mouseenter', stop);
+  section.addEventListener('mouseleave', start);
+  section.addEventListener('focusin', stop);
+  section.addEventListener('focusout', e => {if (!section.contains(e.relatedTarget)) start();});
+  track.addEventListener('touchstart', stop, {passive:true});
+  track.addEventListener('touchend', start, {passive:true});
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+  window.addEventListener('resize', () => {go(Math.min(current,maxIndex())); start();});
+  status.textContent = `1 / ${maxIndex() + 1}`;
+  start();
+})();
+</script>
 </body>
 </html>
