@@ -275,6 +275,12 @@ header:has(.mast) h1,h2,.cta h2{color:#1a2a5e}
 .headline{margin:0;font-family:var(--display);font-weight:800;font-size:1.2rem;line-height:1.25;color:var(--ink)}
 .pick{border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);border-radius:6px;padding:7px 12px;font-weight:700;font-size:.88rem;min-height:40px}
 .pick.on{background:var(--navy);color:var(--onnavy)}
+.pick.second{border-style:dashed;color:var(--muted-strong);border-color:var(--muted-strong)}
+.pick.second.on{border-style:solid;background:#f7efd6;border-color:#b79a4e;color:#5c4710}
+.stress.against{color:var(--muted-strong)}
+.schoices.nums{gap:6px}
+.schoices.nums .schoice{min-width:40px;padding:7px 0;text-align:center}
+@media(max-width:520px){.schoices.nums .glabel{flex-basis:100%}.schoices.nums .schoice{min-width:44px;min-height:44px}}
 .tally.inline{padding:0;margin-left:auto}
 .verdict .front{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1.2;background:#fff;color:var(--ink);border-radius:6px;padding:14px 16px;margin:0}
 .is-class .stext,.is-class .headline{font-size:1.2rem}
@@ -308,7 +314,23 @@ header:has(.mast) h1,h2,.cta h2{color:#1a2a5e}
 .is-class .money input{font-size:1.3rem;min-height:52px}
 .finals{gap:10px}
 .hrow .schoices + .schoices{margin-top:-2px}
-@media(max-width:520px){.weakrow{padding-left:12px}.tally.inline{margin-left:0}}
+/* Activity 5: allocate with typed numbers */
+.ptsin{width:4.2ch;text-align:center;font:inherit;font-weight:800;font-variant-numeric:tabular-nums;border:1.5px solid var(--line);border-radius:6px;padding:6px 2px;min-height:36px;color:var(--ink);background:#fff}
+.tally.pts button{min-width:40px;width:auto;padding:0 6px}
+.stat.over b{color:var(--bad)}
+.is-class .ptsin{min-height:44px;font-size:1.1rem}
+/* Activity 5: rank */
+.rank-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.rrow{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--surface)}
+.rrow.first{border-color:var(--navy);background:var(--tint)}
+.rnum{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--onnavy);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.25rem}
+.rbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.rbtns{flex:0 0 auto;display:flex;flex-direction:column;gap:6px}
+.rbtn{width:44px;height:40px;border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);border-radius:6px;font-weight:800;font-size:1.1rem}
+.rbtn:disabled{opacity:.3;cursor:not-allowed}
+.is-class .rnum{width:52px;height:52px;font-size:1.6rem}
+.is-class .rbtn{width:54px;height:48px;font-size:1.3rem}
+@media(max-width:520px){.weakrow{padding-left:12px}.tally.inline{margin-left:0}.rrow{padding:10px}.rnum{width:34px;height:34px;font-size:1.05rem}}
 </style>
 
 </head>
@@ -521,9 +543,10 @@ function resetMatch(){
 function resetGap(){ state.gap = { vals: ISSUE.gaps.map(() => ""), checked: false, revealed: new Set() }; }
 function resetTF(){ state.tf = { ans: ISSUE.truefalse.map(() => null), revealed: new Set() }; }
 function freshThink(){
-  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", text: "", num: "", nums: [], shown: new Set(), voted: false };
+  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", text: "", text2: "", num: "", nums: [], shown: new Set(), voted: false };
+  if (TYPE === "rank") return { order: K.items.map((_, i) => i), moved: false, text: "", voted: false };
   if (TYPE === "allocate") return { judge: K.items.map(() => null), pts: K.items.map(() => 0), hard: null, shown: new Set(), voted: false };
-  if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
+  if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, second: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
   return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0), voted: false };
 }
 function resetCouncil(full){
@@ -913,7 +936,7 @@ function verdict(){
 
 
 /* ---------- shared pieces for Activity 5 ---------- */
-function renderThink(){ if (TYPE === "sort") return renderSort(); if (TYPE === "headlines") return renderHeadlines(); if (TYPE === "allocate") return renderAllocate(); return renderCouncil(); }
+function renderThink(){ if (TYPE === "sort") return renderSort(); if (TYPE === "headlines") return renderHeadlines(); if (TYPE === "allocate") return renderAllocate(); if (TYPE === "rank") return renderRank(); return renderCouncil(); }
 function thinkBox(V){
   return isClass()
     ? el("div", { class: "think" }, el("span", { class: "kicker", text: V.classLabel }), el("ol", {}, V.classQuestions.map(q => el("li", { text: q }))))
@@ -934,6 +957,10 @@ function stats(list){
 }
 
 /* ================= Activity 5 (type "sort"): sort each item into a category ================= */
+// item.labels: { categoryId: "button text" } = per-row button labels (also used in the result groups).
+// unique: each category can be used on only one line (choosing it elsewhere clears the old line). hideCategoryStats, markedStat.
+// textField2: a second free-answer box, same shape as textField.
+// pickNotes: [{ when: { itemIndex: categoryId, ... }, text, label? }] shown in the result when those lines were marked that way.
 function renderSort(){
   const S = state.council, cls = isClass(), n = K.items.length, V = K.verdict;
   const done = S.picks.filter(Boolean).length;
@@ -947,7 +974,7 @@ function renderSort(){
         el("div", { class: "schoices", role: "group", "aria-label": "Your choice for line " + (i + 1) },
           K.categories.map(c => el("button", { type: "button", class: "schoice c-" + c.id + (pick === c.id ? " on" : ""), "data-fid": "s" + i + c.id,
             "aria-pressed": pick === c.id ? "true" : "false",
-            onclick: () => { S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: c.label })),
+            onclick: () => { if (K.unique && pick !== c.id) S.picks = S.picks.map(p => p === c.id ? null : p); S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: (it.labels && it.labels[c.id]) || c.label })),
           cls && it.consider && !S.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "sc" + i,
             onclick: () => { S.shown.add(i); renderSort(); }, text: "Show a question" }) : null),
         pick === K.dependsOn ? el("label", { class: "field" },
@@ -962,7 +989,7 @@ function renderSort(){
     });
     return [
       head(5, UI.council),
-      stats([[done + " of " + n, "lines marked"]].concat(K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
+      stats([[done + " of " + n, K.markedStat || "lines marked"]].concat(K.hideCategoryStats ? [] : K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
       el("ol", { class: "sort" }, rows),
       K.number ? numberField(S, cls) : null,
       K.finals ? el("div", { class: "field rule finals" },
@@ -977,6 +1004,11 @@ function renderSort(){
         el("span", { text: K.textField.prompt }),
         el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: S.text, maxlength: "200", autocomplete: "off",
           oninput: e => { S.text = e.target.value; } })) : null,
+      K.textField2 ? el("label", { class: "field rule" },
+        K.textField2.kicker ? el("span", { class: "kicker", text: K.textField2.kicker }) : null,
+        el("span", { text: K.textField2.prompt }),
+        el("input", { type: "text", id: "tfield2", "data-fid": "tfield2", value: S.text2, maxlength: "200", autocomplete: "off",
+          oninput: e => { S.text2 = e.target.value; } })) : null,
       K.ruleStem ? el("label", { class: "field rule" },
         el("span", { class: "kicker", text: "Your rule" }),
         el("span", { text: "Finish the sentence: " + K.ruleStem + "…" }),
@@ -984,7 +1016,7 @@ function renderSort(){
           oninput: e => { S.rule = e.target.value; } })) : null,
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderSort), text: K.resultButton }),
-        done || S.rule || S.text || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+        done || S.rule || S.text || S.text2 || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
           onclick: () => { resetCouncil(true); renderSort(); }, text: "Clear choices" }) : null),
       S.voted ? sortVerdict() : null,
       panelNav("council")
@@ -999,7 +1031,7 @@ function sortVerdict(){
     const its = K.items.map((_, i) => i).filter(i => S.picks[i] === c.id);
     return el("div", { class: "sgroup" },
       el("b", { text: c.label + " (" + its.length + ")" }),
-      its.length ? el("ul", {}, its.map(i => el("li", {}, K.items[i].text,
+      its.length ? el("ul", {}, its.map(i => el("li", {}, (K.items[i].labels && K.items[i].labels[c.id]) || K.items[i].text,
         c.id === K.dependsOn ? el("span", { class: "eff" }, el("b", { text: K.dependsPrompt + " " }), S.depends[i].trim() || V.noDepends) : null,
         K.askEach ? el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), S.asks[i].trim() || K.askEach.missing) : null)))
         : el("p", { class: "eff", text: V.emptyGroup }));
@@ -1014,17 +1046,21 @@ function sortVerdict(){
       el("span", { class: "eff" }, it.note))))) : null;
   return verdictBox(
     el("h3", { text: V.title }),
-    done < n ? el("p", { text: fill(V.unanswered, { n: n - done }) }) : null,
+    done < n ? el("p", { text: n - done === 1 ? oneLeft(V) : fill(V.unanswered, { n: n - done }) }) : null,
     K.total ? el("p", { class: "total" }, K.total.sum
       ? fill(K.total.text, { n: dur(K.items.reduce((a, it, i) => a + (S.picks[i] === K.total.cat ? it.mins || 0 : 0), 0)), m: dur(K.items.reduce((a, it) => a + (it.mins || 0), 0)) })
       : fill(K.total.text, { n: S.picks.filter(p => p === K.total.cat).length, m: n })) : null,
     K.textField ? (S.text.trim()
       ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), S.text.trim())
       : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
+    K.textField2 ? (S.text2.trim()
+      ? el("p", {}, el("b", { text: K.textField2.resultLabel + ": " }), S.text2.trim())
+      : el("p", { class: "link" }, el("b", { text: K.textField2.resultLabel + ": " }), K.textField2.missing)) : null,
     groups,
     K.number ? numberResult(S) : null,
     K.finals ? K.finals.map(f => el("p", {}, el("b", { text: f.label + " " }), ((f.options.find(o => o.id === S.finals[f.id]) || {}).label) || V.noFinal)) : null,
     (K.finalNotes || []).filter(fn => Object.entries(fn.when).every(([k, v]) => S.finals[k] === v)).map(fn => el("p", { class: "link" }, el("b", { text: "Think about this: " }), fn.text)),
+    (K.pickNotes || []).filter(pn => Object.entries(pn.when).every(([i, c]) => S.picks[+i] === c)).map(pn => el("p", { class: "link" }, el("b", { text: (pn.label || "Push back") + ": " }), pn.text)),
     K.allSame && done === n && S.picks.every(p => p === S.picks[0]) && K.allSame[S.picks[0]] ? el("p", { class: "link" }, el("b", { text: "Push back: " }), K.allSame[S.picks[0]]) : null,
     K.ruleStem ? el("p", {}, el("b", { text: "Your rule: " }), S.rule.trim() ? K.ruleStem + " " + S.rule.trim().replace(/^\.\.\.|^…/, "") : V.noRule) : null,
     V.compare ? el("p", { text: V.compare }) : null,
@@ -1033,6 +1069,12 @@ function sortVerdict(){
     thinkBox(V), againBtn(renderSort));
 }
 
+/* "1 lines are not marked yet" → "1 line is not marked yet" (or use verdict.unansweredOne). */
+function oneLeft(V){
+  if (V.unansweredOne) return V.unansweredOne;
+  return V.unanswered.replace(/\{n\} (\S+) (are|have)\b/, (m, w, v) =>
+    "1 " + (w === "people" ? "person" : /(sh|ch|x|ss)es$/.test(w) ? w.slice(0, -2) : w.replace(/s$/, "")) + " " + (v === "are" ? "is" : "has"));
+}
 /* Minutes as "18 hrs 40 min" (used by summed totals). */
 function dur(m){ const h = Math.floor(m / 60), r = m % 60; return (h ? h + (h === 1 ? " hr" : " hrs") : "") + (h && r ? " " : "") + (r || !h ? r + " min" : ""); }
 
@@ -1076,7 +1118,14 @@ function numberResult(S){
 }
 
 /* ================= Activity 5 (type "headlines"): a list of items to note, rate, compare, pick one ================= */
+// Optional: item.against + K.againstLabel (a second visible line), K.secondPick { label, stat, resultLabel, missing, prompt? },
+// item.pickNote (shown when that item is chosen), K.pickStatName (item field shown in the pick stat), wordPrompt may be omitted.
+// K.thresholdLine { scale, options: [ids], label, stat, none } = first item rated one of those options (shown as a stat and in the result).
+// K.pickClassOnly + K.pickResultLabel + verdict.noPick: the pick (e.g. "the line your group disagreed about") only appears in Classroom Mode.
+// scale.push.rating may be an array; push.text may be omitted so only item-specific pushes show.
 // Rating rows: K.scales = [{ label, options: [{id,label,name}], push? }], or the older single K.ratings / K.ratingLabel / K.push.
+function thresholdIdx(H){ const T = K.thresholdLine; return T ? K.items.findIndex((_, i) => T.options.includes(H.rates[T.scale][i])) : -1; }
+const ratingHit = (P, r) => Array.isArray(P.rating) ? P.rating.includes(r) : r === P.rating;
 function scales(){ return K.scales || (K.ratings ? [{ label: K.ratingLabel, options: K.ratings, push: K.push }] : []); }
 function renderHeadlines(){
   const H = state.council, cls = isClass(), n = K.items.length;
@@ -1091,8 +1140,9 @@ function renderHeadlines(){
           el("span", { class: "hnum", text: String(i + 1) }),
           el("div", { class: "hbody" },
             el("p", { class: "headline", text: it.headline }),
-            it.stresses ? el("p", { class: "stress" }, el("b", { text: K.stressLabel + ": " }), it.stresses) : null)),
-        SC.map((sc, k) => el("div", { class: "schoices", role: "group", "aria-label": sc.label + " " + (i + 1) },
+            it.stresses ? el("p", { class: "stress" }, el("b", { text: K.stressLabel + ": " }), it.stresses) : null,
+            it.against ? el("p", { class: "stress against" }, el("b", { text: K.againstLabel + ": " }), it.against) : null)),
+        SC.map((sc, k) => el("div", { class: "schoices" + (sc.options.every(r => String(r.label).length <= 2) ? " nums" : ""), role: "group", "aria-label": sc.label + " " + (i + 1) },
           el("span", { class: "glabel", text: sc.label }),
           sc.options.map(r => el("button", { type: "button", class: "schoice c-j" + (H.rates[k][i] === r.id ? " on" : ""), "data-fid": "hrt" + k + "-" + i + r.id,
             "aria-pressed": H.rates[k][i] === r.id ? "true" : "false", "aria-label": sc.label + " " + (r.name || r.label),
@@ -1102,8 +1152,10 @@ function renderHeadlines(){
           el("input", { type: "text", id: "note" + i, "data-fid": "note" + i, value: H.notes[i], maxlength: "200", autocomplete: "off",
             oninput: e => { H.notes[i] = e.target.value; const s = $("hWritten"); if (s) s.textContent = H.notes.filter(x => x.trim()).length + " of " + n; } })) : null,
         el("div", { class: "row" },
-          el("button", { type: "button", class: "pick" + (chosen ? " on" : ""), "data-fid": "pk" + i, "aria-pressed": chosen ? "true" : "false",
-            onclick: () => { H.choice = chosen ? null : i; H.voted = false; renderHeadlines(); }, text: chosen ? "✓ " + K.pickLabel : K.pickLabel }),
+          K.pickClassOnly && !cls ? null : el("button", { type: "button", class: "pick" + (chosen ? " on" : ""), "data-fid": "pk" + i, "aria-pressed": chosen ? "true" : "false",
+            onclick: () => { H.choice = chosen ? null : i; if (H.second === i) H.second = null; H.voted = false; renderHeadlines(); }, text: chosen ? "✓ " + K.pickLabel : K.pickLabel }),
+          K.secondPick && !chosen ? el("button", { type: "button", class: "pick second" + (H.second === i ? " on" : ""), "data-fid": "pk2" + i, "aria-pressed": H.second === i ? "true" : "false",
+            onclick: () => { H.second = H.second === i ? null : i; H.voted = false; renderHeadlines(); }, text: H.second === i ? "✓ " + K.secondPick.label : K.secondPick.label }) : null,
           !rev && it.omits ? el("button", { type: "button", class: "mini", "data-fid": "hr" + i, onclick: () => { H.revealed.add(i); renderHeadlines(); }, text: K.revealButton || "Show a possible answer" }) : null,
           cls ? el("span", { class: "tally inline" },
             el("span", { text: K.tallyLabel }),
@@ -1117,12 +1169,14 @@ function renderHeadlines(){
       el("p", { class: "study" }, el("b", { text: (K.studyLabel || "The study") + ": " }), K.study),
       el("div", { class: "town" },
         K.omitLabel ? el("div", { class: "stat" }, el("b", { id: "hWritten", text: written + " of " + n }), el("small", { text: K.notesStat || "notes written" }))
-          : el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: judged + " of " + n }), el("small", { text: K.judgedStat || "items judged" })),
-        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: H.choice === null ? "–" : "No. " + (H.choice + 1) }), el("small", { text: K.pickStat || "headline chosen" }))),
+          : SC.length ? el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: judged + " of " + n }), el("small", { text: K.judgedStat || "items judged" })) : null,
+        K.thresholdLine ? el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: thresholdIdx(H) < 0 ? "–" : "No. " + (thresholdIdx(H) + 1) }), el("small", { text: K.thresholdLine.stat })) : null,
+        K.pickClassOnly && !cls ? null : el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: H.choice === null ? "–" : (K.pickStatName ? K.items[H.choice][K.pickStatName] || K.items[H.choice].headline : "No. " + (H.choice + 1)) }), el("small", { text: K.pickStat || "headline chosen" })),
+        K.secondPick ? el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: H.second === null ? "–" : (K.pickStatName ? K.items[H.second][K.pickStatName] || K.items[H.second].headline : "No. " + (H.second + 1)) }), el("small", { text: K.secondPick.stat })) : null),
       el("ol", { class: "heads" }, rows),
-      el("label", { class: "field rule" },
+      K.wordPrompt ? el("label", { class: "field rule" },
         el("span", { text: K.wordPrompt }),
-        el("input", { type: "text", id: "hword", "data-fid": "hword", value: H.word, maxlength: "80", autocomplete: "off", oninput: e => { H.word = e.target.value; } })),
+        el("input", { type: "text", id: "hword", "data-fid": "hword", value: H.word, maxlength: "80", autocomplete: "off", oninput: e => { H.word = e.target.value; } })) : null,
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderHeadlines), text: K.resultButton }),
         withAns && K.items.some((x, i) => x.omits && !H.revealed.has(i)) ? el("button", { type: "button", class: "btn ghost", "data-fid": "hrall",
@@ -1135,15 +1189,23 @@ function renderHeadlines(){
 }
 function headlineVerdict(){
   const H = state.council, V = K.verdict, cls = isClass(), SC = scales();
-  if (H.choice === null) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
-  const it = K.items[H.choice];
+  if (H.choice === null && !K.pickClassOnly) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  if (K.pickClassOnly && SC.length && !K.items.some((_, i) => SC.some((_, k) => H.rates[k][i]))) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const it = H.choice === null ? {} : K.items[H.choice], ti = thresholdIdx(H);
   const top = cls ? K.items.map((x, i) => [i, H.teams[i]]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]) : [];
   return verdictBox(
     el("h3", { text: V.title }),
-    V.frontLabel ? el("p", {}, el("b", { text: fill(V.frontLabel, { n: H.choice + 1 }) })) : null,
-    el("p", { class: "front", text: it.headline }),
-    el("p", {}, el("b", { text: K.wordResultLabel + ": " }), H.word.trim() || V.noWord),
-    K.omitLabel ? el("p", {}, el("b", { text: (K.noteResultLabel || "Your note on what it leaves out") + ": " }), H.notes[H.choice].trim() || V.noNote) : null,
+    K.thresholdLine ? el("p", { class: "total" }, el("b", { text: K.thresholdLine.label + ": " }), ti < 0 ? K.thresholdLine.none : "No. " + (ti + 1) + ", " + K.items[ti].headline.replace(/\.$/, "")) : null,
+    K.pickClassOnly ? (cls ? el("p", {}, el("b", { text: K.pickResultLabel + ": " }), H.choice === null ? V.noPick : "No. " + (H.choice + 1) + ", " + it.headline.replace(/\.$/, "")) : null)
+      : [V.frontLabel ? el("p", {}, el("b", { text: fill(V.frontLabel, { n: H.choice + 1 }) })) : null,
+         el("p", { class: "front", text: it.headline })],
+    K.secondPick ? (H.second === null
+      ? el("p", { class: "link" }, el("b", { text: K.secondPick.resultLabel + ": " }), K.secondPick.missing)
+      : [el("p", {}, el("b", { text: K.secondPick.resultLabel + ": " }), K.items[H.second].headline),
+         K.secondPick.prompt ? el("p", { class: "link", text: K.secondPick.prompt }) : null]) : null,
+    K.wordPrompt ? el("p", {}, el("b", { text: K.wordResultLabel + ": " }), H.word.trim() || V.noWord) : null,
+    it.pickNote ? el("p", { class: "link" }, el("b", { text: (K.pickNoteLabel || "Think about this") + ": " }), it.pickNote) : null,
+    K.omitLabel && H.choice !== null ? el("p", {}, el("b", { text: (K.noteResultLabel || "Your note on what it leaves out") + ": " }), H.notes[H.choice].trim() || V.noNote) : null,
     it.omits ? el("p", {}, el("b", { text: (K.answerResultLabel || "A possible answer") + ": " }), it.omits) : null,
     SC.length ? el("div", { class: "notes" },
       el("span", { class: "kicker", text: V.ratingsTitle }),
@@ -1158,41 +1220,55 @@ function headlineVerdict(){
 function ratingPushes(H){
   return scales().flatMap((sc, k) => {
     const P = sc.push; if (!P) return [];
-    const hit = K.items.map((x, i) => i).filter(i => H.rates[k][i] === P.rating);
+    const hit = K.items.map((x, i) => i).filter(i => ratingHit(P, H.rates[k][i]));
     const own = hit.filter(i => K.items[i].push), rest = hit.filter(i => !K.items[i].push);
     return [
-      ...own.map(i => el("p", { class: "link" }, el("b", { text: "Push back: " }), K.items[i].push)),
-      rest.length ? el("p", { class: "link" }, el("b", { text: "Push back: " }), fill(P.text, { items: rest.map(i => "“" + K.items[i].headline + "”").join(", ") })) : null
+      ...own.map(i => el("p", { class: "link" }, el("b", { text: (K.items[i].pushLabel || "Push back") + ": " }), K.items[i].push)),
+      rest.length && P.text ? el("p", { class: "link" }, el("b", { text: "Push back: " }), fill(P.text, { items: rest.map(i => "“" + K.items[i].headline + "”").join(", ") })) : null
     ];
   });
 }
 
-/* ================= Activity 5 (type "allocate"): judge each defense, then share out points ================= */
+/* ================= Activity 5 (type "allocate"): (optionally judge each item,) then share out points ================= */
+// Options: judgments (optional), hardButton (optional), step (default 1), typeIn (number box), usedLabel, leaderLabel,
+// item.largestNote / item.leastNote (shown when that item has the most / fewest points), pushLabel.
+function allocUsed(){ return state.council.pts.reduce((a, b) => a + b, 0); }
+function allocStat(){
+  const used = allocUsed(), T = K.total, s = $("allocUsed");
+  if (s) { s.textContent = used + " of " + T; s.parentNode.classList.toggle("done", used === T); s.parentNode.classList.toggle("over", used > T); }
+}
 function renderAllocate(){
-  const A = state.council, cls = isClass(), n = K.items.length, T = K.total;
-  const used = A.pts.reduce((a, b) => a + b, 0);
+  const A = state.council, cls = isClass(), T = K.total, step = K.step || 1;
+  const used = allocUsed();
   const top = Math.max(...A.pts);
-  const leaders = top > 0 ? K.items.filter((_, i) => A.pts[i] === top).map(it => it.who) : [];
+  const leaders = top > 0 ? K.items.filter((_, i) => A.pts[i] === top).map(it => it.short || it.who) : [];
+  const unit = K.unit || "point";
+  const setPts = (i, v) => { A.pts[i] = Math.max(0, Math.min(T, v)); A.voted = false; renderAllocate(); };
   paint("p-council", () => {
     const rows = K.items.map((it, i) => {
       const j = A.judge[i];
       return el("li", { class: "srow" + (A.pts[i] > 0 ? " picked" : "") + (A.hard === i ? " is-weak" : "") },
         el("p", { class: "stext", text: it.who }),
-        el("p", { class: "shint quote" }, el("b", { text: K.defenseLabel + ": " }), it.defense),
-        el("div", { class: "schoices", role: "group", "aria-label": K.judgeLabel + " " + it.who },
+        it.defense ? el("p", { class: "shint" + (K.defenseQuote === false ? "" : " quote") }, el("b", { text: K.defenseLabel + ": " }), it.defense) : null,
+        K.judgments && K.judgments.length ? el("div", { class: "schoices", role: "group", "aria-label": K.judgeLabel + " " + it.who },
           el("span", { class: "glabel", text: K.judgeLabel }),
           K.judgments.map(c => el("button", { type: "button", class: "schoice c-j" + (j === c.id ? " on" : ""), "data-fid": "j" + i + c.id,
-            "aria-pressed": j === c.id ? "true" : "false", onclick: () => { A.judge[i] = j === c.id ? null : c.id; A.voted = false; renderAllocate(); }, text: c.label }))),
+            "aria-pressed": j === c.id ? "true" : "false", onclick: () => { A.judge[i] = j === c.id ? null : c.id; A.voted = false; renderAllocate(); }, text: c.label }))) : null,
         el("div", { class: "row" },
           el("span", { class: "tally inline pts" },
             el("span", { text: K.pointsLabel }),
-            el("button", { type: "button", "data-fid": "am" + i, "aria-label": "One point less for " + it.who, disabled: A.pts[i] === 0,
-              onclick: () => { A.pts[i]--; A.voted = false; renderAllocate(); }, text: "−" }),
-            el("output", { "aria-live": "polite", "aria-label": "Points for " + it.who, text: A.pts[i] + "/" + T }),
-            el("button", { type: "button", "data-fid": "ap" + i, "aria-label": "One point more for " + it.who, disabled: used >= T,
-              onclick: () => { A.pts[i]++; A.voted = false; renderAllocate(); }, text: "+" })),
-          el("button", { type: "button", class: "weak" + (A.hard === i ? " on" : ""), "data-fid": "ah" + i, "aria-pressed": A.hard === i ? "true" : "false",
-            onclick: () => { A.hard = A.hard === i ? null : i; A.voted = false; renderAllocate(); }, text: (A.hard === i ? "✓ " : "") + K.hardButton }),
+            el("button", { type: "button", "data-fid": "am" + i, "aria-label": step + " " + unit + (step === 1 ? "" : "s") + " less for " + it.who, disabled: A.pts[i] === 0,
+              onclick: () => setPts(i, A.pts[i] - step), text: "−" + (step > 1 ? step : "") }),
+            K.typeIn
+              ? el("input", { type: "text", inputmode: "numeric", class: "ptsin", id: "pts" + i, "data-fid": "pts" + i, value: String(A.pts[i]), maxlength: "3",
+                  "aria-label": K.pointsLabel + " for " + it.who, autocomplete: "off",
+                  oninput: e => { const v = parseInt(e.target.value.replace(/\D/g, ""), 10); A.pts[i] = isNaN(v) ? 0 : Math.min(T, v); A.voted = false; allocStat(); },
+                  onchange: () => renderAllocate() })
+              : el("output", { "aria-live": "polite", "aria-label": K.pointsLabel + " for " + it.who, text: A.pts[i] + "/" + T }),
+            el("button", { type: "button", "data-fid": "ap" + i, "aria-label": step + " " + unit + (step === 1 ? "" : "s") + " more for " + it.who, disabled: used >= T,
+              onclick: () => setPts(i, A.pts[i] + Math.min(step, T - used)), text: "+" + (step > 1 ? step : "") })),
+          K.hardButton ? el("button", { type: "button", class: "weak" + (A.hard === i ? " on" : ""), "data-fid": "ah" + i, "aria-pressed": A.hard === i ? "true" : "false",
+            onclick: () => { A.hard = A.hard === i ? null : i; A.voted = false; renderAllocate(); }, text: (A.hard === i ? "✓ " : "") + K.hardButton }) : null,
           cls && it.consider && !A.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "ac" + i,
             onclick: () => { A.shown.add(i); renderAllocate(); }, text: "Show a challenge" }) : null),
         cls && A.shown.has(i) ? el("p", { class: "why" }, el("b", { text: "Challenge: " }), it.consider) : null);
@@ -1201,8 +1277,8 @@ function renderAllocate(){
       head(5, UI.council),
       el("p", { class: "study" }, el("b", { text: K.scenarioLabel + ": " }), K.scenario),
       el("div", { class: "town" },
-        el("div", { class: "stat" + (used === T ? " done" : "") }, el("b", { "aria-live": "polite", text: used + " of " + T }), el("small", { text: "points shared out" })),
-        el("div", { class: "stat" }, el("b", { text: leaders.length ? leaders.join(" & ") : "–" }), el("small", { text: "largest share" }))),
+        el("div", { class: "stat" + (used === T ? " done" : "") + (used > T ? " over" : "") }, el("b", { id: "allocUsed", "aria-live": "polite", text: used + " of " + T }), el("small", { text: K.usedLabel || "points shared out" })),
+        el("div", { class: "stat" }, el("b", { text: leaders.length ? leaders.join(" & ") : "–" }), el("small", { text: K.leaderLabel || "largest share" }))),
       el("ol", { class: "sort" }, rows),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderAllocate), text: K.resultButton }),
@@ -1215,27 +1291,94 @@ function renderAllocate(){
 }
 function allocateVerdict(){
   const A = state.council, V = K.verdict, T = K.total;
-  const used = A.pts.reduce((a, b) => a + b, 0);
-  if (used !== T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.unfinishedText, { n: used, total: T, left: T - used }) }));
+  const used = allocUsed();
+  if (used < T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.unfinishedText, { n: used, total: T, left: T - used }) }));
+  if (used > T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.overText || V.unfinishedText, { n: used, total: T, over: used - T, left: T - used }) }));
+  const judged = K.judgments && K.judgments.length;
   const jLabel = id => (K.judgments.find(c => c.id === id) || {}).label;
   const order = K.items.map((_, i) => i).sort((a, b) => A.pts[b] - A.pts[a]);
-  const top = A.pts[order[0]];
+  const top = A.pts[order[0]], low = A.pts[order[order.length - 1]];
   const leaders = order.filter(i => A.pts[i] === top);
+  const lowest = order.filter(i => A.pts[i] === low && low < top);
   const zeros = order.filter(i => A.pts[i] === 0);
+  const pl = K.pushLabel || "Push back";
   return verdictBox(
     el("h3", { text: V.title }),
     el("ol", { class: "rank" }, order.map(i => el("li", {},
-      el("b", { text: K.items[i].who + ": " + A.pts[i] + "/" + T }),
-      el("span", { class: "eff" }, el("b", { text: K.judgeLabel + " " }), jLabel(A.judge[i]) || V.noJudge)))),
-    el("p", {}, el("b", { text: "Largest share: " }), leaders.map(i => K.items[i].who).join(" and ") + (leaders.length > 1 ? " (tied)" : "") + "."),
-    el("p", {}, el("b", { text: V.hardLabel + ": " }), A.hard === null ? V.noHard : K.items[A.hard].who + ". " + K.items[A.hard].defense),
-    zeros.length ? el("p", {}, el("b", { text: "No responsibility: " }), zeros.map(i => K.items[i].who).join(", ") + ". " + V.zeroPrompt) : null,
-    leaders.filter(i => K.items[i].largestNote).map(i => el("p", { class: "link" }, el("b", { text: "Push back: " }), K.items[i].largestNote)),
-    el("div", { class: "notes" },
+      el("b", { text: K.items[i].who + ": " + A.pts[i] + (K.showOutOf === false ? "" : "/" + T) }),
+      judged ? el("span", { class: "eff" }, el("b", { text: K.judgeLabel + " " }), jLabel(A.judge[i]) || V.noJudge) : null))),
+    el("p", {}, el("b", { text: (V.largestLabel || "Largest share") + ": " }), leaders.map(i => K.items[i].who).join(" and ") + (leaders.length > 1 ? " (tied)" : "") + "."),
+    K.hardButton ? el("p", {}, el("b", { text: V.hardLabel + ": " }), A.hard === null ? V.noHard : K.items[A.hard].who + ". " + K.items[A.hard].defense) : null,
+    zeros.length ? el("p", {}, el("b", { text: (V.zeroLabel || "No responsibility") + ": " }), zeros.map(i => K.items[i].who).join(", ") + ". " + V.zeroPrompt) : null,
+    leaders.filter(i => K.items[i].largestNote).map(i => el("p", { class: "link" }, el("b", { text: pl + ": " }), K.items[i].largestNote)),
+    lowest.filter(i => K.items[i].leastNote).map(i => el("p", { class: "link" }, el("b", { text: pl + ": " }), K.items[i].leastNote)),
+    K.items.some(it => it.consider) ? el("div", { class: "notes" },
       el("span", { class: "kicker", text: V.challengeTitle }),
-      el("ul", {}, K.items.filter(it => it.consider).map(it => el("li", {}, el("b", { text: it.who + ": " }), it.consider)))),
+      el("ul", {}, K.items.filter(it => it.consider).map(it => el("li", {}, el("b", { text: it.who + ": " }), it.consider)))) : null,
     V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
     thinkBox(V), againBtn(renderAllocate));
+}
+
+/* ================= Activity 5 (type "rank"): put the items in order, 1 to n ================= */
+function moveRank(pos, d){
+  const R = state.council, j = pos + d;
+  if (j < 0 || j >= R.order.length) return;
+  [R.order[pos], R.order[j]] = [R.order[j], R.order[pos]];
+  R.moved = true; R.voted = false; renderRank();
+}
+function renderRank(){
+  const R = state.council, n = K.items.length;
+  paint("p-council", () => {
+    const rows = R.order.map((idx, pos) => {
+      const it = K.items[idx];
+      return el("li", { class: "rrow" + (pos === 0 ? " first" : "") },
+        el("span", { class: "rnum", "aria-hidden": "true", text: String(pos + 1) }),
+        el("div", { class: "rbody" },
+          el("p", { class: "stext", text: it.text }),
+          it.hint ? el("p", { class: "shint" }, K.hintLabel ? el("b", { text: K.hintLabel + ": " }) : null, it.hint) : null),
+        el("div", { class: "rbtns" },
+          el("button", { type: "button", class: "rbtn", "data-fid": "up" + idx, disabled: pos === 0,
+            "aria-label": "Move up: " + it.text + " (now number " + (pos + 1) + ")", onclick: () => moveRank(pos, -1), text: "↑" }),
+          el("button", { type: "button", class: "rbtn", "data-fid": "dn" + idx, disabled: pos === n - 1,
+            "aria-label": "Move down: " + it.text + " (now number " + (pos + 1) + ")", onclick: () => moveRank(pos, 1), text: "↓" })));
+    });
+    return [
+      head(5, UI.council),
+      K.scale ? el("p", { class: "study" }, el("b", { text: K.scale.top + " " }), "is number 1. ", el("b", { text: K.scale.bottom + " " }), "is number " + n + ".") : null,
+      el("div", { class: "town" },
+        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: K.items[R.order[0]].short || K.items[R.order[0]].text }), el("small", { text: "number 1" }))),
+      el("ol", { class: "rank-list", "aria-label": "Your order" }, rows),
+      K.textField ? el("label", { class: "field rule" },
+        el("span", { class: "kicker", text: K.textField.kicker }),
+        el("span", { text: K.textField.prompt }),
+        el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: R.text, maxlength: "200", autocomplete: "off",
+          oninput: e => { R.text = e.target.value; } })) : null,
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderRank), text: K.resultButton }),
+        R.moved || R.text ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+          onclick: () => { resetCouncil(true); renderRank(); }, text: "Reset the order" }) : null),
+      R.voted ? rankVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function rankVerdict(){
+  const R = state.council, V = K.verdict, top = R.order[0];
+  return verdictBox(
+    el("h3", { text: V.title }),
+    !R.moved ? el("p", { class: "link", text: V.unmoved }) : null,
+    el("ol", { class: "rank" }, R.order.map(i => el("li", { text: K.items[i].text }))),
+    el("p", { class: "total" }, fill(V.firstLine, { item: K.items[top].text })),
+    K.textField ? (R.text.trim()
+      ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), R.text.trim())
+      : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
+    K.items[top].firstNote ? el("p", { class: "link" }, el("b", { text: "Think about this: " }), K.items[top].firstNote) : null,
+    K.items[R.order[R.order.length - 1]].lastNote ? el("p", { class: "link" }, el("b", { text: "Think about this: " }), K.items[R.order[R.order.length - 1]].lastNote) : null,
+    K.items.some(it => it.note) ? el("div", { class: "notes" },
+      el("span", { class: "kicker", text: V.notesTitle }),
+      el("ul", {}, R.order.filter(i => K.items[i].note).map(i => el("li", {}, el("b", { text: K.items[i].text + " (you put it number " + (R.order.indexOf(i) + 1) + "): " }), K.items[i].note)))) : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderRank));
 }
 
 /* ---------------- tabs ---------------- */

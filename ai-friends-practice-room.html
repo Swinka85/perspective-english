@@ -551,7 +551,7 @@ function resetMatch(){
 function resetGap(){ state.gap = { vals: ISSUE.gaps.map(() => ""), checked: false, revealed: new Set() }; }
 function resetTF(){ state.tf = { ans: ISSUE.truefalse.map(() => null), revealed: new Set() }; }
 function freshThink(){
-  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", text: "", num: "", nums: [], shown: new Set(), voted: false };
+  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", text: "", text2: "", num: "", nums: [], shown: new Set(), voted: false };
   if (TYPE === "rank") return { order: K.items.map((_, i) => i), moved: false, text: "", voted: false };
   if (TYPE === "allocate") return { judge: K.items.map(() => null), pts: K.items.map(() => 0), hard: null, shown: new Set(), voted: false };
   if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, second: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
@@ -965,6 +965,9 @@ function stats(list){
 }
 
 /* ================= Activity 5 (type "sort"): sort each item into a category ================= */
+// item.labels: { categoryId: "button text" } = per-row button labels (also used in the result groups).
+// unique: each category can be used on only one line (choosing it elsewhere clears the old line). hideCategoryStats, markedStat.
+// textField2: a second free-answer box, same shape as textField.
 // pickNotes: [{ when: { itemIndex: categoryId, ... }, text, label? }] shown in the result when those lines were marked that way.
 function renderSort(){
   const S = state.council, cls = isClass(), n = K.items.length, V = K.verdict;
@@ -979,7 +982,7 @@ function renderSort(){
         el("div", { class: "schoices", role: "group", "aria-label": "Your choice for line " + (i + 1) },
           K.categories.map(c => el("button", { type: "button", class: "schoice c-" + c.id + (pick === c.id ? " on" : ""), "data-fid": "s" + i + c.id,
             "aria-pressed": pick === c.id ? "true" : "false",
-            onclick: () => { S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: c.label })),
+            onclick: () => { if (K.unique && pick !== c.id) S.picks = S.picks.map(p => p === c.id ? null : p); S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: (it.labels && it.labels[c.id]) || c.label })),
           cls && it.consider && !S.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "sc" + i,
             onclick: () => { S.shown.add(i); renderSort(); }, text: "Show a question" }) : null),
         pick === K.dependsOn ? el("label", { class: "field" },
@@ -994,7 +997,7 @@ function renderSort(){
     });
     return [
       head(5, UI.council),
-      stats([[done + " of " + n, "lines marked"]].concat(K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
+      stats([[done + " of " + n, K.markedStat || "lines marked"]].concat(K.hideCategoryStats ? [] : K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
       el("ol", { class: "sort" }, rows),
       K.number ? numberField(S, cls) : null,
       K.finals ? el("div", { class: "field rule finals" },
@@ -1009,6 +1012,11 @@ function renderSort(){
         el("span", { text: K.textField.prompt }),
         el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: S.text, maxlength: "200", autocomplete: "off",
           oninput: e => { S.text = e.target.value; } })) : null,
+      K.textField2 ? el("label", { class: "field rule" },
+        K.textField2.kicker ? el("span", { class: "kicker", text: K.textField2.kicker }) : null,
+        el("span", { text: K.textField2.prompt }),
+        el("input", { type: "text", id: "tfield2", "data-fid": "tfield2", value: S.text2, maxlength: "200", autocomplete: "off",
+          oninput: e => { S.text2 = e.target.value; } })) : null,
       K.ruleStem ? el("label", { class: "field rule" },
         el("span", { class: "kicker", text: "Your rule" }),
         el("span", { text: "Finish the sentence: " + K.ruleStem + "…" }),
@@ -1016,7 +1024,7 @@ function renderSort(){
           oninput: e => { S.rule = e.target.value; } })) : null,
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderSort), text: K.resultButton }),
-        done || S.rule || S.text || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+        done || S.rule || S.text || S.text2 || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
           onclick: () => { resetCouncil(true); renderSort(); }, text: "Clear choices" }) : null),
       S.voted ? sortVerdict() : null,
       panelNav("council")
@@ -1031,7 +1039,7 @@ function sortVerdict(){
     const its = K.items.map((_, i) => i).filter(i => S.picks[i] === c.id);
     return el("div", { class: "sgroup" },
       el("b", { text: c.label + " (" + its.length + ")" }),
-      its.length ? el("ul", {}, its.map(i => el("li", {}, K.items[i].text,
+      its.length ? el("ul", {}, its.map(i => el("li", {}, (K.items[i].labels && K.items[i].labels[c.id]) || K.items[i].text,
         c.id === K.dependsOn ? el("span", { class: "eff" }, el("b", { text: K.dependsPrompt + " " }), S.depends[i].trim() || V.noDepends) : null,
         K.askEach ? el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), S.asks[i].trim() || K.askEach.missing) : null)))
         : el("p", { class: "eff", text: V.emptyGroup }));
@@ -1046,13 +1054,16 @@ function sortVerdict(){
       el("span", { class: "eff" }, it.note))))) : null;
   return verdictBox(
     el("h3", { text: V.title }),
-    done < n ? el("p", { text: fill(V.unanswered, { n: n - done }) }) : null,
+    done < n ? el("p", { text: n - done === 1 ? oneLeft(V) : fill(V.unanswered, { n: n - done }) }) : null,
     K.total ? el("p", { class: "total" }, K.total.sum
       ? fill(K.total.text, { n: dur(K.items.reduce((a, it, i) => a + (S.picks[i] === K.total.cat ? it.mins || 0 : 0), 0)), m: dur(K.items.reduce((a, it) => a + (it.mins || 0), 0)) })
       : fill(K.total.text, { n: S.picks.filter(p => p === K.total.cat).length, m: n })) : null,
     K.textField ? (S.text.trim()
       ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), S.text.trim())
       : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
+    K.textField2 ? (S.text2.trim()
+      ? el("p", {}, el("b", { text: K.textField2.resultLabel + ": " }), S.text2.trim())
+      : el("p", { class: "link" }, el("b", { text: K.textField2.resultLabel + ": " }), K.textField2.missing)) : null,
     groups,
     K.number ? numberResult(S) : null,
     K.finals ? K.finals.map(f => el("p", {}, el("b", { text: f.label + " " }), ((f.options.find(o => o.id === S.finals[f.id]) || {}).label) || V.noFinal)) : null,
@@ -1066,6 +1077,12 @@ function sortVerdict(){
     thinkBox(V), againBtn(renderSort));
 }
 
+/* "1 lines are not marked yet" → "1 line is not marked yet" (or use verdict.unansweredOne). */
+function oneLeft(V){
+  if (V.unansweredOne) return V.unansweredOne;
+  return V.unanswered.replace(/\{n\} (\S+) (are|have)\b/, (m, w, v) =>
+    "1 " + (w === "people" ? "person" : /(sh|ch|x|ss)es$/.test(w) ? w.slice(0, -2) : w.replace(/s$/, "")) + " " + (v === "are" ? "is" : "has"));
+}
 /* Minutes as "18 hrs 40 min" (used by summed totals). */
 function dur(m){ const h = Math.floor(m / 60), r = m % 60; return (h ? h + (h === 1 ? " hr" : " hrs") : "") + (h && r ? " " : "") + (r || !h ? r + " min" : ""); }
 

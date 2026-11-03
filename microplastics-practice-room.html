@@ -962,6 +962,7 @@ function stats(list){
 
 /* ================= Activity 5 (type "sort"): sort each item into a category ================= */
 // item.labels: { categoryId: "button text" } = per-row button labels (also used in the result groups).
+// unique: each category can be used on only one line (choosing it elsewhere clears the old line). hideCategoryStats, markedStat.
 // textField2: a second free-answer box, same shape as textField.
 // pickNotes: [{ when: { itemIndex: categoryId, ... }, text, label? }] shown in the result when those lines were marked that way.
 function renderSort(){
@@ -977,7 +978,7 @@ function renderSort(){
         el("div", { class: "schoices", role: "group", "aria-label": "Your choice for line " + (i + 1) },
           K.categories.map(c => el("button", { type: "button", class: "schoice c-" + c.id + (pick === c.id ? " on" : ""), "data-fid": "s" + i + c.id,
             "aria-pressed": pick === c.id ? "true" : "false",
-            onclick: () => { S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: (it.labels && it.labels[c.id]) || c.label })),
+            onclick: () => { if (K.unique && pick !== c.id) S.picks = S.picks.map(p => p === c.id ? null : p); S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: (it.labels && it.labels[c.id]) || c.label })),
           cls && it.consider && !S.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "sc" + i,
             onclick: () => { S.shown.add(i); renderSort(); }, text: "Show a question" }) : null),
         pick === K.dependsOn ? el("label", { class: "field" },
@@ -992,7 +993,7 @@ function renderSort(){
     });
     return [
       head(5, UI.council),
-      stats([[done + " of " + n, "lines marked"]].concat(K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
+      stats([[done + " of " + n, K.markedStat || "lines marked"]].concat(K.hideCategoryStats ? [] : K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
       el("ol", { class: "sort" }, rows),
       K.number ? numberField(S, cls) : null,
       K.finals ? el("div", { class: "field rule finals" },
@@ -1049,7 +1050,7 @@ function sortVerdict(){
       el("span", { class: "eff" }, it.note))))) : null;
   return verdictBox(
     el("h3", { text: V.title }),
-    done < n ? el("p", { text: fill(V.unanswered, { n: n - done }) }) : null,
+    done < n ? el("p", { text: n - done === 1 ? oneLeft(V) : fill(V.unanswered, { n: n - done }) }) : null,
     K.total ? el("p", { class: "total" }, K.total.sum
       ? fill(K.total.text, { n: dur(K.items.reduce((a, it, i) => a + (S.picks[i] === K.total.cat ? it.mins || 0 : 0), 0)), m: dur(K.items.reduce((a, it) => a + (it.mins || 0), 0)) })
       : fill(K.total.text, { n: S.picks.filter(p => p === K.total.cat).length, m: n })) : null,
@@ -1072,6 +1073,12 @@ function sortVerdict(){
     thinkBox(V), againBtn(renderSort));
 }
 
+/* "1 lines are not marked yet" → "1 line is not marked yet" (or use verdict.unansweredOne). */
+function oneLeft(V){
+  if (V.unansweredOne) return V.unansweredOne;
+  return V.unanswered.replace(/\{n\} (\S+) (are|have)\b/, (m, w, v) =>
+    "1 " + (w === "people" ? "person" : /(sh|ch|x|ss)es$/.test(w) ? w.slice(0, -2) : w.replace(/s$/, "")) + " " + (v === "are" ? "is" : "has"));
+}
 /* Minutes as "18 hrs 40 min" (used by summed totals). */
 function dur(m){ const h = Math.floor(m / 60), r = m % 60; return (h ? h + (h === 1 ? " hr" : " hrs") : "") + (h && r ? " " : "") + (r || !h ? r + " min" : ""); }
 
