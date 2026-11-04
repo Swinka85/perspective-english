@@ -488,9 +488,9 @@ const ISSUE = {
       cls: "Tap an expression, then a meaning, to record the class's choice. Nothing is marked until you press Check matches.",
       team: "Justify each pairing before anyone taps the board." },
     gap: { kicker: "Language in context", title: "Complete each sentence",
-      solo: "Choose the expression that fits each gap. Each expression is used once. Then check your answers.",
-      cls: "Choose the class's answer for each gap, then reveal the answers one at a time or all together.",
-      team: "Agree on the expression and be ready to say why it fits." },
+      solo: "Choose the expression that fits each gap. Change the form if you need to. Then check your answers.",
+      cls: "Choose the class's answer for each gap, then reveal the answers one at a time or all together. Some answers change form.",
+      team: "Agree on the expression and the form it needs in the sentence." },
     tf: { kicker: "Reading check", title: "True or false?",
       solo: "Judge what the article states or implies. You will see the answer and the evidence straight away.",
       cls: "Read each statement aloud. Record the class's judgment, then reveal when you are ready.",
@@ -994,6 +994,7 @@ function stats(list){
 // unique: each category can be used on only one line (choosing it elsewhere clears the old line). hideCategoryStats, markedStat.
 // textField2: a second free-answer box, same shape as textField.
 // pickNotes: [{ when: { itemIndex: categoryId, ... }, text, label? }] shown in the result when those lines were marked that way.
+// askNotes: [{ match: "regex", text, label? }] shown when any askEach answer on a chosen line matches (case-insensitive).
 function renderSort(){
   const S = state.council, cls = isClass(), n = K.items.length, V = K.verdict;
   const done = S.picks.filter(Boolean).length;
@@ -1108,6 +1109,7 @@ function sortVerdict(){
     K.finals ? K.finals.map(f => el("p", {}, el("b", { text: f.label + " " }), ((f.options.find(o => o.id === S.finals[f.id]) || {}).label) || V.noFinal)) : null,
     (K.finalNotes || []).filter(fn => Object.entries(fn.when).every(([k, v]) => S.finals[k] === v)).map(fn => el("p", { class: "link" }, el("b", { text: "Think about this: " }), fn.text)),
     (K.pickNotes || []).filter(pn => Object.entries(pn.when).every(([i, c]) => S.picks[+i] === c)).map(pn => el("p", { class: "link" }, el("b", { text: (pn.label || "Push back") + ": " }), pn.text)),
+    (K.askNotes || []).filter(an => K.items.some((_, i) => S.picks[i] && new RegExp(an.match, "i").test(S.asks[i] || ""))).map(an => el("p", { class: "link" }, el("b", { text: (an.label || "Push back") + ": " }), an.text)),
     K.allSame && done === n && S.picks.every(p => p === S.picks[0]) && K.allSame[S.picks[0]] ? el("p", { class: "link" }, el("b", { text: "Push back: " }), K.allSame[S.picks[0]]) : null,
     K.ruleStem ? el("p", {}, el("b", { text: (K.ruleLabel || "Your rule") + ": " }), S.rule.trim() ? K.ruleStem + " " + S.rule.trim().replace(/^\.\.\.|^…/, "") : V.noRule) : null,
     V.compare ? el("p", { text: V.compare }) : null,
