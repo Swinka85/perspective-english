@@ -1,0 +1,1590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Memories for Sale Practice Room A1–A2</title>
+<meta name="description" content="Free interactive practice for the Perspective English Memories for Sale lesson on experiences vs possessions (Issue 032, A1–A2): flashcards, matching, gap-fill, true or false, and a same-price choice activity.">
+<meta name="theme-color" content="#176b6b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Open+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* =========================================================================
+   PERSPECTIVE PRACTICE ROOM — shared styles (same for every issue)
+   Layout: magazine masthead, mode bar, pill tab bar, one activity panel at a time.
+   ========================================================================= */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --tint:#f3f0e8; --ink:#1a2a5e;
+  --muted:#555d6b; --muted-strong:#475569;
+  --navy:#1a2a5e; --onnavy:#ffffff; --ticket:#d4af37; --onticket:#0b2c5f;
+  --line:#d8dce4; --good:#1b7d52; --good-bg:#e6f4ed; --bad:#b83a33; --bad-bg:#fbeceb;
+  --focus:#1a2a5e;
+  --display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --body:Arial,Helvetica,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
+.wrap{max-width:740px;margin:0 auto;padding-block:20px 48px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+/* masthead */
+.mast{display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--ink);padding-bottom:6px;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:1.4rem;letter-spacing:.12em}
+.issue{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,8vw,3.4rem);line-height:1.05;margin:18px 0 6px;text-wrap:balance}
+.dek{color:var(--muted);margin:0;max-width:60ch}
+.level{display:inline-block;background:var(--ticket);color:var(--onticket);font-weight:700;font-size:.75rem;letter-spacing:.08em;padding:3px 8px;border-radius:3px;margin-top:10px}
+
+/* mode bar */
+.modebar{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.seg{display:inline-flex;border:1.5px solid var(--navy);border-radius:8px;padding:3px;gap:3px;background:var(--surface)}
+.seg button{border:0;background:transparent;font-weight:600;font-size:.92rem;padding:8px 14px;border-radius:5px;min-height:40px}
+.seg button[aria-pressed="true"]{background:var(--navy);color:var(--onnavy)}
+.fs-btn{margin-left:auto;border:1.5px solid var(--line);background:var(--surface);border-radius:6px;padding:7px 12px;font-size:.85rem;font-weight:600;color:var(--muted-strong);min-height:40px}
+.mode-desc{flex-basis:100%;margin:0;color:var(--muted);font-size:.92rem}
+.fs-msg{flex-basis:100%;margin:0;font-size:.88rem;color:var(--muted-strong);background:var(--tint);border-radius:6px;padding:8px 10px}
+
+/* tabs */
+nav{display:flex;gap:6px;overflow-x:auto;margin:18px 0 14px;padding:2px 2px 6px}
+nav button{flex:0 0 auto;font-weight:600;font-size:.85rem;border:1.5px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:999px;min-height:40px}
+nav button[aria-selected="true"]{background:var(--navy);border-color:var(--navy);color:var(--onnavy)}
+
+/* panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.p-head{display:flex;flex-direction:column;gap:6px}
+.kicker{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--navy)}
+h2{font-family:var(--display);font-weight:400;font-size:1.6rem;margin:0;line-height:1.15;text-wrap:balance}
+.hint{color:var(--muted);margin:0;font-size:.95rem;max-width:62ch}
+.team{margin:0;font-size:.95rem;background:var(--tint);border-left:4px solid var(--ticket);padding:8px 12px;border-radius:0 6px 6px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row.split{justify-content:space-between}
+.btn{font-weight:600;font-size:.95rem;background:var(--navy);color:var(--onnavy);border:1.5px solid var(--navy);border-radius:6px;padding:10px 16px;min-height:44px}
+.btn.ghost{background:transparent;color:var(--navy)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.status{font-weight:700;font-variant-numeric:tabular-nums;margin:0}
+.status.win{color:var(--good)}
+.pnav{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:14px;flex-wrap:wrap}
+.pnav button{border:0;background:none;color:var(--navy);font-weight:600;padding:6px 0;font-size:.92rem}
+.pnav span{flex:1}
+
+/* 1 flashcards */
+.card{display:block;width:100%;perspective:1200px;background:none;border:0;padding:0;text-align:center}
+.card-in{display:grid;min-height:230px;transition:transform .5s;transform-style:preserve-3d}
+.card.flip .card-in{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;gap:10px}
+.front{background:var(--navy);color:var(--onnavy)}
+.front .w{font-family:var(--display);font-size:2.4rem;line-height:1.1}
+.back{background:var(--tint);border:2px dashed var(--navy);transform:rotateY(180deg)}
+.back .w-small{font-family:var(--display);font-size:1.1rem;color:var(--navy)}
+.back .def{font-size:1.1rem;font-weight:600;max-width:34ch}
+.back .ex{color:var(--muted);font-style:italic;font-size:.95rem;max-width:44ch}
+.pos{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.tap{font-size:.8rem;opacity:.8}
+.count{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
+
+/* 2 match */
+.match{display:grid;grid-template-columns:1fr 1.6fr;gap:12px}
+.col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tile{display:flex;gap:10px;align-items:center;text-align:left;background:var(--tint);border:1.5px solid var(--line);border-radius:6px;padding:10px 12px;font-size:.95rem;min-height:46px;width:100%}
+.tile .lab{flex:0 0 auto;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;min-width:1.2em}
+.tile .txt{flex:1;min-width:0}
+.tile.word .txt{font-weight:700}
+.tile .badge{flex:0 0 auto;font-size:.8rem;font-weight:700;background:var(--navy);color:var(--onnavy);border-radius:4px;padding:2px 7px}
+.tile.sel{border-color:var(--navy);box-shadow:inset 0 0 0 2px var(--navy)}
+.tile.ok{border-color:var(--good);background:var(--good-bg)}
+.tile.ok .txt,.tile.ok .lab{color:var(--good)}
+.tile.no{border-color:var(--bad);background:var(--bad-bg)}
+.tile.locked{cursor:default}
+.tile.wrong{border-color:var(--bad);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* 3 gap fill */
+.wordbox{display:flex;flex-wrap:wrap;gap:6px;border:1.5px dashed var(--line);border-radius:8px;padding:10px}
+.chip{background:var(--tint);border-radius:4px;padding:3px 10px;font-weight:600;font-size:.92rem}
+.gaps{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.gaps li{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:12px}
+.gaps .num{font-weight:700;color:var(--navy);flex:0 0 auto;line-height:2.1}
+.gaps .sent{flex:1;min-width:0;line-height:2.1;margin:0}
+select{background:var(--tint);border:1.5px solid var(--line);border-radius:5px;padding:4px 6px;font-weight:600;min-height:38px;max-width:100%}
+select.ok{border-color:var(--good);color:var(--good);background:var(--good-bg)}
+select.no{border-color:var(--bad);color:var(--bad);background:var(--bad-bg)}
+.answer{display:inline-block;font-size:.85rem;font-weight:700;color:var(--good);background:var(--good-bg);border-radius:4px;padding:1px 8px;margin-left:4px;line-height:1.6}
+.mini{border:1.5px solid var(--navy);background:transparent;color:var(--navy);font-weight:600;font-size:.85rem;border-radius:5px;padding:6px 10px;min-height:38px;flex:0 0 auto}
+
+/* 4 true or false */
+.tf{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.tfq{display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.tfq .top{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.tfq .stmt{min-width:0;margin:0}
+.tfb{display:flex;gap:6px;flex:0 0 auto;align-items:center}
+.tfb button{min-width:46px;height:42px;font-weight:700;border-radius:6px;border:1.5px solid var(--line);background:var(--tint)}
+.tfb button.chosen{border-color:var(--navy);background:var(--navy);color:var(--onnavy)}
+.tfb button.ok{background:var(--good);border-color:var(--good);color:#fff}
+.tfb button.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.why{margin:0;font-size:.92rem;color:var(--muted-strong);background:var(--tint);border-radius:6px;padding:8px 10px}
+.why b{color:var(--good)}
+
+/* 5 council */
+.town{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--tint);border-radius:6px;padding:10px;text-align:center;min-width:0}
+.stat b{display:block;font-family:var(--display);font-weight:400;font-size:1.35rem;font-variant-numeric:tabular-nums}
+.stat small{color:var(--muted);font-size:.75rem}
+.measures{display:grid;gap:10px}
+.mwrap{display:flex;flex-direction:column;border:1.5px solid var(--line);border-radius:8px;background:var(--surface)}
+.mwrap.on{border-color:var(--navy);background:var(--tint)}
+.measure{display:flex;gap:12px;align-items:flex-start;padding:12px;border:0;background:transparent;text-align:left;width:100%;border-radius:8px}
+.box{flex:0 0 24px;height:24px;border:2px solid var(--navy);border-radius:4px;display:grid;place-items:center;font-weight:700;font-size:.9rem;color:var(--onnavy);margin-top:1px}
+.sq .box{border-radius:50%}
+.mwrap.on .box{background:var(--navy)}
+.mtxt{min-width:0;display:flex;flex-direction:column;gap:2px}
+.mtxt strong{font-size:1rem}
+.mtxt .fix{font-size:.9rem}
+.mtxt .pay{font-size:.85rem;color:var(--bad)}
+.tally{display:flex;align-items:center;gap:8px;padding:0 12px 12px 48px;font-size:.88rem;color:var(--muted-strong)}
+.tally button{width:36px;height:36px;border:1.5px solid var(--line);background:var(--surface);border-radius:6px;font-weight:700;font-size:1.1rem}
+.tally output{min-width:2ch;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.or{margin:2px 0;text-align:center;color:var(--muted);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.verdict{background:var(--navy);color:var(--onnavy);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.verdict h3{font-family:var(--display);font-weight:400;margin:0;font-size:1.35rem}
+.verdict p{margin:0}
+.verdict ul,.verdict ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.verdict .eff{display:block;font-size:.92rem;opacity:.92}
+.verdict .small{font-size:.82rem;opacity:.8}
+.think{background:var(--surface);color:var(--ink);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.think .kicker{color:var(--navy)}
+.verdict .btn.ghost{color:var(--onnavy);border-color:var(--onnavy);align-self:flex-start}
+
+/* call to action */
+.cta{margin-top:24px;border:2px solid var(--ticket);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:var(--surface)}
+.cta ul{margin:0;padding-left:20px;color:var(--muted-strong);font-size:.95rem}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+footer{margin-top:24px;color:var(--muted);font-size:.8rem;text-align:center}
+
+/* ---------- Classroom Mode: projector scale and stronger contrast ---------- */
+body.is-class{font-size:20px;--muted:var(--muted-strong)}
+.is-class .wrap{max-width:1100px}
+.is-class h1{font-size:clamp(2.6rem,6vw,4rem)}
+.is-class .dek,.is-class .hint,.is-class .mode-desc{font-size:1rem}
+.is-class nav button{font-size:1rem;padding:10px 18px;min-height:48px}
+.is-class .panel{padding:clamp(20px,3vw,36px);gap:20px;border-width:2px}
+.is-class h2{font-size:clamp(1.8rem,3.4vw,2.4rem)}
+.is-class .btn{font-size:1.05rem;padding:12px 20px;min-height:52px}
+.is-class .mini{font-size:.95rem;min-height:46px;padding:8px 14px}
+.is-class .card-in{min-height:360px}
+.is-class .front .w{font-size:clamp(3rem,8vw,5rem)}
+.is-class .back .def{font-size:clamp(1.3rem,2.6vw,1.9rem);max-width:30ch}
+.is-class .back .ex{font-size:1.05rem}
+.is-class .tile{font-size:1.05rem;padding:14px 16px;min-height:58px}
+.is-class .gaps .sent,.is-class .gaps .num{font-size:1.15rem}
+.is-class select{font-size:1.05rem;min-height:46px}
+.is-class .tfq .stmt{font-size:1.15rem}
+.is-class .tfb button{min-width:58px;height:52px;font-size:1.1rem}
+.is-class .why{font-size:1rem}
+.is-class .mtxt strong{font-size:1.15rem}
+.is-class .mtxt .fix{font-size:1rem}
+.is-class .mtxt .pay{font-size:.95rem}
+.is-class .tally{font-size:.95rem}
+.is-class .tally button{width:44px;height:44px}
+.is-class .verdict h3{font-size:1.7rem}
+.is-class .stat b{font-size:1.8rem}
+@media (min-width:900px){.is-class .measures{grid-template-columns:1fr 1fr}}
+
+@media (max-width:520px){
+  .match{grid-template-columns:1fr}
+  .tfq .top{flex-direction:column;align-items:flex-start}
+  .tally{padding-left:12px}
+  .fs-btn{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){.card-in{transition:none}.tile.wrong{animation:none}}
+
+/* Perspective English styling from the supplied page and ORIGINAL perspective.css */
+.wrap{max-width:920px;padding-top:28px}
+.mast{align-items:center;border-bottom:1px solid #1a2a5e;padding-bottom:18px}
+.brand-link{display:flex;flex-direction:column;gap:0;text-decoration:none;color:#1a2a5e}
+.brand{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:46px;letter-spacing:1px;line-height:.95}
+.brand-tagline{font-family:Arial,Helvetica,sans-serif;margin-top:8px;font-size:10px;font-weight:700;letter-spacing:5px;line-height:1.5;text-transform:uppercase;color:#1a2a5e}
+.issue{color:#987b36;font-size:.75rem;font-weight:800}
+header:has(.mast) h1{font-family:var(--display);font-weight:800;letter-spacing:-.025em;font-size:clamp(2.2rem,5vw,3.65rem);line-height:1.14;color:#1a2a5e;margin:35px 0 14px}
+header:has(.mast) h1::after{content:"";display:block;width:68px;height:3px;background:#b79a4e;margin:20px 0 0}
+.dek{line-height:1.65;color:#555d6b;font-size:1.05rem;max-width:690px}
+.level{background:#1a2a5e;color:#fff;border-radius:999px;padding:6px 13px;font-weight:800}
+.panel{border-radius:8px;box-shadow:0 4px 14px rgba(11,44,95,.055);padding:26px}
+h2,.verdict h3,.front .w,.back .w-small,.stat b{font-family:var(--display);font-weight:800;letter-spacing:-.02em}
+.kicker{color:#987b36;font-weight:800}
+.btn{border-radius:4px;font-weight:800}
+nav button{font-weight:700}
+.cta{background:#f3f0e8;border:1px solid rgba(11,44,95,.18);border-radius:10px;padding:26px}
+.cta h2{color:#0b2c5f}
+@media(max-width:850px){.brand{font-size:38px}.brand-tagline{letter-spacing:4px}}
+@media(max-width:520px){.mast{align-items:flex-start}.issue{padding-top:6px}.panel{padding:17px}.brand{font-size:clamp(27px,8vw,38px)}.brand-tagline{font-size:8px;letter-spacing:clamp(1px,.8vw,4px)}}
+
+/* LEVEL COLOR — the only part that changes between A, B and C */
+:root{--navy:#176b6b;--focus:#176b6b}
+.mast{border-bottom-color:#176b6b}
+.brand-link,.brand-tagline{color:#176b6b}
+header:has(.mast) h1,h2,.cta h2{color:#176b6b}
+.level{background:#176b6b}
+.levels a[aria-current="page"]{background:#176b6b;border-color:#176b6b;color:#fff}
+
+/* Level links, assumption marker and result details (shared) */
+.level{display:none} /* the level links below show the current level */
+.levels{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.levels a{display:inline-flex;align-items:center;padding:6px 12px;border:1px solid rgba(11,44,95,.22);border-radius:999px;text-decoration:none;font-weight:800;font-size:12px;letter-spacing:.2px;color:#0b2c5f;background:#fff}
+.mtxt .fix b{font-weight:700}
+.mtxt .fix.quote{font-style:italic}
+.mtxt .fix.quote b{font-style:normal}
+.mtxt .pay.assume{color:var(--muted-strong)}
+.weakrow{padding:0 12px 12px 48px}
+.weak{border:1.5px dashed var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.82rem;font-weight:700;color:var(--muted-strong);min-height:34px}
+.weak.on{border-style:solid;border-color:#b79a4e;background:#f7efd6;color:#5c4710}
+.mwrap.is-weak{border-color:#b79a4e}
+.verdict .eff b{font-weight:700}
+.effs{display:flex;flex-direction:column;gap:4px}
+.verdict .link{background:rgba(255,255,255,.12);border-radius:6px;padding:8px 10px}
+.is-class .weak{font-size:.95rem;min-height:42px}
+.town{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+/* Activity 5: sort ("Where is the line?") */
+.sort,.heads{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.srow,.hrow{display:flex;flex-direction:column;gap:8px;border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--surface)}
+.srow.picked,.hrow.on{border-color:var(--navy);background:var(--tint)}
+.stext,.shint,.stress,.study{margin:0}
+.stext{font-weight:700}
+.shint,.stress{font-size:.9rem;color:var(--muted-strong)}
+.schoices{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.schoice{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:700;font-size:.88rem;min-height:40px}
+.schoice.on{background:var(--navy);border-color:var(--navy);color:var(--onnavy)}
+.schoice.c-cheat.on{background:var(--bad);border-color:var(--bad);color:#fff}
+.schoice.c-fine.on,.schoice.c-ok.on{background:var(--good);border-color:var(--good);color:#fff}
+.schoice.c-gray.on,.schoice.c-unsure.on{background:#6b7280;border-color:#6b7280;color:#fff}
+.field{display:flex;flex-direction:column;gap:4px;font-size:.9rem;color:var(--muted-strong)}
+.field input{font:inherit;font-size:1rem;color:var(--ink);border:1.5px solid var(--line);border-radius:6px;padding:9px 11px;background:#fff;min-height:42px;width:100%}
+.field input:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+.field.rule{background:var(--tint);border-radius:8px;padding:12px 14px}
+.sgroup{display:flex;flex-direction:column;gap:4px}
+.sgroup ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+/* Activity 5: headlines */
+.study{background:var(--tint);border-left:4px solid #b79a4e;padding:10px 14px;border-radius:0 6px 6px 0}
+.htop{display:flex;gap:12px;align-items:flex-start}
+.hnum{flex:0 0 auto;font-family:var(--display);font-weight:800;font-size:1.3rem;color:var(--navy);min-width:1.2em}
+.hbody{min-width:0;display:flex;flex-direction:column;gap:4px}
+.headline{margin:0;font-family:var(--display);font-weight:800;font-size:1.2rem;line-height:1.25;color:var(--ink)}
+.pick{border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);border-radius:6px;padding:7px 12px;font-weight:700;font-size:.88rem;min-height:40px}
+.pick.on{background:var(--navy);color:var(--onnavy)}
+.pick.second{border-style:dashed;color:var(--muted-strong);border-color:var(--muted-strong)}
+.pick.second.on{border-style:solid;background:#f7efd6;border-color:#b79a4e;color:#5c4710}
+.stress.against{color:var(--muted-strong)}
+.schoices.nums{gap:6px}
+.schoices.nums .schoice{min-width:40px;padding:7px 0;text-align:center}
+@media(max-width:520px){.schoices.nums .glabel{flex-basis:100%}.schoices.nums .schoice{min-width:44px;min-height:44px}}
+.tally.inline{padding:0;margin-left:auto}
+.verdict .front{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1.2;background:#fff;color:var(--ink);border-radius:6px;padding:14px 16px;margin:0}
+.is-class .stext,.is-class .headline{font-size:1.2rem}
+.is-class .schoice,.is-class .pick{font-size:1rem;min-height:48px;padding:9px 18px}
+.is-class .field input{font-size:1.1rem;min-height:50px}
+/* Activity 5: sort notes, allocate */
+.notes{background:var(--surface);color:var(--ink);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.notes .kicker{color:var(--navy)}
+.notes p{margin:0}
+.notes ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.notes .eff{display:block;font-size:.92rem}
+.verdict .total{font-size:1.15rem;font-weight:700}
+.verdict .rank{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.verdict .path{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.schoice:disabled{cursor:default}
+.schoice:disabled:not(.on){opacity:.4}
+.shint.quote{font-style:italic}
+.shint.quote b{font-style:normal}
+.glabel{font-size:.85rem;font-weight:700;color:var(--muted-strong);margin-right:2px}
+.schoice.c-j.on{background:var(--navy);border-color:var(--navy);color:var(--onnavy)}
+.srow.is-weak{border-color:#b79a4e}
+.tally.pts{margin-left:0;margin-right:auto}
+.tally.pts output{min-width:3.4ch}
+.tally.pts output.stars{min-width:3.6ch;letter-spacing:1px;color:#a8740e;font-size:1.1rem;text-align:center}
+.crit .rank-list{margin:8px 0 0;gap:6px}
+.crit .rrow{padding:6px 10px;gap:10px}
+.crit .rnum{width:30px;height:30px;font-size:.95rem}
+.crit .rbtns{flex-direction:row}
+.crit .rbtn{width:44px;height:44px}
+.crit .stext{margin:0}
+.tally.pts output.stars .off{color:#cfc6b4}
+.stat.done b{color:var(--good)}
+.is-class .glabel{font-size:.95rem}
+/* Activity 5: price tags, number input, ratings */
+.tag{display:inline-block;background:var(--navy);color:var(--onnavy);font-weight:800;border-radius:4px;padding:1px 8px;margin-right:8px;font-variant-numeric:tabular-nums}
+.money{display:inline-flex;align-items:center;gap:6px;max-width:220px}
+.money .pre{font-weight:800;font-size:1.2rem;color:var(--ink)}
+.money input{font:inherit;font-size:1.1rem;font-weight:700;color:var(--ink);border:1.5px solid var(--line);border-radius:6px;padding:8px 10px;background:#fff;min-height:44px;width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chipx{border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);border-radius:999px;padding:4px 10px;font-weight:700;font-size:.9rem}
+.hi{margin-left:6px;color:var(--ink)}
+.is-class .money input{font-size:1.3rem;min-height:52px}
+.finals{gap:10px}
+.hrow .schoices + .schoices{margin-top:-2px}
+/* Activity 5: allocate with typed numbers */
+.ptsin{width:4.2ch;text-align:center;font:inherit;font-weight:800;font-variant-numeric:tabular-nums;border:1.5px solid var(--line);border-radius:6px;padding:6px 2px;min-height:36px;color:var(--ink);background:#fff}
+.tally.pts button{min-width:40px;width:auto;padding:0 6px}
+.stat.over b{color:var(--bad)}
+.is-class .ptsin{min-height:44px;font-size:1.1rem}
+/* Activity 5: rank */
+.rank-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.rrow{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--surface)}
+.rrow.first{border-color:var(--navy);background:var(--tint)}
+.rnum{flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--onnavy);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.25rem}
+.rbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.rbtns{flex:0 0 auto;display:flex;flex-direction:column;gap:6px}
+.rbtn{width:44px;height:40px;border:1.5px solid var(--navy);background:var(--surface);color:var(--navy);border-radius:6px;font-weight:800;font-size:1.1rem}
+.rbtn:disabled{opacity:.3;cursor:not-allowed}
+.is-class .rnum{width:52px;height:52px;font-size:1.6rem}
+.is-class .rbtn{width:54px;height:48px;font-size:1.3rem}
+.is-class .crit .rnum{width:36px;height:36px;font-size:1.1rem}
+@media(max-width:520px){.weakrow{padding-left:12px}.tally.inline{margin-left:0}.rrow{padding:10px}.rnum{width:34px;height:34px;font-size:1.05rem}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mast"><a class="brand-link" href="https://perspectiveenglish.com/"><span class="brand">PERSPECTIVE</span><span class="brand-tagline">LESSONS WORTH TALKING ABOUT</span></a><span class="issue" id="issueLabel"></span></div>
+    <h1 id="issueTitle"></h1>
+    <p class="dek" id="issueDek"></p>
+    <span class="level" id="issueLevel"></span>
+    <div class="levels" id="levelSwitch" role="navigation" aria-label="Practice Room levels"></div>
+  </header>
+
+  <div class="modebar">
+    <div class="seg" role="group" aria-label="Practice mode">
+      <button type="button" id="modeSolo" data-mode="solo" aria-pressed="true">Solo Practice</button>
+      <button type="button" id="modeClass" data-mode="class" aria-pressed="false">Classroom Mode</button>
+    </div>
+    <button type="button" class="fs-btn" id="fsBtn" hidden>Full screen</button>
+    <p class="mode-desc" id="modeDesc" aria-live="polite"></p>
+    <p class="fs-msg" id="fsMsg" role="status" hidden></p>
+  </div>
+
+  <nav role="tablist" aria-label="Activities" id="tabs"></nav>
+
+  <section class="panel" id="p-cards" role="tabpanel" aria-labelledby="tab-cards"></section>
+  <section class="panel" id="p-match" role="tabpanel" aria-labelledby="tab-match" hidden></section>
+  <section class="panel" id="p-gap" role="tabpanel" aria-labelledby="tab-gap" hidden></section>
+  <section class="panel" id="p-tf" role="tabpanel" aria-labelledby="tab-tf" hidden></section>
+  <section class="panel" id="p-council" role="tabpanel" aria-labelledby="tab-council" hidden></section>
+
+  <aside class="cta" id="cta"></aside>
+
+  <footer>perspectiveenglish.com · © 2026 Perspective English. All rights reserved.</footer>
+</div>
+
+<script>
+/* =========================================================================
+   ISSUE CONTENT — edit this block to make a Practice Room for another issue
+   or level. Everything below "PRACTICE ROOM ENGINE" stays the same.
+   ========================================================================= */
+const ISSUE = {
+  number: "032",
+  title: "Memories for Sale",
+  level: "A1–A2",
+  dek: "Are experiences worth more than things? Learn the new words, check the article, then choose between things and experiences that cost the same.",
+  lessonUrl: "https://perspectiveenglish.com/experiences-vs-possessions-esl-lesson-a1-a2.html",
+  levels: [
+    { label: "A1–A2", name: "Beginner",     href: "experiences-vs-possessions-practice-room-a1-a2.html" },
+    { label: "B1–B2", name: "Intermediate", href: "experiences-vs-possessions-practice-room.html" },
+    { label: "C1–C2", name: "Advanced",     href: "experiences-vs-possessions-practice-room-c1-c2.html" }
+  ],
+
+  // Activity 1 + 2: vocabulary (flashcards and matching). Examples are quoted from the article.
+  vocab: [
+    { word: "own",        pos: "verb",         def: "to have something that is yours",                                   ex: "For a long time, success meant the things you could own: a house, a car, a watch." },
+    { word: "memory",     pos: "noun",         def: "a picture in your mind from the past",                              ex: "Some say a memory lasts longer than a jacket and costs nothing to keep." },
+    { word: "prefer",     pos: "verb",         def: "to like one thing more than another",                               ex: "About three in four young people say they prefer to spend money on experiences, like trips and concerts." },
+    { word: "show off",   pos: "phrasal verb", def: "to let people see something so they think you are special",         ex: "People now show off experiences the way they once showed off a watch…" },
+    { word: "experience", pos: "noun",         def: "something you do and remember, like a trip",                        ex: "Studies suggest an experience makes us happier for longer." }
+  ],
+
+  // Activity 3: fill the gap (word box shows these in the order given)
+  gapWords: ["show off", "experience", "prefer", "memory", "own"],
+  gaps: [
+    { before: "Do you",                              answer: "prefer",     after: "the beach or the mountains?" },
+    { before: "My first concert is still my best",   answer: "memory",     after: "." },
+    { before: "Do you",                              answer: "own",        after: "a car, or do you take the bus?" },
+    { before: "He always wears his gold watch to",   answer: "show off",   after: "." },
+    { before: "My trip to Japan was a great",        answer: "experience", after: "." }
+  ],
+
+  // Activity 4: true or false (answers from the teacher guide; why = evidence from the article)
+  truefalse: [
+    { s: "Most people in the line eat the bread while it is warm.",       a: false, why: "Most people will not eat their bread while it is warm." },
+    { s: "Most young people prefer to spend on experiences.",              a: true,  why: "About three in four young people say they prefer to spend money on experiences, like trips and concerts." },
+    { s: "All concert tickets now cost the same.",                         a: false, why: "Concert tickets now come at different prices, and VIP tickets can cost hundreds of dollars." },
+    { s: "In the past, success meant experiences, not things.",            a: false, why: "For a long time, success meant the things you could own: a house, a car, a watch." },
+    { s: "Millions pay to walk through special museum rooms.",             a: true,  why: "Millions pay to walk through special museum rooms." }
+  ],
+
+  // Activity 5: "Same price, different life". No right answer (teacher guide). The twist stays hidden until all three choices are made.
+  thinking: {
+    type: "sort",
+    sequential: true,
+    sequentialNote: "Step {k} of {n}. Choose before you see the next step. You cannot go back.",
+    pathTags: true,
+    hideCategoryStats: true,
+    markedStat: "choices made",
+    categories: [ { id: "a", label: "Option A" }, { id: "b", label: "Option B" } ],
+    hintLabel: "Option A",
+    hint2Label: "Option B",
+    items: [
+      { tag: "$1,500", text: "A new laptop or five days in Japan?",
+        hint: "A new laptop. Yours for years. You use it almost every day.", hint2: "Five days in Japan. Over in a week. You remember it for years.",
+        labels: { a: "A new laptop", b: "Five days in Japan" } },
+      { tag: "$300", text: "A designer jacket or a concert and a hotel?",
+        hint: "A designer jacket. You wear it every winter, for years.", hint2: "A concert and a hotel. One night. Your favorite singer, close to the stage.",
+        labels: { a: "A designer jacket", b: "A concert and a hotel" } },
+      { tag: "$100", text: "Great headphones or dinner at a top restaurant?",
+        hint: "Great headphones. You use them every day on the way to work or class.", hint2: "Dinner at a top restaurant. Two hours. A meal you will talk about for years.",
+        labels: { a: "Great headphones", b: "Dinner at a top restaurant" } },
+      { tag: "Now the twist", text: "You cannot take photos, post or tell anyone about the experience. Never. Do any of your choices change? $1,500: a new laptop or five days in Japan?",
+        labels: { a: "A new laptop", b: "Five days in Japan" } },
+      { tag: "After the twist", text: "$300: a designer jacket or a concert and a hotel?",
+        labels: { a: "A designer jacket", b: "A concert and a hotel" } },
+      { tag: "After the twist", text: "$100: great headphones or dinner at a top restaurant?",
+        labels: { a: "Great headphones", b: "Dinner at a top restaurant" } }
+    ],
+    pickNotes: [
+      { when: { 0: "b", 3: "a" }, label: "Think about this", text: "You changed your $1,500 choice after the twist. Part of the experience was the photo or the post." },
+      { when: { 1: "b", 4: "a" }, label: "Think about this", text: "You changed your $300 choice after the twist. Part of the experience was the photo or the post." },
+      { when: { 2: "b", 5: "a" }, label: "Think about this", text: "You changed your $100 choice after the twist. Part of the experience was the photo or the post." }
+    ],
+    resultButton: "See our choices",
+    verdict: {
+      title: "Same price, different life",
+      noneTitle: "No choices yet",
+      noneText: "Choose A or B for the first pair. Then look again.",
+      unanswered: "{n} choices are not made yet.",
+      notDecided: "not decided yet",
+      emptyGroup: "None",
+      caveat: "There is no right answer. A and B cost the same, so the choice is only about value. You do not need to say what you earn or spend.",
+      soloLabel: "Think about it",
+      reflection: "Which choice might you be sorry about a year from now?",
+      classLabel: "Talk in your groups",
+      classQuestions: [
+        "Which choice was the hardest? Why?",
+        "Did any choice change after the twist? Why?",
+        "Which choice might you be sorry about a year from now?"
+      ]
+    }
+  },
+
+  // Wording for each activity: solo = Solo Practice, cls = Classroom Mode, team = team prompt
+  ui: {
+    tabs: { cards: "Flashcards", match: "Match", gap: "Fill the gap", tf: "True or false", council: "Same price, different life" },
+    cards: { kicker: "Vocabulary", soloTitle: "Tap the card to flip it", classTitle: "Flashcards", tap: "Tap to see the meaning",
+      solo: "Read the word. What does it mean? Tap the card to check.",
+      cls: "Show the word. Ask the class what it means. Then reveal the meaning. Use the arrow keys to change cards.",
+      team: "Say what the word means. Make one sentence with it." },
+    match: { kicker: "Vocabulary", title: "Match the words and the meanings",
+      solo: "Tap a word. Then tap its meaning. You will see if you are right.",
+      cls: "Tap a word, then a meaning, to show the class's answer. Press Check matches when you are ready.",
+      team: "Talk about each word. Agree on the answer together." },
+    gap: { kicker: "Language in context", title: "Complete the sentences",
+      solo: "Choose a word from the box for each sentence. Use each word one time. Then check your answers.",
+      cls: "Choose the class's answer for each sentence. Then reveal the answers one by one or all together.",
+      team: "Choose the missing word. Say why it is correct." },
+    tf: { kicker: "Reading check", title: "True or false?",
+      solo: "Read the sentences. Are they true or false? You will see the answer at once.",
+      cls: "Read each sentence to the class. Tap T or F for the class's answer. Then reveal it.",
+      team: "Find the answer in the article." },
+    council: { kicker: "Critical thinking", title: "Same price, different life",
+      solo: "A and B cost the same. Choose one from each pair. Then tell a partner one reason for each choice.",
+      cls: "A and B cost the same. Students choose one from each pair. Record the class's choices, then ask for one reason each time.",
+      team: "Say why: I would choose…, because… / I prefer… to…" }
+  },
+
+  cta: {
+    title: "Teach Memories for Sale in class",
+    text: "This Practice Room is free to use. The complete A1–A2 lesson pack turns it into a full class:",
+    items: ["The magazine-style article with audio", "Printable student worksheets", "Teacher guide and answer key", "Presentation slides for the classroom"],
+    button: "Explore the full lesson"
+  }
+};
+
+/* =========================================================================
+   PRACTICE ROOM ENGINE — shared by every issue and every level.
+   No need to edit below. All wording comes from the ISSUE block above.
+   ========================================================================= */
+(function(){
+"use strict";
+
+const UI = ISSUE.ui;
+const K = ISSUE.thinking || ISSUE.council;   // Activity 5 content
+const TYPE = (K && K.type) || "council";    // "council", "sort" or "headlines"
+const TABS = ["cards", "match", "gap", "tf", "council"].map(id => ({ id, label: UI.tabs[id] }));
+const LETTERS = "ABCDEFGHIJ";
+const MAX_TEAMS = 10;
+const SQ = "sq"; // id used for the "Change nothing" option
+
+const $ = id => document.getElementById(id);
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const fill = (s, vars) => s.replace(/\{(\w+)\}/g, (_, k) => vars[k]);
+
+/* Small DOM helper: el("button", {class:"btn", text:"Go", onclick: fn}, child, ...) */
+function el(tag, props, ...kids){
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) { if (c == null || c === false) continue; n.append(c instanceof Node ? c : document.createTextNode(String(c))); }
+  return n;
+}
+
+/* Re-render a panel, keeping keyboard focus on the same control (data-fid). */
+function paint(id, build){
+  const p = $(id);
+  const a = document.activeElement;
+  const fid = a && p.contains(a) ? a.getAttribute("data-fid") : null;
+  p.replaceChildren(...build().filter(Boolean));
+  if (fid) { const t = p.querySelector('[data-fid="' + fid + '"]'); if (t) t.focus({ preventScroll: true }); }
+}
+
+/* ---------------- state ---------------- */
+const state = {
+  mode: "solo",
+  tab: "cards",
+  cards: { i: 0, shown: false },
+  match: null,
+  gap: null,
+  tf: null,
+  council: null
+};
+const isClass = () => state.mode === "class";
+
+function resetMatch(){
+  const keys = ISSUE.vocab.map(v => v.word);
+  state.match = { words: shuffle(keys), defs: shuffle(keys), sel: null, pairs: {}, done: new Set(), tries: 0, checked: false, flash: null };
+}
+function resetGap(){ state.gap = { vals: ISSUE.gaps.map(() => ""), checked: false, revealed: new Set() }; }
+function resetTF(){ state.tf = { ans: ISSUE.truefalse.map(() => null), revealed: new Set() }; }
+function freshThink(){
+  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", text: "", text2: "", num: "", nums: [], shown: new Set(), voted: false };
+  if (TYPE === "rank") return { order: K.items.map((_, i) => i), moved: false, text: "", voted: false };
+  if (TYPE === "allocate") return { judge: K.items.map(() => null), pts: K.items.map(() => 0), hard: null, shown: new Set(), voted: false,
+    order: K.criteria ? K.criteria.items.map((_, i) => i) : [], moved: false, fields: {} };
+  if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, second: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
+  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0), voted: false };
+}
+function resetCouncil(full){
+  if (!state.council || full) state.council = freshThink();
+  const C = state.council;
+  C.voted = false;
+  if (C.revealed) C.revealed.clear();   // model answers stay hidden after a mode switch
+  if (C.shown) C.shown.clear();
+}
+
+/* ---------------- shared pieces ---------------- */
+function head(n, t, title){
+  return el("div", { class: "p-head" },
+    el("span", { class: "kicker", text: "Activity " + n + " · " + t.kicker }),
+    el("h2", { text: title || t.title }),
+    el("p", { class: "hint", text: isClass() ? t.cls : t.solo }),
+    isClass() && t.team ? el("p", { class: "team" }, el("b", { text: "In teams: " }), t.team) : null
+  );
+}
+function panelNav(id){
+  const i = TABS.findIndex(t => t.id === id);
+  const prev = TABS[i - 1], next = TABS[i + 1];
+  return el("div", { class: "pnav" },
+    prev ? el("button", { type: "button", "data-fid": "pprev", onclick: () => goTab(prev.id, true), text: "← " + prev.label }) : el("span"),
+    next ? el("button", { type: "button", "data-fid": "pnext", onclick: () => goTab(next.id, true), text: next.label + " →" }) : el("span")
+  );
+}
+
+/* ================= Activity 1: Flashcards ================= */
+function renderCards(){
+  const S = state.cards, V = ISSUE.vocab, v = V[S.i], cls = isClass(), t = UI.cards;
+  paint("p-cards", () => {
+    const front = el("span", { class: "face front", id: "cardFront", "aria-hidden": S.shown ? "true" : "false" },
+      el("span", { class: "pos", text: v.pos }),
+      el("span", { class: "w", text: v.word }),
+      cls ? null : el("span", { class: "tap", text: t.tap }));
+    const back = el("span", { class: "face back", id: "cardBack", "aria-hidden": S.shown ? "false" : "true" },
+      el("span", { class: "w-small", text: v.word }),
+      el("span", { class: "def", text: v.def }),
+      el("span", { class: "ex", text: "“" + v.ex + "”" }));
+    const inner = el("span", { class: "card-in" }, front, back);
+    const card = cls
+      ? el("div", { class: "card" + (S.shown ? " flip" : ""), id: "card" }, inner)
+      : el("button", { type: "button", class: "card" + (S.shown ? " flip" : ""), id: "card", "data-fid": "card",
+          "aria-label": "Flashcard: " + v.word + ". Press to flip.", onclick: flipCard }, inner);
+    return [
+      head(1, t, cls ? t.classTitle : t.soloTitle),
+      card,
+      el("div", { class: "row split" },
+        el("button", { type: "button", class: "btn ghost", "data-fid": "cprev", onclick: () => moveCard(-1), text: "← Back" }),
+        el("span", { class: "count", "aria-live": "polite", text: "Card " + (S.i + 1) + " of " + V.length }),
+        el("button", { type: "button", class: "btn", "data-fid": "cnext", onclick: () => moveCard(1), text: "Next →" })),
+      el("div", { class: "row" },
+        cls ? el("button", { type: "button", class: "btn", id: "revealBtn", "data-fid": "creveal", "aria-pressed": S.shown ? "true" : "false",
+          onclick: flipCard, text: S.shown ? "Hide meaning" : "Reveal meaning" }) : null,
+        el("button", { type: "button", class: "btn ghost", "data-fid": "crestart", onclick: () => { S.i = 0; S.shown = false; renderCards(); }, text: "Start again" })),
+      panelNav("cards")
+    ];
+  });
+}
+function flipCard(){
+  const S = state.cards; S.shown = !S.shown;
+  $("card").classList.toggle("flip", S.shown);
+  $("cardFront").setAttribute("aria-hidden", S.shown ? "true" : "false");
+  $("cardBack").setAttribute("aria-hidden", S.shown ? "false" : "true");
+  const r = $("revealBtn");
+  if (r) { r.textContent = S.shown ? "Hide meaning" : "Reveal meaning"; r.setAttribute("aria-pressed", S.shown ? "true" : "false"); }
+}
+function moveCard(d){
+  const S = state.cards, n = ISSUE.vocab.length;
+  S.i = (S.i + d + n) % n; S.shown = false; renderCards();
+}
+
+/* ================= Activity 2: Matching ================= */
+function pick(kind, key){
+  const M = state.match;
+  if (!isClass() && M.done.has(key)) return;
+  if (M.sel && M.sel.kind === kind) { M.sel = M.sel.key === key ? null : { kind, key }; return renderMatch(); }
+  if (!M.sel) { M.sel = { kind, key }; return renderMatch(); }
+  const w = kind === "w" ? key : M.sel.key;
+  const d = kind === "d" ? key : M.sel.key;
+  M.sel = null;
+  if (isClass()) {
+    for (const k of Object.keys(M.pairs)) if (M.pairs[k] === d) delete M.pairs[k];
+    M.pairs[w] = d;
+    M.checked = false;
+  } else if (w === d) {
+    M.done.add(w);
+  } else {
+    M.tries++; M.flash = [w, d];
+  }
+  renderMatch();
+}
+function renderMatch(){
+  const M = state.match, cls = isClass(), n = ISSUE.vocab.length;
+  const defOf = k => ISSUE.vocab.find(v => v.word === k).def;
+  const letterOf = k => LETTERS[M.defs.indexOf(k)];
+  const numOf = k => M.words.indexOf(k) + 1;
+
+  paint("p-match", () => {
+    const words = M.words.map((k, i) => {
+      let c = "tile word";
+      const paired = M.pairs[k];
+      if (M.sel && M.sel.kind === "w" && M.sel.key === k) c += " sel";
+      if (!cls && M.done.has(k)) c += " ok locked";
+      if (cls && M.checked && paired) c += paired === k ? " ok" : " no";
+      if (M.flash && M.flash[0] === k) c += " wrong";
+      return el("button", { type: "button", class: c, "data-fid": "w-" + k,
+          "aria-pressed": M.sel && M.sel.key === k && M.sel.kind === "w" ? "true" : "false",
+          "aria-disabled": !cls && M.done.has(k) ? "true" : null, onclick: () => pick("w", k) },
+        el("span", { class: "lab", text: (i + 1) + "" }),
+        el("span", { class: "txt", text: k }),
+        cls && paired ? el("span", { class: "badge", text: "→ " + letterOf(paired) }) : null);
+    });
+    const defs = M.defs.map((k, i) => {
+      let c = "tile";
+      const owner = Object.keys(M.pairs).find(w => M.pairs[w] === k);
+      if (M.sel && M.sel.kind === "d" && M.sel.key === k) c += " sel";
+      if (!cls && M.done.has(k)) c += " ok locked";
+      if (cls && M.checked && owner) c += owner === k ? " ok" : " no";
+      if (M.flash && M.flash[1] === k) c += " wrong";
+      return el("button", { type: "button", class: c, "data-fid": "d-" + k,
+          "aria-pressed": M.sel && M.sel.key === k && M.sel.kind === "d" ? "true" : "false",
+          "aria-disabled": !cls && M.done.has(k) ? "true" : null, onclick: () => pick("d", k) },
+        el("span", { class: "lab", text: LETTERS[i] }),
+        el("span", { class: "txt", text: defOf(k) }),
+        cls && owner ? el("span", { class: "badge", text: String(numOf(owner)) }) : null);
+    });
+
+    let status, win = false;
+    if (!cls) {
+      status = M.done.size === n ? "All " + n + " matched. Well done!" : M.done.size + " of " + n + " matched";
+      if (M.tries) status += " · " + M.tries + " incorrect " + (M.tries === 1 ? "try" : "tries");
+      win = M.done.size === n;
+    } else {
+      const made = Object.keys(M.pairs).length;
+      if (M.checked) {
+        const right = Object.keys(M.pairs).filter(w => M.pairs[w] === w).length;
+        status = right + " of " + n + " correct"; win = right === n;
+      } else status = "Pairs made: " + made + " of " + n;
+    }
+
+    return [
+      head(2, UI.match),
+      el("div", { class: "match" }, el("div", { class: "col" }, words), el("div", { class: "col" }, defs)),
+      el("p", { class: "status" + (win ? " win" : ""), "aria-live": "polite", text: status }),
+      el("div", { class: "row" },
+        cls ? el("button", { type: "button", class: "btn", "data-fid": "mcheck", disabled: Object.keys(M.pairs).length === 0,
+          onclick: () => { M.checked = true; M.sel = null; renderMatch(); }, text: "Check matches" }) : null,
+        cls ? el("button", { type: "button", class: "btn ghost", "data-fid": "mshow",
+          onclick: () => { M.pairs = {}; M.words.forEach(w => M.pairs[w] = w); M.checked = true; M.sel = null; renderMatch(); }, text: "Show answers" }) : null,
+        el("button", { type: "button", class: "btn ghost", "data-fid": "mreset", onclick: () => { resetMatch(); renderMatch(); }, text: "Shuffle and restart" })),
+      panelNav("match")
+    ];
+  });
+
+  if (M.flash) setTimeout(() => {
+    M.flash = null;
+    document.querySelectorAll("#p-match .wrong").forEach(x => x.classList.remove("wrong"));
+  }, 450);
+}
+
+/* ================= Activity 3: Fill the gap ================= */
+function renderGap(){
+  const G = state.gap, cls = isClass(), n = ISSUE.gaps.length;
+  const shown = g => g.form || g.answer; // the word as it appears in the sentence
+  paint("p-gap", () => {
+    const items = ISSUE.gaps.map((g, i) => {
+      const val = G.vals[i], rev = G.revealed.has(i);
+      let mark = "";
+      if (!cls && G.checked) mark = val === g.answer ? "ok" : "no";
+      if (rev && val) mark = val === g.answer ? "ok" : "no";
+      const sel = el("select", { id: "gap" + i, "data-fid": "gap" + i, class: mark || null, "aria-label": "Gap " + (i + 1),
+          onchange: e => { G.vals[i] = e.target.value; if (!cls) G.checked = false; renderGap(); } },
+        el("option", { value: "", text: "choose…" }),
+        ISSUE.gapWords.map(w => el("option", { value: w, text: w, selected: val === w })));
+      return el("li", {},
+        el("span", { class: "num", text: (i + 1) + "" }),
+        el("p", { class: "sent" }, g.before ? g.before + " " : "", sel, (/^[.,?!;:]/.test(g.after) ? "" : " ") + g.after,
+          rev ? el("span", { class: "answer", text: "Answer: " + shown(g) }) : null),
+        cls && !rev ? el("button", { type: "button", class: "mini", "data-fid": "grev" + i,
+          onclick: () => { G.revealed.add(i); renderGap(); }, text: "Reveal" }) : null);
+    });
+
+    let status = "";
+    if (!cls && G.checked) {
+      const right = ISSUE.gaps.filter((g, i) => G.vals[i] === g.answer).length;
+      status = right + " of " + n + " correct" + (right === n ? ". Perfect!" : ". Change the red answers and check again.");
+    }
+    if (cls) status = "Revealed: " + G.revealed.size + " of " + n;
+    const allRight = !cls && G.checked && ISSUE.gaps.every((g, i) => G.vals[i] === g.answer);
+
+    return [
+      head(3, UI.gap),
+      el("div", { class: "wordbox", "aria-label": "Word box" }, ISSUE.gapWords.map(w => el("span", { class: "chip", text: w }))),
+      el("ol", { class: "gaps" }, items),
+      el("p", { class: "status" + (allRight ? " win" : ""), "aria-live": "polite", text: status }),
+      el("div", { class: "row" },
+        !cls ? el("button", { type: "button", class: "btn", "data-fid": "gcheck", onclick: () => { G.checked = true; renderGap(); }, text: "Check answers" }) : null,
+        !cls && G.checked && !allRight ? el("button", { type: "button", class: "btn ghost", "data-fid": "gshow",
+          onclick: () => { ISSUE.gaps.forEach((_, i) => G.revealed.add(i)); renderGap(); }, text: "Show answers" }) : null,
+        cls ? el("button", { type: "button", class: "btn", "data-fid": "grevall", disabled: G.revealed.size === n,
+          onclick: () => { ISSUE.gaps.forEach((_, i) => G.revealed.add(i)); renderGap(); }, text: "Reveal all" }) : null,
+        el("button", { type: "button", class: "btn ghost", "data-fid": "greset", onclick: () => { resetGap(); renderGap(); }, text: "Reset" })),
+      panelNav("gap")
+    ];
+  });
+}
+
+/* ================= Activity 4: True or false ================= */
+function answerTF(i, v){
+  const T = state.tf;
+  if (isClass()) {
+    if (T.revealed.has(i)) return;
+    T.ans[i] = T.ans[i] === v ? null : v;
+  } else {
+    if (T.ans[i] !== null) return;
+    T.ans[i] = v; T.revealed.add(i);
+  }
+  renderTF();
+}
+function renderTF(){
+  const T = state.tf, cls = isClass(), Q = ISSUE.truefalse, n = Q.length;
+  paint("p-tf", () => {
+    const items = Q.map((q, i) => {
+      const rev = T.revealed.has(i), ans = T.ans[i];
+      const btn = (label, v) => {
+        let c = "";
+        if (rev) { if (v === q.a) c = "ok"; else if (ans === v) c = "no"; }
+        else if (ans === v) c = "chosen";
+        return el("button", { type: "button", class: c || null, "data-fid": "tf" + i + label,
+          "aria-label": (v ? "True" : "False") + ", statement " + (i + 1),
+          "aria-pressed": ans === v ? "true" : "false", onclick: () => answerTF(i, v), text: label });
+      };
+      return el("li", { class: "tfq" },
+        el("div", { class: "top" },
+          el("p", { class: "stmt", text: (i + 1) + ". " + q.s }),
+          el("div", { class: "tfb" }, btn("T", true), btn("F", false),
+            cls && !rev ? el("button", { type: "button", class: "mini", "data-fid": "tfrev" + i,
+              onclick: () => { T.revealed.add(i); renderTF(); }, text: "Reveal" }) : null)),
+        rev ? el("p", { class: "why" }, el("b", { text: (q.a ? "True. " : "False. ") }), q.why) : null);
+    });
+
+    let status, win = false;
+    if (!cls) {
+      const done = T.ans.filter(a => a !== null).length;
+      const right = Q.filter((q, i) => T.ans[i] === q.a).length;
+      status = done === n ? "Finished: " + right + " of " + n + " correct" : right + " correct so far · " + done + " of " + n + " answered";
+      win = done === n && right === n;
+    } else status = "Revealed: " + T.revealed.size + " of " + n;
+
+    return [
+      head(4, UI.tf),
+      el("ol", { class: "tf" }, items),
+      el("p", { class: "status" + (win ? " win" : ""), "aria-live": "polite", text: status }),
+      el("div", { class: "row" },
+        cls ? el("button", { type: "button", class: "btn", "data-fid": "tfrevall", disabled: T.revealed.size === n,
+          onclick: () => { Q.forEach((_, i) => T.revealed.add(i)); renderTF(); }, text: "Reveal all" }) : null,
+        el("button", { type: "button", class: "btn ghost", "data-fid": "tfreset", onclick: () => { resetTF(); renderTF(); }, text: cls ? "Reset" : "Restart" })),
+      panelNav("tf")
+    ];
+  });
+}
+
+/* ================= Activity 5: Council ================= */
+function toggleMeasure(i){
+  const C = state.council;
+  C.statusQuo = false;
+  C.sel.has(i) ? C.sel.delete(i) : C.sel.add(i);
+  C.voted = false; renderCouncil();
+}
+function toggleStatusQuo(){
+  const C = state.council;
+  C.statusQuo = !C.statusQuo;
+  if (C.statusQuo) C.sel.clear();
+  C.voted = false; renderCouncil();
+}
+function toggleWeak(id){
+  const C = state.council;
+  C.weak = C.weak === id ? null : id;
+  C.voted = false; renderCouncil();
+}
+function setTeams(i, d){
+  const C = state.council;
+  C.teams[i] = Math.max(0, Math.min(MAX_TEAMS, C.teams[i] + d));
+  renderCouncil();
+}
+function renderCouncil(){
+  const C = state.council, cls = isClass(), M = K.measures;
+  paint("p-council", () => {
+    const passedLabel = C.statusQuo ? "None" : C.sel.size + " of " + M.length;
+    const tile = (m, on, onclick, fid) => el("button", { type: "button", class: "measure", "data-fid": fid, "aria-pressed": on ? "true" : "false", onclick },
+      el("span", { class: "box", "aria-hidden": "true", text: on ? "✓" : "" }),
+      el("span", { class: "mtxt" },
+        el("strong", { text: m.name }),
+        el("span", { class: "fix" + (K.aStyle ? " " + K.aStyle : "") }, K.aLabel ? el("b", { text: K.aLabel + ": " }) : null, m.a),
+        el("span", { class: "pay" + (K.bStyle ? " " + K.bStyle : "") }, K.bLabel + ": " + m.b)));
+    const weakBtn = (id, name) => K.weakest ? el("div", { class: "weakrow" },
+      el("button", { type: "button", class: "weak" + (C.weak === id ? " on" : ""), "data-fid": "wk-" + id,
+        "aria-pressed": C.weak === id ? "true" : "false", "aria-label": K.weakest.button + ": " + name,
+        onclick: () => toggleWeak(id), text: (C.weak === id ? "✓ " : "") + K.weakest.button })) : null;
+
+    const list = M.map((m, i) => {
+      const on = C.sel.has(i);
+      return el("div", { class: "mwrap" + (on ? " on" : "") + (C.weak === i ? " is-weak" : "") },
+        tile(m, on, () => toggleMeasure(i), "m" + i),
+        cls ? el("div", { class: "tally" },
+          el("span", { text: "Teams in favor" }),
+          el("button", { type: "button", "data-fid": "tm" + i, "aria-label": "One fewer team in favor of " + m.name, disabled: C.teams[i] === 0, onclick: () => setTeams(i, -1), text: "−" }),
+          el("output", { "aria-live": "polite", "aria-label": "Teams in favor of " + m.name, text: String(C.teams[i]) }),
+          el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + m.name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null,
+        weakBtn(i, m.name));
+    });
+    const sq = el("div", { class: "mwrap sq" + (C.statusQuo ? " on" : "") + (C.weak === SQ ? " is-weak" : "") },
+      tile(K.statusQuo, C.statusQuo, toggleStatusQuo, "msq"), weakBtn(SQ, K.statusQuo.name));
+
+    return [
+      head(5, UI.council),
+      el("div", { class: "town" },
+        K.stats.map(s => el("div", { class: "stat" }, el("b", { text: s.value }), el("small", { text: s.label }))),
+        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: passedLabel }), el("small", { text: K.passedLabel }))),
+      el("div", { class: "measures" }, list),
+      el("p", { class: "or", text: "or" }),
+      sq,
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: holdVote, text: "Hold the vote" }),
+        (C.sel.size || C.statusQuo || C.weak !== null) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+          onclick: () => { resetCouncil(true); renderCouncil(); }, text: "Clear choices" }) : null),
+      C.voted ? verdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function holdVote(){
+  state.council.voted = true; renderCouncil();
+  const v = $("verdict");
+  if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
+}
+function effects(m){
+  const L = K.effectLabels;
+  return m.effects.map((t, i) => el("span", { class: "eff" }, el("b", { text: L[i] + ": " }), t));
+}
+function verdict(){
+  const C = state.council, V = K.verdict, cls = isClass();
+  const box = (...kids) => el("div", { class: "verdict", id: "verdict", tabindex: "-1", role: "region", "aria-label": "Vote result" }, ...kids);
+  const again = el("button", { type: "button", class: "btn ghost", "data-fid": "vagain", onclick: () => { resetCouncil(true); renderCouncil(); $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
+  const think = thinkBox(V);
+  const caveat = el("p", { class: "small", text: V.caveat });
+  let weakLine = null;
+  if (K.weakest) {
+    if (C.weak === null) weakLine = el("p", {}, el("b", { text: K.weakest.resultLabel + ": " }), K.weakest.missing);
+    else {
+      const m = C.weak === SQ ? K.statusQuo : K.measures[C.weak];
+      weakLine = el("p", {}, el("b", { text: K.weakest.resultLabel + ": " }), m.name + ". " + fill(K.weakest.sentence, { b: m.b }));
+    }
+  }
+
+  if (!C.sel.size && !C.statusQuo) {
+    return box(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  }
+  if (C.statusQuo) {
+    const q = K.statusQuo;
+    return box(
+      el("h3", { text: V.nothingTitle }),
+      el("div", { class: "effs" }, effects(q)),
+      q.group && V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), q.group + ".") : null,
+      weakLine, caveat, think, again);
+  }
+  const passed = [...C.sel].sort((a, b) => a - b);
+  const extra = (K.links || []).filter(l => l.when.every(i => C.sel.has(i)) && !(l.without || []).some(i => C.sel.has(i)));
+  const note = passed.length === 1 ? V.notes[0] : passed.length <= 3 ? V.notes[1] : V.notes[2];
+  return box(
+    el("h3", { text: V.votedTitle }),
+    el("p", { text: fill(V.passedIntro, { n: passed.length, m: K.measures.length }) }),
+    el("ul", {}, passed.map(i => {
+      const m = K.measures[i];
+      return el("li", {},
+        el("b", { text: m.name }),
+        cls && C.teams[i] ? " (" + C.teams[i] + (C.teams[i] === 1 ? " team" : " teams") + " in favor)" : null,
+        effects(m));
+    })),
+    V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), passed.map(i => K.measures[i].group).join("; ") + ".") : null,
+    extra.map(l => el("p", { class: "link" }, el("b", { text: V.linkLabel + ": " }), l.text)),
+    el("p", { text: note }),
+    weakLine, caveat, think, again);
+}
+
+
+/* ---------- shared pieces for Activity 5 ---------- */
+function renderThink(){ if (TYPE === "sort") return renderSort(); if (TYPE === "headlines") return renderHeadlines(); if (TYPE === "allocate") return renderAllocate(); if (TYPE === "rank") return renderRank(); return renderCouncil(); }
+function thinkBox(V){
+  return isClass()
+    ? el("div", { class: "think" }, el("span", { class: "kicker", text: V.classLabel }), el("ol", {}, V.classQuestions.map(q => el("li", { text: q }))))
+    : el("div", { class: "think" }, el("span", { class: "kicker", text: V.soloLabel }), el("p", { text: V.reflection }));
+}
+function verdictBox(...kids){ return el("div", { class: "verdict", id: "verdict", tabindex: "-1", role: "region", "aria-label": "Result" }, ...kids); }
+function showResult(render){
+  state.council.voted = true; render();
+  const v = $("verdict");
+  if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
+}
+function againBtn(render){
+  return el("button", { type: "button", class: "btn ghost", "data-fid": "vagain",
+    onclick: () => { resetCouncil(true); render(); $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
+}
+function stats(list){
+  return el("div", { class: "town" }, list.map(s => el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: s[0] }), el("small", { text: s[1] }))));
+}
+
+/* ================= Activity 5 (type "sort"): sort each item into a category ================= */
+// item.labels: { categoryId: "button text" } = per-row button labels (also used in the result groups).
+// sequential: true = one step at a time; later rows stay hidden until the current one is chosen, and chosen rows lock ("you cannot go back").
+//   sequentialNote: "Step {k} of {n}"; verdict.notDecided; the result shows the path instead of category groups.
+//   pathTags: true = show each row's tag in the path. askEach.rows: [indexes] = only those rows get a reason box (also shown in the path).
+// quota: { cat, n, restLabel, wrongText: "You kept {k}. Keep exactly {n}." } = choose exactly n lines; unmarked lines are listed under restLabel. hint2 + hint2Label = a second visible column.
+// unique: each category can be used on only one line (choosing it elsewhere clears the old line). hideCategoryStats, markedStat.
+// textField2: a second free-answer box, same shape as textField.
+// pickNotes: [{ when: { itemIndex: categoryId, ... }, text, label? }] shown in the result when those lines were marked that way.
+function renderSort(){
+  const S = state.council, cls = isClass(), n = K.items.length, V = K.verdict;
+  const done = S.picks.filter(Boolean).length;
+  paint("p-council", () => {
+    const open = K.sequential ? S.picks.findIndex(p => !p) : -1;
+    const rows = K.items.map((it, i) => {
+      const pick = S.picks[i];
+      if (K.sequential && open >= 0 && i > open) return null;
+      const locked = K.sequential && !!pick;
+      const showConsider = it.consider && (cls ? S.shown.has(i) : !!pick);
+      return el("li", { class: "srow" + (pick ? " picked" : "") },
+        el("p", { class: "stext" }, it.tag ? el("span", { class: "tag", text: it.tag }) : (i + 1) + ". ", it.text),
+        it.hint ? el("p", { class: "shint" }, K.hintLabel ? el("b", { text: K.hintLabel + ": " }) : null, it.hint) : null,
+        it.hint2 ? el("p", { class: "shint" }, K.hint2Label ? el("b", { text: K.hint2Label + ": " }) : null, it.hint2) : null,
+        el("div", { class: "schoices", role: "group", "aria-label": "Your choice for line " + (i + 1) },
+          K.categories.map(c => el("button", { type: "button", class: "schoice c-" + c.id + (pick === c.id ? " on" : ""), "data-fid": "s" + i + c.id,
+            "aria-pressed": pick === c.id ? "true" : "false", disabled: locked,
+            onclick: () => { if (locked) return; if (K.unique && pick !== c.id) S.picks = S.picks.map(p => p === c.id ? null : p); S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: (it.labels && it.labels[c.id]) || c.label })),
+          cls && it.consider && !S.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "sc" + i,
+            onclick: () => { S.shown.add(i); renderSort(); }, text: "Show a question" }) : null),
+        pick === K.dependsOn ? el("label", { class: "field" },
+          el("span", { text: K.dependsPrompt }),
+          el("input", { type: "text", id: "dep" + i, "data-fid": "dep" + i, value: S.depends[i], maxlength: "160", autocomplete: "off",
+            oninput: e => { S.depends[i] = e.target.value; } })) : null,
+        K.askEach && pick && (!K.askEach.rows || K.askEach.rows.includes(i)) ? el("label", { class: "field" },
+          el("span", { text: K.askEach.prompt }),
+          el("input", { type: "text", id: "ask" + i, "data-fid": "ask" + i, value: S.asks[i], maxlength: "160", autocomplete: "off",
+            oninput: e => { S.asks[i] = e.target.value; } })) : null,
+        showConsider ? el("p", { class: "why" }, el("b", { text: "Think about it: " }), it.consider) : null);
+    });
+    return [
+      head(5, UI.council),
+      stats([[done + " of " + (K.quota ? K.quota.n : n), K.markedStat || "lines marked"]].concat(K.hideCategoryStats ? [] : K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))
+        .concat((K.sums || []).map(sm => [sumFmt(sm, sortSum(S, sm)) + (sm.max != null ? " of " + (sm.suffix ? sumFmt(sm, sm.max) : sm.max) : ""), sm.stat]))),
+      el("ol", { class: "sort" }, rows),
+      K.sequential && open >= 0 && K.sequentialNote ? el("p", { class: "small", text: fill(K.sequentialNote, { k: open + 1, n }) }) : null,
+      K.number ? numberField(S, cls) : null,
+      K.finals ? el("div", { class: "field rule finals" },
+        el("span", { class: "kicker", text: K.finalsTitle || "Your verdict" }),
+        K.finals.map(f => el("div", { class: "schoices", role: "group", "aria-label": f.label },
+          el("span", { class: "glabel", text: f.label }),
+          f.options.map(o => el("button", { type: "button", class: "schoice c-j" + (S.finals[f.id] === o.id ? " on" : ""), "data-fid": "f" + f.id + o.id,
+            "aria-pressed": S.finals[f.id] === o.id ? "true" : "false",
+            onclick: () => { S.finals[f.id] = S.finals[f.id] === o.id ? null : o.id; S.voted = false; renderSort(); }, text: o.label }))))) : null,
+      K.textField ? el("label", { class: "field rule" },
+        el("span", { class: "kicker", text: K.textField.kicker }),
+        el("span", { text: K.textField.prompt }),
+        el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: S.text, maxlength: "200", autocomplete: "off",
+          oninput: e => { S.text = e.target.value; } })) : null,
+      K.textField2 ? el("label", { class: "field rule" },
+        K.textField2.kicker ? el("span", { class: "kicker", text: K.textField2.kicker }) : null,
+        el("span", { text: K.textField2.prompt }),
+        el("input", { type: "text", id: "tfield2", "data-fid": "tfield2", value: S.text2, maxlength: "200", autocomplete: "off",
+          oninput: e => { S.text2 = e.target.value; } })) : null,
+      K.ruleStem ? el("label", { class: "field rule" },
+        el("span", { class: "kicker", text: K.ruleLabel || "Your rule" }),
+        el("span", { text: "Finish the sentence: " + K.ruleStem + "…" }),
+        el("input", { type: "text", id: "rule", "data-fid": "rule", value: S.rule, maxlength: "200", autocomplete: "off",
+          oninput: e => { S.rule = e.target.value; } })) : null,
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderSort), text: K.resultButton }),
+        done || S.rule || S.text || S.text2 || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+          onclick: () => { resetCouncil(true); renderSort(); }, text: "Clear choices" }) : null),
+      S.voted ? sortVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function sortVerdict(){
+  const S = state.council, V = K.verdict, n = K.items.length;
+  const done = S.picks.filter(Boolean).length;
+  if (!done) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const groups = K.categories.map(c => {
+    const its = K.items.map((_, i) => i).filter(i => S.picks[i] === c.id);
+    return el("div", { class: "sgroup" },
+      el("b", { text: c.label + " (" + its.length + ")" }),
+      its.length ? el("ul", {}, its.map(i => el("li", {}, (K.items[i].labels && K.items[i].labels[c.id]) || K.items[i].text,
+        c.id === K.dependsOn ? el("span", { class: "eff" }, el("b", { text: K.dependsPrompt + " " }), S.depends[i].trim() || V.noDepends) : null,
+        K.askEach ? el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), S.asks[i].trim() || K.askEach.missing) : null)))
+        : el("p", { class: "eff", text: V.emptyGroup }));
+  });
+  const catLabel = id => (K.categories.find(c => c.id === id) || {}).label;
+  const notes = K.items.some(it => it.note) ? el("div", { class: "notes" },
+    el("span", { class: "kicker", text: K.noteTitle }),
+    K.noteIntro ? el("p", { text: K.noteIntro }) : null,
+    el("ul", {}, K.items.map((it, i) => !it.note ? null : el("li", {},
+      el("b", { text: it.text }),
+      el("span", { class: "eff" }, el("b", { text: "You chose: " }), catLabel(S.picks[i]) || "not marked"),
+      el("span", { class: "eff" }, it.note))))) : null;
+  return verdictBox(
+    el("h3", { text: V.title }),
+    K.quota ? (done !== K.quota.n ? el("p", { class: "link", text: fill(K.quota.wrongText, { k: done, n: K.quota.n }) }) : null)
+      : !K.optionalLines && done < n ? el("p", { text: n - done === 1 ? oneLeft(V) : fill(V.unanswered, { n: n - done }) }) : null,
+    K.total ? el("p", { class: "total" }, K.total.sum
+      ? fill(K.total.text, { n: dur(K.items.reduce((a, it, i) => a + (S.picks[i] === K.total.cat ? it.mins || 0 : 0), 0)), m: dur(K.items.reduce((a, it) => a + (it.mins || 0), 0)) })
+      : fill(K.total.text, { n: S.picks.filter(p => p === K.total.cat).length, m: n })) : null,
+    K.textField ? (S.text.trim()
+      ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), S.text.trim())
+      : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
+    (K.sums || []).map(sm => { const v = sortSum(S, sm); return sm.max != null && v > sm.max
+      ? el("p", { class: "link", text: fill(sm.overText, { n: sm.suffix ? sumFmt(sm, v) : v, max: sm.suffix ? sumFmt(sm, sm.max) : sm.max }) })
+      : el("p", { class: "total", text: fill(sm.text, { n: sumFmt(sm, v), max: sm.suffix ? sumFmt(sm, sm.max) : sm.max }) }); }),
+    K.textField2 ? (S.text2.trim()
+      ? el("p", {}, el("b", { text: K.textField2.resultLabel + ": " }), S.text2.trim())
+      : el("p", { class: "link" }, el("b", { text: K.textField2.resultLabel + ": " }), K.textField2.missing)) : null,
+    K.sequential ? el("ol", { class: "path" }, K.items.map((it, i) => el("li", {}, el("b", { text: (K.pathTags && it.tag ? it.tag + " · " : "") + it.text + " " }),
+      S.picks[i] ? ((it.labels && it.labels[S.picks[i]]) || catLabel(S.picks[i])) : V.notDecided,
+      K.askEach && S.picks[i] && (!K.askEach.rows || K.askEach.rows.includes(i)) ? el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), S.asks[i].trim() || K.askEach.missing) : null))) : groups,
+    K.quota ? el("div", { class: "sgroup" }, el("b", { text: K.quota.restLabel + " (" + (n - done) + ")" }),
+      n - done ? el("ul", {}, K.items.map((it, i) => S.picks[i] ? null : el("li", { text: it.text }))) : el("p", { class: "eff", text: V.emptyGroup })) : null,
+    K.number ? numberResult(S) : null,
+    K.finals ? K.finals.map(f => el("p", {}, el("b", { text: f.label + " " }), ((f.options.find(o => o.id === S.finals[f.id]) || {}).label) || V.noFinal)) : null,
+    (K.finalNotes || []).filter(fn => Object.entries(fn.when).every(([k, v]) => S.finals[k] === v)).map(fn => el("p", { class: "link" }, el("b", { text: "Think about this: " }), fn.text)),
+    (K.pickNotes || []).filter(pn => Object.entries(pn.when).every(([i, c]) => S.picks[+i] === c)).map(pn => el("p", { class: "link" }, el("b", { text: (pn.label || "Push back") + ": " }), pn.text)),
+    K.allSame && done === n && S.picks.every(p => p === S.picks[0]) && K.allSame[S.picks[0]] ? el("p", { class: "link" }, el("b", { text: "Push back: " }), K.allSame[S.picks[0]]) : null,
+    K.ruleStem ? el("p", {}, el("b", { text: (K.ruleLabel || "Your rule") + ": " }), S.rule.trim() ? K.ruleStem + " " + S.rule.trim().replace(/^\.\.\.|^…/, "") : V.noRule) : null,
+    V.compare ? el("p", { text: V.compare }) : null,
+    notes,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderSort));
+}
+
+/* Optional running totals for sort: K.sums = [{ cat, field, stat, text, prefix?, max?, overText? }] adds item[field] for lines marked cat. */
+// suffix (optional): "$70M of $100M" instead of "$70 of 100".
+function sumFmt(sm, v){ return (sm.prefix || "") + v + (sm.suffix || ""); }
+function sortSum(S, sm){ return K.items.reduce((a, it, i) => a + (S.picks[i] === sm.cat ? (it[sm.field] || 0) : 0), 0); }
+/* "1 lines are not marked yet" → "1 line is not marked yet" (or use verdict.unansweredOne). */
+function oneLeft(V){
+  if (V.unansweredOne) return V.unansweredOne;
+  const sing = w => w === "people" ? "person" : /(sh|ch|x|ss)es$/.test(w) ? w.slice(0, -2) : w.replace(/s$/, "");
+  const out = V.unanswered.replace(/\{n\} ((?:\S+ )*?)(\S+) (are|have)\b/, (m, pre, w, v) => "1 " + pre + sing(w) + " " + (v === "are" ? "is" : "has"));
+  return out.replace("{n}", "1");
+}
+
+/* Minutes as "18 hrs 40 min" (used by summed totals). */
+function dur(m){ const h = Math.floor(m / 60), r = m % 60; return (h ? h + (h === 1 ? " hr" : " hrs") : "") + (h && r ? " " : "") + (r || !h ? r + " min" : ""); }
+
+/* Optional "your number" for sort activities (e.g. the most you would pay). */
+const money = v => { const n = parseFloat(String(v).replace(/[^0-9.]/g, "")); return isFinite(n) ? Math.round(n * 100) / 100 : null; };
+function numberField(S, cls){
+  const N = K.number;
+  if (!cls) return el("label", { class: "field rule" },
+    el("span", { class: "kicker", text: N.kicker }),
+    el("span", { text: N.solo }),
+    el("span", { class: "money" }, el("span", { class: "pre", text: N.prefix }),
+      el("input", { type: "text", inputmode: "decimal", id: "num", "data-fid": "num", value: S.num, maxlength: "8", autocomplete: "off",
+        oninput: e => { S.num = e.target.value.replace(/[^0-9.]/g, ""); e.target.value = S.num; } })));
+  const add = () => { const inp = $("numAdd"); const v = money(inp.value); if (v === null) return; S.nums.push(v); S.voted = false; renderSort(); const n = $("numAdd"); if (n) n.focus(); };
+  const hi = S.nums.length ? Math.max(...S.nums) : null;
+  return el("div", { class: "field rule" },
+    el("span", { class: "kicker", text: N.kicker }),
+    el("span", { text: N.cls }),
+    el("div", { class: "row" },
+      el("span", { class: "money" }, el("span", { class: "pre", text: N.prefix }),
+        el("input", { type: "text", inputmode: "decimal", id: "numAdd", "data-fid": "numAdd", maxlength: "8", autocomplete: "off", "aria-label": N.cls,
+          onkeydown: e => { if (e.key === "Enter") { e.preventDefault(); add(); } } })),
+      el("button", { type: "button", class: "mini", "data-fid": "numAddBtn", onclick: add, text: "Add" })),
+    S.nums.length ? el("div", { class: "chips" },
+      S.nums.map((v, i) => el("button", { type: "button", class: "chipx", "data-fid": "nx" + i, "aria-label": "Remove " + N.prefix + v,
+        onclick: () => { S.nums.splice(i, 1); S.voted = false; renderSort(); }, text: N.prefix + v + " ×" })),
+      el("span", { class: "hi" }, el("b", { text: "Highest: " }), N.prefix + hi)) : null);
+}
+function numberResult(S){
+  const N = K.number, cls = isClass();
+  const val = cls ? (S.nums.length ? Math.max(...S.nums) : null) : money(S.num);
+  const lines = [];
+  if (val === null) lines.push(el("p", {}, el("b", { text: N.resultLabel + ": " }), N.missing));
+  else {
+    lines.push(el("p", { class: "total" }, (cls ? N.classResultLabel : N.resultLabel) + ": " + N.prefix + val +
+      (cls && S.nums.length > 1 ? " (from " + S.nums.map(v => N.prefix + v).join(", ") + ")" : "")));
+    const over = K.items.filter((it, i) => S.picks[i] === N.buyCat && typeof it.price === "number" && it.price > val);
+    if (over.length) lines.push(el("p", { class: "link" }, fill(N.gapText, { items: over.map(it => it.tag || it.text).join(" and "), n: N.prefix + val })));
+  }
+  return lines;
+}
+
+/* ================= Activity 5 (type "headlines"): a list of items to note, rate, compare, pick one ================= */
+// Optional: item.against + K.againstLabel (a second visible line), K.secondPick { label, stat, resultLabel, missing, prompt? },
+// item.pickNote (shown when that item is chosen), K.pickStatName (item field shown in the pick stat), wordPrompt may be omitted.
+// K.thresholdLine { scale, options: [ids], label, stat, none } = first item rated one of those options (shown as a stat and in the result).
+// K.pickClassOnly + K.pickResultLabel + verdict.noPick: the pick (e.g. "the line your group disagreed about") only appears in Classroom Mode.
+// scale.push.rating may be an array; push.text may be omitted so only item-specific pushes show.
+// Rating rows: K.scales = [{ label, options: [{id,label,name}], push? }], or the older single K.ratings / K.ratingLabel / K.push.
+function thresholdIdx(H){ const T = K.thresholdLine; return T ? K.items.findIndex((_, i) => T.options.includes(H.rates[T.scale][i])) : -1; }
+const ratingHit = (P, r) => Array.isArray(P.rating) ? P.rating.includes(r) : r === P.rating;
+function scales(){ return K.scales || (K.ratings ? [{ label: K.ratingLabel, options: K.ratings, push: K.push }] : []); }
+function renderHeadlines(){
+  const H = state.council, cls = isClass(), n = K.items.length;
+  const written = H.notes.filter(x => x.trim()).length;
+  const SC = scales(), withAns = K.items.filter(x => x.omits).length;
+  const judged = K.items.filter((_, i) => SC.length && SC.every((_, k) => H.rates[k][i])).length;
+  paint("p-council", () => {
+    const rows = K.items.map((it, i) => {
+      const rev = H.revealed.has(i), chosen = H.choice === i;
+      return el("li", { class: "hrow" + (chosen ? " on" : "") },
+        el("div", { class: "htop" },
+          el("span", { class: "hnum", text: String(i + 1) }),
+          el("div", { class: "hbody" },
+            el("p", { class: "headline", text: it.headline }),
+            it.stresses ? el("p", { class: "stress" }, el("b", { text: K.stressLabel + ": " }), it.stresses) : null,
+            it.against ? el("p", { class: "stress against" }, el("b", { text: K.againstLabel + ": " }), it.against) : null)),
+        SC.map((sc, k) => el("div", { class: "schoices" + (sc.options.every(r => String(r.label).length <= 2) ? " nums" : ""), role: "group", "aria-label": sc.label + " " + (i + 1) },
+          el("span", { class: "glabel", text: sc.label }),
+          sc.options.map(r => el("button", { type: "button", class: "schoice c-j" + (H.rates[k][i] === r.id ? " on" : ""), "data-fid": "hrt" + k + "-" + i + r.id,
+            "aria-pressed": H.rates[k][i] === r.id ? "true" : "false", "aria-label": sc.label + " " + (r.name || r.label),
+            onclick: () => { H.rates[k][i] = H.rates[k][i] === r.id ? null : r.id; H.voted = false; renderHeadlines(); }, text: r.label })))),
+        K.omitLabel ? el("label", { class: "field" },
+          el("span", { text: K.omitLabel }),
+          el("input", { type: "text", id: "note" + i, "data-fid": "note" + i, value: H.notes[i], maxlength: "200", autocomplete: "off",
+            oninput: e => { H.notes[i] = e.target.value; const s = $("hWritten"); if (s) s.textContent = H.notes.filter(x => x.trim()).length + " of " + n; } })) : null,
+        el("div", { class: "row" },
+          K.pickClassOnly && !cls ? null : el("button", { type: "button", class: "pick" + (chosen ? " on" : ""), "data-fid": "pk" + i, "aria-pressed": chosen ? "true" : "false",
+            onclick: () => { H.choice = chosen ? null : i; if (H.second === i) H.second = null; H.voted = false; renderHeadlines(); }, text: chosen ? "✓ " + K.pickLabel : K.pickLabel }),
+          K.secondPick && !chosen ? el("button", { type: "button", class: "pick second" + (H.second === i ? " on" : ""), "data-fid": "pk2" + i, "aria-pressed": H.second === i ? "true" : "false",
+            onclick: () => { H.second = H.second === i ? null : i; H.voted = false; renderHeadlines(); }, text: H.second === i ? "✓ " + K.secondPick.label : K.secondPick.label }) : null,
+          !rev && it.omits ? el("button", { type: "button", class: "mini", "data-fid": "hr" + i, onclick: () => { H.revealed.add(i); renderHeadlines(); }, text: K.revealButton || "Show a possible answer" }) : null,
+          cls ? el("span", { class: "tally inline" },
+            el("span", { text: K.tallyLabel }),
+            el("button", { type: "button", "data-fid": "hm" + i, "aria-label": "One fewer for headline " + (i + 1), disabled: H.teams[i] === 0, onclick: () => { H.teams[i]--; renderHeadlines(); }, text: "−" }),
+            el("output", { text: String(H.teams[i]) }),
+            el("button", { type: "button", "data-fid": "hp" + i, "aria-label": "One more for headline " + (i + 1), disabled: H.teams[i] === MAX_TEAMS, onclick: () => { H.teams[i]++; renderHeadlines(); }, text: "+" })) : null),
+        rev && it.omits ? el("p", { class: "why" }, el("b", { text: (K.answerLabel || "Possible answer") + ": " }), it.omits) : null);
+    });
+    return [
+      head(5, UI.council),
+      el("p", { class: "study" }, el("b", { text: (K.studyLabel || "The study") + ": " }), K.study),
+      el("div", { class: "town" },
+        K.omitLabel ? el("div", { class: "stat" }, el("b", { id: "hWritten", text: written + " of " + n }), el("small", { text: K.notesStat || "notes written" }))
+          : SC.length ? el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: judged + " of " + n }), el("small", { text: K.judgedStat || "items judged" })) : null,
+        K.thresholdLine ? el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: thresholdIdx(H) < 0 ? "–" : "No. " + (thresholdIdx(H) + 1) }), el("small", { text: K.thresholdLine.stat })) : null,
+        K.pickClassOnly && !cls ? null : el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: H.choice === null ? "–" : (K.pickStatName ? K.items[H.choice][K.pickStatName] || K.items[H.choice].headline : "No. " + (H.choice + 1)) }), el("small", { text: K.pickStat || "headline chosen" })),
+        K.secondPick ? el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: H.second === null ? "–" : (K.pickStatName ? K.items[H.second][K.pickStatName] || K.items[H.second].headline : "No. " + (H.second + 1)) }), el("small", { text: K.secondPick.stat })) : null),
+      el("ol", { class: "heads" }, rows),
+      K.wordPrompt ? el("label", { class: "field rule" },
+        el("span", { text: K.wordPrompt }),
+        el("input", { type: "text", id: "hword", "data-fid": "hword", value: H.word, maxlength: "80", autocomplete: "off", oninput: e => { H.word = e.target.value; } })) : null,
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderHeadlines), text: K.resultButton }),
+        withAns && K.items.some((x, i) => x.omits && !H.revealed.has(i)) ? el("button", { type: "button", class: "btn ghost", "data-fid": "hrall",
+          onclick: () => { K.items.forEach((_, i) => H.revealed.add(i)); renderHeadlines(); }, text: K.revealAllButton || "Show all possible answers" }) : null,
+        el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderHeadlines(); }, text: "Clear" })),
+      H.voted ? headlineVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function headlineVerdict(){
+  const H = state.council, V = K.verdict, cls = isClass(), SC = scales();
+  if (H.choice === null && !K.pickClassOnly) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  if (K.pickClassOnly && SC.length && !K.items.some((_, i) => SC.some((_, k) => H.rates[k][i]))) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const it = H.choice === null ? {} : K.items[H.choice], ti = thresholdIdx(H);
+  const top = cls ? K.items.map((x, i) => [i, H.teams[i]]).filter(x => x[1] > 0).sort((a, b) => b[1] - a[1]) : [];
+  return verdictBox(
+    el("h3", { text: V.title }),
+    K.thresholdLine ? el("p", { class: "total" }, el("b", { text: K.thresholdLine.label + ": " }), ti < 0 ? K.thresholdLine.none : "No. " + (ti + 1) + ", " + K.items[ti].headline.replace(/\.$/, "")) : null,
+    K.pickClassOnly ? (cls ? el("p", {}, el("b", { text: K.pickResultLabel + ": " }), H.choice === null ? V.noPick : "No. " + (H.choice + 1) + ", " + it.headline.replace(/\.$/, "")) : null)
+      : [V.frontLabel ? el("p", {}, el("b", { text: fill(V.frontLabel, { n: H.choice + 1 }) })) : null,
+         el("p", { class: "front", text: it.headline })],
+    K.secondPick ? (H.second === null
+      ? el("p", { class: "link" }, el("b", { text: K.secondPick.resultLabel + ": " }), K.secondPick.missing)
+      : [el("p", {}, el("b", { text: K.secondPick.resultLabel + ": " }), K.items[H.second].headline),
+         K.secondPick.prompt ? el("p", { class: "link", text: K.secondPick.prompt }) : null]) : null,
+    K.wordPrompt ? el("p", {}, el("b", { text: K.wordResultLabel + ": " }), H.word.trim() || V.noWord) : null,
+    it.pickNote ? el("p", { class: "link" }, el("b", { text: (K.pickNoteLabel || "Think about this") + ": " }), it.pickNote) : null,
+    K.omitLabel && H.choice !== null ? el("p", {}, el("b", { text: (K.noteResultLabel || "Your note on what it leaves out") + ": " }), H.notes[H.choice].trim() || V.noNote) : null,
+    it.omits ? el("p", {}, el("b", { text: (K.answerResultLabel || "A possible answer") + ": " }), it.omits) : null,
+    SC.length ? el("div", { class: "notes" },
+      el("span", { class: "kicker", text: V.ratingsTitle }),
+      el("ul", {}, K.items.map((x, i) => el("li", {}, el("b", { text: x.headline.replace(/\.$/, "") + ": " }),
+        SC.map((sc, k) => (SC.length > 1 ? sc.label + " " : "") + (((sc.options.find(r => r.id === H.rates[k][i]) || {}).name) || V.noRating)).join(" · "))))) : null,
+    K.countLine ? el("p", { class: "total" }, fill(K.countLine.text, { n: H.rates[K.countLine.scale].filter(r => r === K.countLine.option).length, m: K.items.length })) : null,
+    SC.length ? ratingPushes(H) : null,
+    top.length ? el("p", {}, el("b", { text: "Team votes: " }), top.map(x => "No. " + (x[0] + 1) + " (" + x[1] + ")").join(", ") + ".") : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderHeadlines));
+}
+function ratingPushes(H){
+  return scales().flatMap((sc, k) => {
+    const P = sc.push; if (!P) return [];
+    const hit = K.items.map((x, i) => i).filter(i => ratingHit(P, H.rates[k][i]));
+    const own = hit.filter(i => K.items[i].push), rest = hit.filter(i => !K.items[i].push);
+    return [
+      ...own.map(i => el("p", { class: "link" }, el("b", { text: (K.items[i].pushLabel || "Push back") + ": " }), K.items[i].push)),
+      rest.length && P.text ? el("p", { class: "link" }, el("b", { text: "Push back: " }), fill(P.text, { items: rest.map(i => "“" + K.items[i].headline + "”").join(", ") })) : null
+    ];
+  });
+}
+
+/* ================= Activity 5 (type "allocate"): (optionally judge each item,) then share out points ================= */
+// Options: judgments (optional), hardButton (optional), step (default 1), typeIn (number box), usedLabel, leaderLabel,
+// item.largestNote / item.leastNote (shown when that item has the most / fewest points), pushLabel.
+// maxEach (cap per item), stars (show ★/☆ instead of "n/total"), allowUnder (the total need not be used up: verdict.underText / allSpentText),
+// criteria: { kicker, prompt, items: [{ id, text }] } = rank these first (verdict.criteriaLabel, criteriaUnmoved),
+// criteriaNotes: [{ above, below, item, pts: "zero"|"some", text }] shown when criterion "above" is ranked higher than "below" and the item got zero / some points,
+// fields: [{ id, kicker?, prompt?, stem?, resultLabel, missing }] = free-answer lines (stem = "finish the sentence").
+function starText(p, m){ return "★".repeat(p) + "☆".repeat(Math.max(0, m - p)); }
+function moveCrit(pos, d){
+  const A = state.council, j = pos + d;
+  if (j < 0 || j >= A.order.length) return;
+  [A.order[pos], A.order[j]] = [A.order[j], A.order[pos]];
+  A.moved = true; A.voted = false; renderAllocate();
+}
+function allocUsed(){ return state.council.pts.reduce((a, b) => a + b, 0); }
+function allocStat(){
+  const used = allocUsed(), T = K.total, s = $("allocUsed");
+  if (s) { s.textContent = used + " of " + T; s.parentNode.classList.toggle("done", used === T); s.parentNode.classList.toggle("over", used > T); }
+}
+function renderAllocate(){
+  const A = state.council, cls = isClass(), T = K.total, step = K.step || 1;
+  const used = allocUsed();
+  const top = Math.max(...A.pts);
+  const leaders = top > 0 ? K.items.filter((_, i) => A.pts[i] === top).map(it => it.short || it.who) : [];
+  const unit = K.unit || "point";
+  const maxE = K.maxEach || T;
+  const setPts = (i, v) => { A.pts[i] = Math.max(0, Math.min(maxE, v)); A.voted = false; renderAllocate(); };
+  paint("p-council", () => {
+    const rows = K.items.map((it, i) => {
+      const j = A.judge[i];
+      return el("li", { class: "srow" + (A.pts[i] > 0 ? " picked" : "") + (A.hard === i ? " is-weak" : "") },
+        el("p", { class: "stext", text: it.who }),
+        it.defense ? el("p", { class: "shint" + (K.defenseQuote === false ? "" : " quote") }, el("b", { text: K.defenseLabel + ": " }), it.defense) : null,
+        K.judgments && K.judgments.length ? el("div", { class: "schoices", role: "group", "aria-label": K.judgeLabel + " " + it.who },
+          el("span", { class: "glabel", text: K.judgeLabel }),
+          K.judgments.map(c => el("button", { type: "button", class: "schoice c-j" + (j === c.id ? " on" : ""), "data-fid": "j" + i + c.id,
+            "aria-pressed": j === c.id ? "true" : "false", onclick: () => { A.judge[i] = j === c.id ? null : c.id; A.voted = false; renderAllocate(); }, text: c.label }))) : null,
+        el("div", { class: "row" },
+          el("span", { class: "tally inline pts" },
+            el("span", { text: K.pointsLabel }),
+            el("button", { type: "button", "data-fid": "am" + i, "aria-label": step + " " + unit + (step === 1 ? "" : "s") + " less for " + it.who, disabled: A.pts[i] === 0,
+              onclick: () => setPts(i, A.pts[i] - step), text: "−" + (step > 1 ? step : "") }),
+            K.typeIn
+              ? el("input", { type: "text", inputmode: "numeric", class: "ptsin", id: "pts" + i, "data-fid": "pts" + i, value: String(A.pts[i]), maxlength: "3",
+                  "aria-label": K.pointsLabel + " for " + it.who, autocomplete: "off",
+                  oninput: e => { const v = parseInt(e.target.value.replace(/\D/g, ""), 10); A.pts[i] = isNaN(v) ? 0 : Math.min(T, v); A.voted = false; allocStat(); },
+                  onchange: () => renderAllocate() })
+              : el("output", { "aria-live": "polite", "aria-label": K.pointsLabel + " for " + it.who + (K.stars ? ": " + A.pts[i] : ""), class: K.stars ? "stars" : null, text: K.stars ? null : A.pts[i] + "/" + T },
+                  K.stars ? [el("span", { text: "★".repeat(A.pts[i]) }), el("span", { class: "off", text: "☆".repeat(Math.max(0, maxE - A.pts[i])) })] : null),
+            el("button", { type: "button", "data-fid": "ap" + i, "aria-label": step + " " + unit + (step === 1 ? "" : "s") + " more for " + it.who, disabled: used >= T || A.pts[i] >= maxE,
+              onclick: () => setPts(i, A.pts[i] + Math.min(step, T - used)), text: "+" + (step > 1 ? step : "") })),
+          K.hardButton ? el("button", { type: "button", class: "weak" + (A.hard === i ? " on" : ""), "data-fid": "ah" + i, "aria-pressed": A.hard === i ? "true" : "false",
+            onclick: () => { A.hard = A.hard === i ? null : i; A.voted = false; renderAllocate(); }, text: (A.hard === i ? "✓ " : "") + K.hardButton }) : null,
+          cls && it.consider && !A.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "ac" + i,
+            onclick: () => { A.shown.add(i); renderAllocate(); }, text: "Show a challenge" }) : null),
+        cls && A.shown.has(i) ? el("p", { class: "why" }, el("b", { text: "Challenge: " }), it.consider) : null);
+    });
+    const C = K.criteria, nc = C ? C.items.length : 0;
+    const crit = C ? el("div", { class: "field rule crit" },
+      C.kicker ? el("span", { class: "kicker", text: C.kicker }) : null,
+      el("span", { text: C.prompt }),
+      el("ol", { class: "rank-list", "aria-label": C.prompt }, A.order.map((ci, pos) => el("li", { class: "rrow" + (pos === 0 ? " first" : "") },
+        el("span", { class: "rnum", "aria-hidden": "true", text: String(pos + 1) }),
+        el("div", { class: "rbody" }, el("p", { class: "stext", text: C.items[ci].text })),
+        el("div", { class: "rbtns" },
+          el("button", { type: "button", class: "rbtn", "data-fid": "cup" + ci, disabled: pos === 0,
+            "aria-label": "Move up: " + C.items[ci].text + " (now number " + (pos + 1) + ")", onclick: () => moveCrit(pos, -1), text: "↑" }),
+          el("button", { type: "button", class: "rbtn", "data-fid": "cdn" + ci, disabled: pos === nc - 1,
+            "aria-label": "Move down: " + C.items[ci].text + " (now number " + (pos + 1) + ")", onclick: () => moveCrit(pos, 1), text: "↓" })))))) : null;
+    const fields = (K.fields || []).map(f => el("label", { class: "field rule" },
+      f.kicker ? el("span", { class: "kicker", text: f.kicker }) : null,
+      el("span", { text: f.stem ? "Finish the sentence: " + f.stem + "…" : f.prompt }),
+      el("input", { type: "text", id: "af" + f.id, "data-fid": "af" + f.id, value: A.fields[f.id] || "", maxlength: "200", autocomplete: "off",
+        oninput: e => { A.fields[f.id] = e.target.value; } })));
+    return [
+      head(5, UI.council),
+      el("p", { class: "study" }, el("b", { text: K.scenarioLabel + ": " }), K.scenario),
+      crit,
+      el("div", { class: "town" },
+        el("div", { class: "stat" + (used === T ? " done" : "") + (used > T ? " over" : "") }, el("b", { id: "allocUsed", "aria-live": "polite", text: used + " of " + T }), el("small", { text: K.usedLabel || "points shared out" })),
+        el("div", { class: "stat" }, el("b", { text: leaders.length ? leaders.join(" & ") : "–" }), el("small", { text: K.leaderLabel || "largest share" }))),
+      el("ol", { class: "sort" }, rows),
+      ...fields,
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderAllocate), text: K.resultButton }),
+        used || A.hard !== null || A.judge.some(Boolean) || A.moved || Object.values(A.fields).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+          onclick: () => { resetCouncil(true); renderAllocate(); }, text: "Clear choices" }) : null),
+      A.voted ? allocateVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function allocateVerdict(){
+  const A = state.council, V = K.verdict, T = K.total;
+  const used = allocUsed(), maxE = K.maxEach || T;
+  if (K.allowUnder ? used === 0 : used < T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.unfinishedText, { n: used, total: T, left: T - used }) }));
+  if (used > T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.overText || V.unfinishedText, { n: used, total: T, over: used - T, left: T - used }) }));
+  const judged = K.judgments && K.judgments.length;
+  const jLabel = id => (K.judgments.find(c => c.id === id) || {}).label;
+  const order = K.items.map((_, i) => i).sort((a, b) => A.pts[b] - A.pts[a]);
+  const top = A.pts[order[0]], low = A.pts[order[order.length - 1]];
+  const leaders = order.filter(i => A.pts[i] === top);
+  const lowest = order.filter(i => A.pts[i] === low && low < top);
+  const zeros = order.filter(i => A.pts[i] === 0);
+  const pl = K.pushLabel || "Push back";
+  return verdictBox(
+    el("h3", { text: V.title }),
+    el("ol", { class: "rank" }, order.map(i => el("li", {},
+      el("b", { text: K.items[i].who + ": " + (K.stars ? (A.pts[i] ? "★".repeat(A.pts[i]) : V.noStar || "0") : A.pts[i] + (K.showOutOf === false ? "" : "/" + T)) }),
+      judged ? el("span", { class: "eff" }, el("b", { text: K.judgeLabel + " " }), jLabel(A.judge[i]) || V.noJudge) : null))),
+    K.allowUnder && used < T && V.underText ? el("p", { class: "link", text: fill(V.underText, { n: used, total: T, left: T - used }) }) : null,
+    K.allowUnder && used === T && V.allSpentText ? el("p", { class: "link", text: V.allSpentText }) : null,
+    el("p", {}, el("b", { text: (V.largestLabel || "Largest share") + ": " }), leaders.map(i => K.items[i].who).join(" and ") + (leaders.length > 1 ? " (tied)" : "") + "."),
+    K.criteria ? el("p", {}, el("b", { text: (V.criteriaLabel || "Your order") + ": " }), A.order.map(ci => K.criteria.items[ci].text).join(", ") + ".") : null,
+    K.criteria && !A.moved && V.criteriaUnmoved ? el("p", { class: "link", text: V.criteriaUnmoved }) : null,
+    ...(K.fields || []).map(f => { const t = (A.fields[f.id] || "").trim();
+      return t ? el("p", {}, el("b", { text: f.resultLabel + ": " }), f.stem ? f.stem + " " + t.replace(/^\.\.\.|^…/, "") : t)
+               : el("p", { class: "link" }, el("b", { text: f.resultLabel + ": " }), f.missing); }),
+    ...(K.criteria && A.moved ? (K.criteriaNotes || []).filter(nt => {
+      const ids = A.order.map(ci => K.criteria.items[ci].id);
+      return ids.indexOf(nt.above) < ids.indexOf(nt.below) && (nt.pts === "zero" ? A.pts[nt.item] === 0 : A.pts[nt.item] > 0);
+    }).map(nt => el("p", { class: "link" }, el("b", { text: pl + ": " }), nt.text)) : []),
+    K.hardButton ? el("p", {}, el("b", { text: V.hardLabel + ": " }), A.hard === null ? V.noHard : K.items[A.hard].who + ". " + K.items[A.hard].defense) : null,
+    zeros.length ? el("p", {}, el("b", { text: (V.zeroLabel || "No responsibility") + ": " }), zeros.map(i => K.items[i].who).join(", ") + ". " + V.zeroPrompt) : null,
+    leaders.filter(i => K.items[i].largestNote).map(i => el("p", { class: "link" }, el("b", { text: pl + ": " }), K.items[i].largestNote)),
+    lowest.filter(i => K.items[i].leastNote).map(i => el("p", { class: "link" }, el("b", { text: pl + ": " }), K.items[i].leastNote)),
+    K.items.some(it => it.consider) ? el("div", { class: "notes" },
+      el("span", { class: "kicker", text: V.challengeTitle }),
+      el("ul", {}, K.items.filter(it => it.consider).map(it => el("li", {}, el("b", { text: it.who + ": " }), it.consider)))) : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderAllocate));
+}
+
+/* ================= Activity 5 (type "rank"): put the items in order, 1 to n ================= */
+function moveRank(pos, d){
+  const R = state.council, j = pos + d;
+  if (j < 0 || j >= R.order.length) return;
+  [R.order[pos], R.order[j]] = [R.order[j], R.order[pos]];
+  R.moved = true; R.voted = false; renderRank();
+}
+function renderRank(){
+  const R = state.council, n = K.items.length;
+  paint("p-council", () => {
+    const rows = R.order.map((idx, pos) => {
+      const it = K.items[idx];
+      return el("li", { class: "rrow" + (pos === 0 ? " first" : "") },
+        el("span", { class: "rnum", "aria-hidden": "true", text: String(pos + 1) }),
+        el("div", { class: "rbody" },
+          el("p", { class: "stext", text: it.text }),
+          it.hint ? el("p", { class: "shint" }, K.hintLabel ? el("b", { text: K.hintLabel + ": " }) : null, it.hint) : null),
+        el("div", { class: "rbtns" },
+          el("button", { type: "button", class: "rbtn", "data-fid": "up" + idx, disabled: pos === 0,
+            "aria-label": "Move up: " + it.text + " (now number " + (pos + 1) + ")", onclick: () => moveRank(pos, -1), text: "↑" }),
+          el("button", { type: "button", class: "rbtn", "data-fid": "dn" + idx, disabled: pos === n - 1,
+            "aria-label": "Move down: " + it.text + " (now number " + (pos + 1) + ")", onclick: () => moveRank(pos, 1), text: "↓" })));
+    });
+    return [
+      head(5, UI.council),
+      K.scale ? el("p", { class: "study" }, el("b", { text: K.scale.top + " " }), "is number 1. ", el("b", { text: K.scale.bottom + " " }), "is number " + n + ".") : null,
+      el("div", { class: "town" },
+        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: K.items[R.order[0]].short || K.items[R.order[0]].text }), el("small", { text: "number 1" }))),
+      el("ol", { class: "rank-list", "aria-label": "Your order" }, rows),
+      K.textField ? el("label", { class: "field rule" },
+        el("span", { class: "kicker", text: K.textField.kicker }),
+        el("span", { text: K.textField.prompt }),
+        el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: R.text, maxlength: "200", autocomplete: "off",
+          oninput: e => { R.text = e.target.value; } })) : null,
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderRank), text: K.resultButton }),
+        R.moved || R.text ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+          onclick: () => { resetCouncil(true); renderRank(); }, text: "Reset the order" }) : null),
+      R.voted ? rankVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function rankVerdict(){
+  const R = state.council, V = K.verdict, top = R.order[0];
+  return verdictBox(
+    el("h3", { text: V.title }),
+    !R.moved ? el("p", { class: "link", text: V.unmoved }) : null,
+    el("ol", { class: "rank" }, R.order.map(i => el("li", { text: K.items[i].text }))),
+    el("p", { class: "total" }, fill(V.firstLine, { item: K.items[top].text })),
+    K.textField ? (R.text.trim()
+      ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), R.text.trim())
+      : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
+    K.items[top].firstNote ? el("p", { class: "link" }, el("b", { text: "Think about this: " }), K.items[top].firstNote) : null,
+    K.items[R.order[R.order.length - 1]].lastNote ? el("p", { class: "link" }, el("b", { text: "Think about this: " }), K.items[R.order[R.order.length - 1]].lastNote) : null,
+    K.items.some(it => it.note) ? el("div", { class: "notes" },
+      el("span", { class: "kicker", text: V.notesTitle }),
+      el("ul", {}, R.order.filter(i => K.items[i].note).map(i => el("li", {}, el("b", { text: K.items[i].text + " (you put it number " + (R.order.indexOf(i) + 1) + "): " }), K.items[i].note)))) : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderRank));
+}
+
+/* ---------------- tabs ---------------- */
+function buildTabs(){
+  const nav = $("tabs");
+  nav.replaceChildren(...TABS.map(t => el("button", { type: "button", role: "tab", id: "tab-" + t.id, "aria-controls": "p-" + t.id,
+    "aria-selected": t.id === state.tab ? "true" : "false", tabindex: t.id === state.tab ? "0" : "-1",
+    onclick: () => goTab(t.id), text: t.label })));
+  nav.addEventListener("keydown", e => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const i = TABS.findIndex(t => t.id === state.tab);
+    const j = (i + (e.key === "ArrowRight" ? 1 : -1) + TABS.length) % TABS.length;
+    goTab(TABS[j].id); $("tab-" + TABS[j].id).focus(); e.preventDefault();
+  });
+}
+function goTab(id, scroll){
+  state.tab = id;
+  TABS.forEach(t => {
+    const b = $("tab-" + t.id), on = t.id === id;
+    b.setAttribute("aria-selected", on ? "true" : "false"); b.tabIndex = on ? 0 : -1;
+    $("p-" + t.id).hidden = !on;
+  });
+  if (scroll) {
+    $("tabs").scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    $("tab-" + id).focus({ preventScroll: true });
+  }
+}
+
+/* ---------------- modes ---------------- */
+const MODE_TEXT = {
+  solo: "Instant feedback and scores. Work at your own pace on any device.",
+  class: "For projecting in class. Answers stay hidden until you reveal them."
+};
+function setMode(m, initial){
+  state.mode = m;
+  document.body.classList.toggle("is-class", m === "class");
+  $("modeSolo").setAttribute("aria-pressed", m === "solo" ? "true" : "false");
+  $("modeClass").setAttribute("aria-pressed", m === "class" ? "true" : "false");
+  $("modeDesc").textContent = MODE_TEXT[m] + (initial ? "" : " Answers were cleared for the new mode.");
+  $("fsBtn").hidden = m !== "class";
+  $("fsMsg").hidden = true;
+  // Answers are cleared on every switch, so scores and feedback always match the mode.
+  state.cards.shown = false;
+  resetMatch(); resetGap(); resetTF(); resetCouncil(true);
+  renderAll();
+  try { localStorage.setItem("pe-practice-mode", m); } catch (e) {}
+  try { history.replaceState(null, "", m === "class" ? "#classroom" : "#solo"); } catch (e) {}
+}
+function renderAll(){ renderCards(); renderMatch(); renderGap(); renderTF(); renderThink(); }
+
+/* ---------------- full screen ---------------- */
+function fsElement(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
+function fsFallback(){
+  const msg = $("fsMsg");
+  msg.textContent = "Full screen isn't available here. Use your browser's own full-screen option instead: F11 on Windows, or Control + Command + F on a Mac.";
+  msg.hidden = false;
+}
+function toggleFullscreen(){
+  const d = document.documentElement;
+  try {
+    if (fsElement()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+    const req = d.requestFullscreen || d.webkitRequestFullscreen;
+    if (!req) return fsFallback();
+    const p = req.call(d);
+    if (p && typeof p.catch === "function") p.catch(fsFallback);
+  } catch (e) { fsFallback(); }
+}
+function updateFsLabel(){ $("fsBtn").textContent = fsElement() ? "Exit full screen" : "Full screen"; }
+
+/* ---------------- start ---------------- */
+function start(){
+  $("issueLabel").textContent = "Issue " + ISSUE.number + " · Practice Room";
+  $("issueTitle").textContent = ISSUE.title;
+  $("issueDek").textContent = ISSUE.dek;
+  $("issueLevel").textContent = ISSUE.level;
+  const ls = $("levelSwitch");
+  if (ls && ISSUE.levels) ls.replaceChildren(...ISSUE.levels.map(l =>
+    el("a", { href: l.href, "aria-current": l.label === ISSUE.level ? "page" : null, text: l.label + " " + l.name })));
+  const c = ISSUE.cta;
+  $("cta").replaceChildren(
+    el("span", { class: "kicker", text: "The full lesson" }),
+    el("h2", { text: c.title }),
+    el("p", { class: "hint", text: c.text }),
+    el("ul", {}, c.items.map(t => el("li", { text: t }))),
+    el("a", { class: "btn", href: ISSUE.lessonUrl, target: "_blank", rel: "noopener", text: c.button + " →" }));
+
+  buildTabs();
+  $("modeSolo").addEventListener("click", () => { if (state.mode !== "solo") setMode("solo"); });
+  $("modeClass").addEventListener("click", () => { if (state.mode !== "class") setMode("class"); });
+  $("fsBtn").addEventListener("click", toggleFullscreen);
+  document.addEventListener("fullscreenchange", updateFsLabel);
+  document.addEventListener("webkitfullscreenchange", updateFsLabel);
+
+  // Arrow keys move between flashcards when the flashcard activity is open.
+  document.addEventListener("keydown", e => {
+    if (state.tab !== "cards" || e.altKey || e.ctrlKey || e.metaKey) return;
+    const t = e.target;
+    if (t && t.closest && (t.closest("#tabs") || /^(SELECT|INPUT|TEXTAREA)$/.test(t.tagName))) return;
+    if (e.key === "ArrowRight") { moveCard(1); e.preventDefault(); }
+    if (e.key === "ArrowLeft") { moveCard(-1); e.preventDefault(); }
+  });
+
+  let mode = "solo";
+  if (location.hash === "#classroom") mode = "class";
+  else if (location.hash !== "#solo") { try { if (localStorage.getItem("pe-practice-mode") === "class") mode = "class"; } catch (e) {} }
+  setMode(mode, true);
+}
+start();
+})();
+</script>
+
+</body>
+</html>
