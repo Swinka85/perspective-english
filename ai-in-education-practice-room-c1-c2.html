@@ -1204,6 +1204,13 @@ function numberResult(S){
 function thresholdIdx(H){ const T = K.thresholdLine; return T ? K.items.findIndex((_, i) => T.options.includes(H.rates[T.scale][i])) : -1; }
 const ratingHit = (P, r) => Array.isArray(P.rating) ? P.rating.includes(r) : r === P.rating;
 function scales(){ return K.scales || (K.ratings ? [{ label: K.ratingLabel, options: K.ratings, push: K.push }] : []); }
+// Classroom Mode: if no headline was picked but pairs were counted, the clear favorite becomes the class choice (a tie stays unpicked).
+function headlineFromPairs(){
+  const H = state.council;
+  if (!isClass() || H.choice !== null || !H.teams) return;
+  const top = Math.max(...H.teams);
+  if (top > 0 && H.teams.filter(t => t === top).length === 1) H.choice = H.teams.indexOf(top);
+}
 function renderHeadlines(){
   const H = state.council, cls = isClass(), n = K.items.length;
   const written = H.notes.filter(x => x.trim()).length;
@@ -1256,7 +1263,7 @@ function renderHeadlines(){
         el("input", { type: "text", id: "hword", "data-fid": "hword", value: H.word, maxlength: "80", autocomplete: "off", oninput: e => { H.word = e.target.value; } })) : null,
       wtwNote(),
       el("div", { class: "row" },
-        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderHeadlines), text: K.resultButton }),
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => { headlineFromPairs(); showResult(renderHeadlines); }, text: K.resultButton }),
         withAns && K.items.some((x, i) => x.omits && !H.revealed.has(i)) ? el("button", { type: "button", class: "btn ghost", "data-fid": "hrall",
           onclick: () => { K.items.forEach((_, i) => H.revealed.add(i)); renderHeadlines(); }, text: K.revealAllButton || "Show all possible answers" }) : null,
         el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderHeadlines(); }, text: "Clear" })),
