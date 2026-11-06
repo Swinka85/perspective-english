@@ -478,6 +478,8 @@ const ISSUE = {
     }
   },
 
+  world: { room: "ai-friends-b", min: 3, neutral: true },
+
   // Wording for each activity: solo = Solo Practice, cls = Classroom Mode, team = team prompt
   ui: {
     tabs: { cards: "Flashcards", match: "Match", gap: "Fill the gap", tf: "True or false", council: "Is it a real friendship?" },
@@ -1879,10 +1881,17 @@ function wtwModel(){
     const W = ISSUE.world, key = C.choice === null ? null : "h" + C.choice, keys = key ? [key] : [];
     const rows = [{ label: W.pickLabel || "The headline chosen", single: true,
       options: K.items.map((it, i) => ({ key: "h" + i, label: it.headline || it.text })), mine: key ? [key] : [] }];
+    // secondPick: e.g. "Nearly chose"
+    if (K.secondPick) {
+      const k2 = C.second === null || C.second === undefined ? null : "g" + C.second;
+      rows.push({ label: W.secondLabel || K.secondPick.label, single: true, options: K.items.map((it, i) => ({ key: "g" + i, label: it.headline || it.text })), mine: k2 ? [k2] : [] });
+      if (k2) keys.push(k2);
+    }
     // ratings: one stacked bar per row and scale
     K.items.forEach((it, i) => scales().forEach((sc, si) => {
       const r = C.rates[si][i], k = r === null || r === undefined ? null : "r" + si + "-" + i + "-" + r;
-      rows.push({ label: (it.headline || it.text).replace(/[.]$/, "") + (sc.label ? " · " + sc.label : ""), stack: true, single: true,
+      const scl = W.scaleLabel !== undefined ? W.scaleLabel : sc.label;   // ISSUE.world.scaleLabel: "" hides e.g. "· Your number"
+      rows.push({ label: (it.headline || it.text).replace(/[.]$/, "") + (scl ? " · " + scl : ""), stack: true, single: true,
         options: sc.options.map(o => ({ key: "r" + si + "-" + i + "-" + o.id, label: o.name || o.label, cat: o.id })), mine: k ? [k] : [] });
       if (k) keys.push(k);
     }));
@@ -1943,7 +1952,9 @@ function wtwNote(){
 // Bar colors: well-known answer ids get meaning colors; anything else gets a color by its position.
 const WTW_GOOD = ["fine", "ok", "eat", "keep", "yes", "safe", "fair", "worth", "genuine", "trust", "plus"], WTW_BAD = ["cheat", "throw", "no", "not", "cant", "avoid", "unfair", "minus"], WTW_MID = ["unsure", "gray", "partly", "depends", "notreally", "both", "same", "unclear", "mixed", "none"];
 // ISSUE.world.neutral: no green/red meaning colors (for opinion questions on political topics).
-function wtwColor(cat, i){
+function wtwColor(cat, i, all){
+  // number scales (1–5): one color from light to dark, so the bar reads as a scale
+  if (all && all.length > 2 && all.every(o => /^\d+$/.test(o.cat))) return "color-mix(in srgb, var(--navy) " + Math.round(25 + 75 * i / (all.length - 1)) + "%, #fff)";
   if (ISSUE.world.neutral) return ["var(--navy)", "#b8862f", "#6b7280", "#3f7f7a"][i % 4];
   if (WTW_GOOD.includes(cat)) return "var(--good)";
   if (WTW_BAD.includes(cat)) return "var(--bad)";
@@ -1966,7 +1977,7 @@ function wtwBox(){
     if (!total) return;
     const youTag = isClass() ? " ✓ your class’s answer" : " ✓ your answer";
     if (row.stack) {
-      const parts = row.options.map((o, k) => ({ o, col: wtwColor(o.cat, k), c: st.counts[o.key] || 0, pc: Math.round(100 * (st.counts[o.key] || 0) / total), you: row.mine.includes(o.key) }));
+      const parts = row.options.map((o, k) => ({ o, col: wtwColor(o.cat, k, row.options), c: st.counts[o.key] || 0, pc: Math.round(100 * (st.counts[o.key] || 0) / total), you: row.mine.includes(o.key) }));
       box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
         el("span", { class: "wtw-stack", "aria-hidden": "true" }, parts.filter(p => p.c > 0).map(p => el("span", { class: p.you ? "you" : "", style: "flex:" + p.c + " 1 0;background:" + p.col }))),
         el("p", { class: "wtw-legend" }, parts.map(p => el("span", { class: p.you ? "you" : "" }, el("i", { "aria-hidden": "true", style: "background:" + p.col }), p.o.label + " " + p.pc + "%" + (p.you ? youTag : ""))))));
