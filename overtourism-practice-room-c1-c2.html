@@ -1795,7 +1795,7 @@ function wtwModel(){
   if (TYPE === "council") {
     const SQv = "sq", rows = [];
     const mine = [...C.sel].map(i => "m" + i).concat(C.statusQuo ? [SQv] : []);
-    K.measures.forEach((m, i) => rows.push({ label: m.name, options: [{ key: "m" + i, label: K.passedWord || "Passed" }], mine }));
+    K.measures.forEach((m, i) => rows.push({ label: m.name, options: [{ key: "m" + i, label: K.passedWord || "Chose this" }], mine }));
     rows.push({ label: K.statusQuo.name, options: [{ key: SQv, label: K.statusQuo.worldWord || "Chose this" }], mine });
     const wk = C.weak === null || C.weak === undefined ? null : (C.weak === SQ ? "wsq" : "w" + C.weak);
     if (K.weakest) rows.push({ label: K.weakest.resultLabel, single: true,
