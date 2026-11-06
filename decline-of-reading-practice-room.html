@@ -280,6 +280,10 @@ header:has(.mast) h1,h2,.cta h2{color:#1a2a5e}
 .stress.against{color:var(--muted-strong)}
 .schoices.nums{gap:6px}
 .schoices.nums .schoice{min-width:40px;padding:7px 0;text-align:center}
+.gcell{display:inline-flex;align-items:center;gap:8px;padding-left:8px}
+.gnum{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1.5px dashed var(--line);font-weight:800;font-size:.9rem;font-variant-numeric:tabular-nums}
+.gcell.on .gnum{border:0;background:var(--onnavy);color:var(--navy)}
+.gpicks{margin-top:8px}
 @media(max-width:520px){.schoices.nums .glabel{flex-basis:100%}.schoices.nums .schoice{min-width:44px;min-height:44px}}
 .tally.inline{padding:0;margin-left:auto}
 .verdict .front{font-family:var(--display);font-weight:800;font-size:1.6rem;line-height:1.2;background:#fff;color:var(--ink);border-radius:6px;padding:14px 16px;margin:0}
@@ -294,6 +298,9 @@ header:has(.mast) h1,h2,.cta h2{color:#1a2a5e}
 .notes .eff{display:block;font-size:.92rem}
 .verdict .total{font-size:1.15rem;font-weight:700}
 .verdict .rank{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.verdict .path{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.schoice:disabled{cursor:default}
+.schoice:disabled:not(.on){opacity:.4}
 .shint.quote{font-style:italic}
 .shint.quote b{font-style:normal}
 .glabel{font-size:.85rem;font-weight:700;color:var(--muted-strong);margin-right:2px}
@@ -301,6 +308,18 @@ header:has(.mast) h1,h2,.cta h2{color:#1a2a5e}
 .srow.is-weak{border-color:#b79a4e}
 .tally.pts{margin-left:0;margin-right:auto}
 .tally.pts output{min-width:3.4ch}
+.tally.pts output.stars{min-width:3.6ch;letter-spacing:1px;color:#a8740e;font-size:1.1rem;text-align:center}
+.crit .rank-list{margin:8px 0 0;gap:6px}
+.rline{display:flex;justify-content:center;margin:-4px 0}
+.rline .mini{border-style:dashed;font-size:.8rem;min-height:36px}
+.rline.on{border-top:3px solid var(--navy);padding-top:6px;margin:2px 0}
+.rline.on .mini{border-style:solid;background:var(--navy);color:var(--onnavy);border-color:var(--navy)}
+.crit .rrow{padding:6px 10px;gap:10px}
+.crit .rnum{width:30px;height:30px;font-size:.95rem}
+.crit .rbtns{flex-direction:row}
+.crit .rbtn{width:44px;height:44px}
+.crit .stext{margin:0}
+.tally.pts output.stars .off{color:#cfc6b4}
 .stat.done b{color:var(--good)}
 .is-class .glabel{font-size:.95rem}
 /* Activity 5: price tags, number input, ratings */
@@ -330,6 +349,7 @@ header:has(.mast) h1,h2,.cta h2{color:#1a2a5e}
 .rbtn:disabled{opacity:.3;cursor:not-allowed}
 .is-class .rnum{width:52px;height:52px;font-size:1.6rem}
 .is-class .rbtn{width:54px;height:48px;font-size:1.3rem}
+.is-class .crit .rnum{width:36px;height:36px;font-size:1.1rem}
 @media(max-width:520px){.weakrow{padding-left:12px}.tally.inline{margin-left:0}.rrow{padding:10px}.rnum{width:34px;height:34px;font-size:1.05rem}}
 </style>
 
@@ -415,6 +435,7 @@ const ISSUE = {
   // Activity 5: "Reading detective". No correct sorting (teacher guide); focus on the reasoning, not the label.
   thinking: {
     type: "sort",
+    teamVotes: true,
     categories: [ { id: "deep", label: "Deep" }, { id: "quick", label: "Quick" }, { id: "both", label: "Both" } ],
     hintLabel: null,
     items: [
@@ -495,7 +516,7 @@ const ISSUE = {
 
 const UI = ISSUE.ui;
 const K = ISSUE.thinking || ISSUE.council;   // Activity 5 content
-const TYPE = (K && K.type) || "council";    // "council", "sort" or "headlines"
+const TYPE = (K && K.type) || "council";    // "council", "sort", "headlines", "allocate", "grid", "rank", "design" or "decisions"
 const TABS = ["cards", "match", "gap", "tf", "council"].map(id => ({ id, label: UI.tabs[id] }));
 const LETTERS = "ABCDEFGHIJ";
 const MAX_TEAMS = 10;
@@ -515,7 +536,7 @@ function el(tag, props, ...kids){
     else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
     else n.setAttribute(k, v === true ? "" : v);
   }
-  for (const c of kids.flat()) { if (c == null || c === false) continue; n.append(c instanceof Node ? c : document.createTextNode(String(c))); }
+  for (const c of kids.flat(Infinity)) { if (c == null || c === false) continue; n.append(c instanceof Node ? c : document.createTextNode(String(c))); }
   return n;
 }
 
@@ -525,6 +546,7 @@ function paint(id, build){
   const a = document.activeElement;
   const fid = a && p.contains(a) ? a.getAttribute("data-fid") : null;
   p.replaceChildren(...build().filter(Boolean));
+  if (id === "p-council" && typeof wtwAttach === "function") wtwAttach();
   if (fid) { const t = p.querySelector('[data-fid="' + fid + '"]'); if (t) t.focus({ preventScroll: true }); }
 }
 
@@ -547,11 +569,15 @@ function resetMatch(){
 function resetGap(){ state.gap = { vals: ISSUE.gaps.map(() => ""), checked: false, revealed: new Set() }; }
 function resetTF(){ state.tf = { ans: ISSUE.truefalse.map(() => null), revealed: new Set() }; }
 function freshThink(){
-  if (TYPE === "sort") return { picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), finals: {}, rule: "", text: "", text2: "", num: "", nums: [], shown: new Set(), voted: false };
-  if (TYPE === "rank") return { order: K.items.map((_, i) => i), moved: false, text: "", voted: false };
-  if (TYPE === "allocate") return { judge: K.items.map(() => null), pts: K.items.map(() => 0), hard: null, shown: new Set(), voted: false };
+  if (TYPE === "sort") return { votes: K.items.map(() => ({})), fvotes: {}, picks: K.items.map(() => null), depends: K.items.map(() => ""), asks: K.items.map(() => ""), prices: K.items.map(() => ""), finals: {}, rule: "", text: "", text2: "", num: "", nums: [], shown: new Set(), voted: false };
+  if (TYPE === "rank") return { order: K.items.map((_, i) => i), moved: false, text: "", line: null, asks: K.items.map(() => ""), voted: false };
+  if (TYPE === "allocate") return { judge: K.items.map(() => null), pts: K.items.map(() => 0), hard: null, shown: new Set(), voted: false,
+    order: K.criteria ? K.criteria.items.map((_, i) => i) : [], moved: false, fields: {} };
+  if (TYPE === "grid") return { ranks: K.rows.map(() => ({})), own: null, rowPick: {}, text: "", voted: false };
+  if (TYPE === "decisions") return { vals: Object.fromEntries(K.rows.map(r => [r.id, r.type === "multi" ? [] : (r.type === "choice" ? null : "")])), lose: Object.fromEntries(K.rows.map(r => [r.id, ""])), voted: false };
+  if (TYPE === "design") return { rows: Array.from({ length: K.min || 3 }, () => ({ name: "", dates: "", why: "", kind: null })), voted: false };
   if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, second: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
-  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0), voted: false };
+  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0).concat([0]), voted: false };
 }
 function resetCouncil(full){
   if (!state.council || full) state.council = freshThink();
@@ -818,14 +844,14 @@ function renderTF(){
 /* ================= Activity 5: Council ================= */
 function toggleMeasure(i){
   const C = state.council;
-  C.statusQuo = false;
+  if (!isClass()) C.statusQuo = false;   // Classroom Mode: teams may back rules and "change nothing" side by side
   C.sel.has(i) ? C.sel.delete(i) : C.sel.add(i);
   C.voted = false; renderCouncil();
 }
 function toggleStatusQuo(){
   const C = state.council;
   C.statusQuo = !C.statusQuo;
-  if (C.statusQuo) C.sel.clear();
+  if (C.statusQuo && !isClass()) C.sel.clear();
   C.voted = false; renderCouncil();
 }
 function toggleWeak(id){
@@ -841,7 +867,7 @@ function setTeams(i, d){
 function renderCouncil(){
   const C = state.council, cls = isClass(), M = K.measures;
   paint("p-council", () => {
-    const passedLabel = C.statusQuo ? "None" : C.sel.size + " of " + M.length;
+    const passedLabel = C.statusQuo && !C.sel.size ? "None" : C.sel.size + " of " + M.length;
     const tile = (m, on, onclick, fid) => el("button", { type: "button", class: "measure", "data-fid": fid, "aria-pressed": on ? "true" : "false", onclick },
       el("span", { class: "box", "aria-hidden": "true", text: on ? "✓" : "" }),
       el("span", { class: "mtxt" },
@@ -853,19 +879,21 @@ function renderCouncil(){
         "aria-pressed": C.weak === id ? "true" : "false", "aria-label": K.weakest.button + ": " + name,
         onclick: () => toggleWeak(id), text: (C.weak === id ? "✓ " : "") + K.weakest.button })) : null;
 
+    // Classroom Mode: a "Teams in favor" counter on every option, "Change nothing" included (index M.length).
+    const tally = (i, name) => cls ? el("div", { class: "tally" },
+      el("span", { text: "Teams in favor" }),
+      el("button", { type: "button", "data-fid": "tm" + i, "aria-label": "One fewer team in favor of " + name, disabled: C.teams[i] === 0, onclick: () => setTeams(i, -1), text: "−" }),
+      el("output", { "aria-live": "polite", "aria-label": "Teams in favor of " + name, text: String(C.teams[i]) }),
+      el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null;
     const list = M.map((m, i) => {
       const on = C.sel.has(i);
       return el("div", { class: "mwrap" + (on ? " on" : "") + (C.weak === i ? " is-weak" : "") },
         tile(m, on, () => toggleMeasure(i), "m" + i),
-        cls ? el("div", { class: "tally" },
-          el("span", { text: "Teams in favor" }),
-          el("button", { type: "button", "data-fid": "tm" + i, "aria-label": "One fewer team in favor of " + m.name, disabled: C.teams[i] === 0, onclick: () => setTeams(i, -1), text: "−" }),
-          el("output", { "aria-live": "polite", "aria-label": "Teams in favor of " + m.name, text: String(C.teams[i]) }),
-          el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + m.name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null,
+        tally(i, m.name),
         weakBtn(i, m.name));
     });
-    const sq = el("div", { class: "mwrap sq" + (C.statusQuo ? " on" : "") + (C.weak === SQ ? " is-weak" : "") },
-      tile(K.statusQuo, C.statusQuo, toggleStatusQuo, "msq"), weakBtn(SQ, K.statusQuo.name));
+    const sq = el("div", { class: "mwrap" + (cls ? "" : " sq") + (C.statusQuo ? " on" : "") + (C.weak === SQ ? " is-weak" : "") },
+      tile(K.statusQuo, C.statusQuo, toggleStatusQuo, "msq"), tally(M.length, K.statusQuo.name), weakBtn(SQ, K.statusQuo.name));
 
     return [
       head(5, UI.council),
@@ -873,8 +901,9 @@ function renderCouncil(){
         K.stats.map(s => el("div", { class: "stat" }, el("b", { text: s.value }), el("small", { text: s.label }))),
         el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: passedLabel }), el("small", { text: K.passedLabel }))),
       el("div", { class: "measures" }, list),
-      el("p", { class: "or", text: "or" }),
+      cls ? null : el("p", { class: "or", text: "or" }),
       sq,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: holdVote, text: "Hold the vote" }),
         (C.sel.size || C.statusQuo || C.weak !== null) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
@@ -885,7 +914,7 @@ function renderCouncil(){
   });
 }
 function holdVote(){
-  state.council.voted = true; renderCouncil();
+  state.council.voted = true; renderCouncil(); wtwGo();
   const v = $("verdict");
   if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
 }
@@ -911,10 +940,11 @@ function verdict(){
   if (!C.sel.size && !C.statusQuo) {
     return box(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
   }
-  if (C.statusQuo) {
+  if (C.statusQuo && !C.sel.size) {
     const q = K.statusQuo;
     return box(
       el("h3", { text: V.nothingTitle }),
+      cls && C.teams[K.measures.length] ? el("p", {}, el("b", { text: q.name }), " (" + C.teams[K.measures.length] + (C.teams[K.measures.length] === 1 ? " team" : " teams") + " in favor)") : null,
       el("div", { class: "effs" }, effects(q)),
       q.group && V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), q.group + ".") : null,
       weakLine, caveat, think, again);
@@ -935,12 +965,13 @@ function verdict(){
     V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), passed.map(i => K.measures[i].group).join("; ") + ".") : null,
     extra.map(l => el("p", { class: "link" }, el("b", { text: V.linkLabel + ": " }), l.text)),
     el("p", { text: note }),
+    C.statusQuo ? el("p", {}, el("b", { text: "Also chosen: " }), K.statusQuo.name, cls && C.teams[K.measures.length] ? " (" + C.teams[K.measures.length] + (C.teams[K.measures.length] === 1 ? " team" : " teams") + " in favor)" : "") : null,
     weakLine, caveat, think, again);
 }
 
 
 /* ---------- shared pieces for Activity 5 ---------- */
-function renderThink(){ if (TYPE === "sort") return renderSort(); if (TYPE === "headlines") return renderHeadlines(); if (TYPE === "allocate") return renderAllocate(); if (TYPE === "rank") return renderRank(); return renderCouncil(); }
+function renderThink(){ if (TYPE === "sort") return renderSort(); if (TYPE === "headlines") return renderHeadlines(); if (TYPE === "allocate") return renderAllocate(); if (TYPE === "rank") return renderRank(); if (TYPE === "grid") return renderGrid(); if (TYPE === "design") return renderDesign(); if (TYPE === "decisions") return renderDecisions(); return renderCouncil(); }
 function thinkBox(V){
   return isClass()
     ? el("div", { class: "think" }, el("span", { class: "kicker", text: V.classLabel }), el("ol", {}, V.classQuestions.map(q => el("li", { text: q }))))
@@ -948,7 +979,7 @@ function thinkBox(V){
 }
 function verdictBox(...kids){ return el("div", { class: "verdict", id: "verdict", tabindex: "-1", role: "region", "aria-label": "Result" }, ...kids); }
 function showResult(render){
-  state.council.voted = true; render();
+  state.council.voted = true; render(); wtwGo();
   const v = $("verdict");
   if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
 }
@@ -962,30 +993,48 @@ function stats(list){
 
 /* ================= Activity 5 (type "sort"): sort each item into a category ================= */
 // item.labels: { categoryId: "button text" } = per-row button labels (also used in the result groups).
+// sequential: true = one step at a time; later rows stay hidden until the current one is chosen, and chosen rows lock ("you cannot go back").
+//   sequentialNote: "Step {k} of {n}"; verdict.notDecided; the result shows the path instead of category groups.
+//   pathTags: true = show each row's tag in the path. askEach.rows: [indexes] = only those rows get a reason box (also shown in the path).
+// quota: { cat, n, restLabel, wrongText: "You kept {k}. Keep exactly {n}." } = choose exactly n lines; unmarked lines are listed under restLabel. hint2 + hint2Label = a second visible column.
 // unique: each category can be used on only one line (choosing it elsewhere clears the old line). hideCategoryStats, markedStat.
 // textField2: a second free-answer box, same shape as textField.
 // pickNotes: [{ when: { itemIndex: categoryId, ... }, text, label? }] shown in the result when those lines were marked that way.
+// askNotes: [{ match: "regex", text, label? }] shown when any askEach answer on a chosen line matches (case-insensitive).
+// priceEach: { prompt, prefix, resultLabel, missing, base, up, down, same, mismatch "{item} {choice} {price} {base}" } = a number box on each marked line (e.g. a new price), checked against the direction chosen.
+// askEach.emptyNote: shown when a marked line has no reason. K.study + K.studyLabel: a line under the heading (e.g. the scenario).
+// emptyNotes: [{ cat, text, label? }] shown when every line is marked and none of them is in that category (e.g. nobody used "Nobody knows").
 function renderSort(){
   const S = state.council, cls = isClass(), n = K.items.length, V = K.verdict;
   const done = S.picks.filter(Boolean).length;
   paint("p-council", () => {
+    const open = K.sequential ? S.picks.findIndex(p => !p) : -1;
     const rows = K.items.map((it, i) => {
       const pick = S.picks[i];
+      if (K.sequential && open >= 0 && i > open) return null;
+      const locked = K.sequential && !!pick;
       const showConsider = it.consider && (cls ? S.shown.has(i) : !!pick);
       return el("li", { class: "srow" + (pick ? " picked" : "") },
         el("p", { class: "stext" }, it.tag ? el("span", { class: "tag", text: it.tag }) : (i + 1) + ". ", it.text),
         it.hint ? el("p", { class: "shint" }, K.hintLabel ? el("b", { text: K.hintLabel + ": " }) : null, it.hint) : null,
+        it.hint2 ? el("p", { class: "shint" }, K.hint2Label ? el("b", { text: K.hint2Label + ": " }) : null, it.hint2) : null,
         el("div", { class: "schoices", role: "group", "aria-label": "Your choice for line " + (i + 1) },
+          teamOn() ? teamChoices(K.categories.map(c => ({ id: c.id, label: (it.labels && it.labels[c.id]) || c.label, cls: "c-" + c.id })), S.votes[i], pick, "s" + i,
+            v => { S.picks[i] = v; S.voted = false; renderSort(); }) :
           K.categories.map(c => el("button", { type: "button", class: "schoice c-" + c.id + (pick === c.id ? " on" : ""), "data-fid": "s" + i + c.id,
-            "aria-pressed": pick === c.id ? "true" : "false",
-            onclick: () => { if (K.unique && pick !== c.id) S.picks = S.picks.map(p => p === c.id ? null : p); S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: (it.labels && it.labels[c.id]) || c.label })),
+            "aria-pressed": pick === c.id ? "true" : "false", disabled: locked,
+            onclick: () => { if (locked) return; if (K.unique && pick !== c.id) S.picks = S.picks.map(p => p === c.id ? null : p); S.picks[i] = pick === c.id ? null : c.id; S.voted = false; renderSort(); }, text: (it.labels && it.labels[c.id]) || c.label })),
           cls && it.consider && !S.shown.has(i) ? el("button", { type: "button", class: "mini", "data-fid": "sc" + i,
             onclick: () => { S.shown.add(i); renderSort(); }, text: "Show a question" }) : null),
         pick === K.dependsOn ? el("label", { class: "field" },
           el("span", { text: K.dependsPrompt }),
           el("input", { type: "text", id: "dep" + i, "data-fid": "dep" + i, value: S.depends[i], maxlength: "160", autocomplete: "off",
             oninput: e => { S.depends[i] = e.target.value; } })) : null,
-        K.askEach && pick ? el("label", { class: "field" },
+        K.priceEach && pick ? el("label", { class: "field" },
+          el("span", { text: K.priceEach.prompt }),
+          el("input", { type: "number", inputmode: "decimal", min: "0", id: "price" + i, "data-fid": "price" + i, value: S.prices[i], autocomplete: "off",
+            oninput: e => { S.prices[i] = e.target.value; S.voted = false; } })) : null,
+        K.askEach && pick && (!K.askEach.rows || K.askEach.rows.includes(i)) ? el("label", { class: "field" },
           el("span", { text: K.askEach.prompt }),
           el("input", { type: "text", id: "ask" + i, "data-fid": "ask" + i, value: S.asks[i], maxlength: "160", autocomplete: "off",
             oninput: e => { S.asks[i] = e.target.value; } })) : null,
@@ -993,13 +1042,19 @@ function renderSort(){
     });
     return [
       head(5, UI.council),
-      stats([[done + " of " + n, K.markedStat || "lines marked"]].concat(K.hideCategoryStats ? [] : K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))),
+      K.study ? el("p", { class: "study" }, el("b", { text: (K.studyLabel || "The task") + ": " }), K.study) : null,
+      stats([[done + " of " + (K.quota ? K.quota.n : n), K.markedStat || "lines marked"]].concat(K.hideCategoryStats ? [] : K.categories.map(c => [String(S.picks.filter(p => p === c.id).length), c.label]))
+        .concat((K.sums || []).map(sm => [sumFmt(sm, sortSum(S, sm)) + (sm.max != null ? " of " + (sm.suffix ? sumFmt(sm, sm.max) : sm.max) : ""), sm.stat]))),
+      teamOn() ? el("p", { class: "team-how" }, el("b", { text: "Team votes: " }), K.teamHow || "Tap an answer once for each team that chose it. The answer with the most teams becomes the class answer.") : null,
       el("ol", { class: "sort" }, rows),
+      K.sequential && open >= 0 && K.sequentialNote ? el("p", { class: "small", text: fill(K.sequentialNote, { k: open + 1, n }) }) : null,
       K.number ? numberField(S, cls) : null,
       K.finals ? el("div", { class: "field rule finals" },
         el("span", { class: "kicker", text: K.finalsTitle || "Your verdict" }),
         K.finals.map(f => el("div", { class: "schoices", role: "group", "aria-label": f.label },
           el("span", { class: "glabel", text: f.label }),
+          teamOn() ? teamChoices(f.options.map(o => ({ id: o.id, label: o.label, cls: "c-j" })), S.fvotes[f.id] = S.fvotes[f.id] || {}, S.finals[f.id] || null, "f" + f.id,
+            v => { S.finals[f.id] = v; S.voted = false; renderSort(); }) :
           f.options.map(o => el("button", { type: "button", class: "schoice c-j" + (S.finals[f.id] === o.id ? " on" : ""), "data-fid": "f" + f.id + o.id,
             "aria-pressed": S.finals[f.id] === o.id ? "true" : "false",
             onclick: () => { S.finals[f.id] = S.finals[f.id] === o.id ? null : o.id; S.voted = false; renderSort(); }, text: o.label }))))) : null,
@@ -1014,10 +1069,11 @@ function renderSort(){
         el("input", { type: "text", id: "tfield2", "data-fid": "tfield2", value: S.text2, maxlength: "200", autocomplete: "off",
           oninput: e => { S.text2 = e.target.value; } })) : null,
       K.ruleStem ? el("label", { class: "field rule" },
-        el("span", { class: "kicker", text: "Your rule" }),
+        el("span", { class: "kicker", text: K.ruleLabel || "Your rule" }),
         el("span", { text: "Finish the sentence: " + K.ruleStem + "…" }),
         el("input", { type: "text", id: "rule", "data-fid": "rule", value: S.rule, maxlength: "200", autocomplete: "off",
           oninput: e => { S.rule = e.target.value; } })) : null,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderSort), text: K.resultButton }),
         done || S.rule || S.text || S.text2 || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
@@ -1026,6 +1082,39 @@ function renderSort(){
       panelNav("council")
     ];
   });
+}
+/* K.teamVotes (Classroom Mode only): each answer button counts teams, so every team casts its own vote.
+   The answer with the most teams becomes the class answer; on a tie the class decides with one tap. */
+function teamOn(){ return !!K.teamVotes && isClass(); }
+function teamPick(counts, cur){
+  const top = Math.max(0, ...Object.values(counts));
+  if (!top) return null;
+  const tied = Object.keys(counts).filter(k => counts[k] === top);
+  return tied.length === 1 ? tied[0] : (tied.includes(cur) ? cur : null);
+}
+function teamChoices(opts, counts, cur, fid, set){
+  const top = Math.max(0, ...Object.values(counts)), tied = top ? opts.filter(o => counts[o.id] === top) : [];
+  const change = (id, d) => { counts[id] = Math.max(0, Math.min(MAX_TEAMS, (counts[id] || 0) + d)); set(teamPick(counts, cur)); };
+  return [
+    ...opts.map(o => el("span", { class: "tvote" },
+      el("button", { type: "button", class: "schoice " + o.cls + (cur === o.id ? " on" : ""), "data-fid": fid + o.id, "aria-pressed": cur === o.id ? "true" : "false",
+        "aria-label": "One more team: " + o.label + " (now " + (counts[o.id] || 0) + ")", disabled: (counts[o.id] || 0) >= MAX_TEAMS, onclick: () => change(o.id, 1) },
+        o.label, el("b", { class: "tv", text: String(counts[o.id] || 0) })),
+      el("button", { type: "button", class: "tvm", "data-fid": fid + "m" + o.id, "aria-label": "One fewer team: " + o.label, disabled: !counts[o.id], onclick: () => change(o.id, -1), text: "−" }))),
+    tied.length > 1 ? el("span", { class: "ttie" }, el("b", { text: "Tied. The class decides: " }),
+      tied.map(o => el("button", { type: "button", class: "mini" + (cur === o.id ? " on" : ""), "data-fid": fid + "t" + o.id, onclick: () => set(o.id), text: o.label }))) : null
+  ];
+}
+function teamLine(opts, counts){
+  if (!Object.values(counts).some(Boolean)) return null;
+  return el("span", { class: "eff" }, el("b", { text: "Team votes: " }), opts.map(o => o.label + " " + (counts[o.id] || 0)).join(" · "));
+}
+function teamStyle(){
+  if (!K.teamVotes || $("team-css")) return;
+  document.head.append(el("style", { id: "team-css", text:
+    ".tvote{display:inline-flex;align-items:center;gap:4px}.schoice .tv{display:inline-block;min-width:1.5em;margin-left:8px;padding:0 6px;border-radius:9px;background:rgba(0,0,0,.08);font-variant-numeric:tabular-nums}" +
+    ".schoice.on .tv{background:rgba(255,255,255,.28)}.tvm{width:30px;height:30px;border:1.5px solid var(--line);background:var(--surface);border-radius:6px;font-weight:700}.tvm:disabled{opacity:.35}" +
+    ".team-how{margin:0 0 12px;font-size:.95rem}.team-how b{color:var(--navy)}.ttie{display:flex;flex-wrap:wrap;align-items:center;gap:6px;width:100%;font-size:.92rem;color:var(--ink)}.ttie .mini.on{background:var(--navy);color:var(--onnavy)}" }));
 }
 function sortVerdict(){
   const S = state.council, V = K.verdict, n = K.items.length;
@@ -1037,48 +1126,74 @@ function sortVerdict(){
       el("b", { text: c.label + " (" + its.length + ")" }),
       its.length ? el("ul", {}, its.map(i => el("li", {}, (K.items[i].labels && K.items[i].labels[c.id]) || K.items[i].text,
         c.id === K.dependsOn ? el("span", { class: "eff" }, el("b", { text: K.dependsPrompt + " " }), S.depends[i].trim() || V.noDepends) : null,
-        K.askEach ? el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), S.asks[i].trim() || K.askEach.missing) : null)))
+        K.priceEach ? el("span", { class: "eff" }, el("b", { text: K.priceEach.resultLabel + ": " }), S.prices[i] !== "" ? (K.priceEach.prefix || "") + S.prices[i] : K.priceEach.missing) : null,
+        K.askEach ? el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), S.asks[i].trim() || K.askEach.missing) : null,
+        teamOn() ? teamLine(K.categories, S.votes[i]) : null)))
         : el("p", { class: "eff", text: V.emptyGroup }));
   });
   const catLabel = id => (K.categories.find(c => c.id === id) || {}).label;
   const notes = K.items.some(it => it.note) ? el("div", { class: "notes" },
     el("span", { class: "kicker", text: K.noteTitle }),
     K.noteIntro ? el("p", { text: K.noteIntro }) : null,
-    el("ul", {}, K.items.map((it, i) => el("li", {},
+    el("ul", {}, K.items.map((it, i) => !it.note ? null : el("li", {},
       el("b", { text: it.text }),
       el("span", { class: "eff" }, el("b", { text: "You chose: " }), catLabel(S.picks[i]) || "not marked"),
       el("span", { class: "eff" }, it.note))))) : null;
   return verdictBox(
     el("h3", { text: V.title }),
-    done < n ? el("p", { text: n - done === 1 ? oneLeft(V) : fill(V.unanswered, { n: n - done }) }) : null,
+    K.quota ? (done !== K.quota.n ? el("p", { class: "link", text: fill(K.quota.wrongText, { k: done, n: K.quota.n }) }) : null)
+      : !K.optionalLines && done < n ? el("p", { text: n - done === 1 ? oneLeft(V) : fill(V.unanswered, { n: n - done }) }) : null,
     K.total ? el("p", { class: "total" }, K.total.sum
       ? fill(K.total.text, { n: dur(K.items.reduce((a, it, i) => a + (S.picks[i] === K.total.cat ? it.mins || 0 : 0), 0)), m: dur(K.items.reduce((a, it) => a + (it.mins || 0), 0)) })
       : fill(K.total.text, { n: S.picks.filter(p => p === K.total.cat).length, m: n })) : null,
     K.textField ? (S.text.trim()
       ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), S.text.trim())
       : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
+    (K.sums || []).map(sm => { const v = sortSum(S, sm); return sm.max != null && v > sm.max
+      ? el("p", { class: "link", text: fill(sm.overText, { n: sm.suffix ? sumFmt(sm, v) : v, max: sm.suffix ? sumFmt(sm, sm.max) : sm.max }) })
+      : [el("p", { class: "total", text: fill(sm.text, { n: sumFmt(sm, v), max: sm.suffix ? sumFmt(sm, sm.max) : sm.max }) }),
+         ...(sm.notes || []).filter(nt => (nt.min == null || v >= nt.min) && (nt.max == null || v <= nt.max)).map(nt => el("p", { class: "link" }, el("b", { text: (nt.label || "Think about this") + ": " }), nt.text))]; }),
     K.textField2 ? (S.text2.trim()
       ? el("p", {}, el("b", { text: K.textField2.resultLabel + ": " }), S.text2.trim())
       : el("p", { class: "link" }, el("b", { text: K.textField2.resultLabel + ": " }), K.textField2.missing)) : null,
-    groups,
+    K.sequential ? el("ol", { class: "path" }, K.items.map((it, i) => el("li", {}, el("b", { text: (K.pathTags && it.tag ? it.tag + " · " : "") + it.text + " " }),
+      S.picks[i] ? ((it.labels && it.labels[S.picks[i]]) || catLabel(S.picks[i])) : V.notDecided,
+      K.askEach && S.picks[i] && (!K.askEach.rows || K.askEach.rows.includes(i)) ? el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), S.asks[i].trim() || K.askEach.missing) : null))) : groups,
+    K.quota ? el("div", { class: "sgroup" }, el("b", { text: K.quota.restLabel + " (" + (n - done) + ")" }),
+      n - done ? el("ul", {}, K.items.map((it, i) => S.picks[i] ? null : el("li", { text: it.text }))) : el("p", { class: "eff", text: V.emptyGroup })) : null,
     K.number ? numberResult(S) : null,
-    K.finals ? K.finals.map(f => el("p", {}, el("b", { text: f.label + " " }), ((f.options.find(o => o.id === S.finals[f.id]) || {}).label) || V.noFinal)) : null,
+    K.finals ? K.finals.map(f => el("p", {}, el("b", { text: f.label + " " }), ((f.options.find(o => o.id === S.finals[f.id]) || {}).label) || V.noFinal,
+      teamOn() ? teamLine(f.options, S.fvotes[f.id] || {}) : null)) : null,
     (K.finalNotes || []).filter(fn => Object.entries(fn.when).every(([k, v]) => S.finals[k] === v)).map(fn => el("p", { class: "link" }, el("b", { text: "Think about this: " }), fn.text)),
     (K.pickNotes || []).filter(pn => Object.entries(pn.when).every(([i, c]) => S.picks[+i] === c)).map(pn => el("p", { class: "link" }, el("b", { text: (pn.label || "Push back") + ": " }), pn.text)),
+    K.priceEach && K.priceEach.mismatch ? K.items.map((it, i) => { const P = K.priceEach, v = parseFloat(S.prices[i]);
+      if (S.prices[i] === "" || isNaN(v)) return null;
+      const bad = (S.picks[i] === P.up && v <= P.base) || (S.picks[i] === P.down && v >= P.base) || (S.picks[i] === P.same && v !== P.base);
+      return bad ? el("p", { class: "link" }, el("b", { text: "Check this: " }), fill(P.mismatch, { item: (it.short || it.text).replace(/\.$/, ""), choice: catLabel(S.picks[i]).toLowerCase(), price: (P.prefix || "") + S.prices[i], base: (P.prefix || "") + P.base })) : null; }) : null,
+    K.askEach && K.askEach.emptyNote && K.items.some((_, i) => S.picks[i] && (!K.askEach.rows || K.askEach.rows.includes(i)) && !S.asks[i].trim()) ? el("p", { class: "link" }, el("b", { text: "Push back: " }), K.askEach.emptyNote) : null,
+    (K.emptyNotes || []).filter(en => S.picks.every(Boolean) && !S.picks.includes(en.cat)).map(en => el("p", { class: "link" }, el("b", { text: (en.label || "Push back") + ": " }), en.text)),
+    (K.askNotes || []).filter(an => K.items.some((_, i) => S.picks[i] && new RegExp(an.match, "i").test(S.asks[i] || ""))).map(an => el("p", { class: "link" }, el("b", { text: (an.label || "Push back") + ": " }), an.text)),
     K.allSame && done === n && S.picks.every(p => p === S.picks[0]) && K.allSame[S.picks[0]] ? el("p", { class: "link" }, el("b", { text: "Push back: " }), K.allSame[S.picks[0]]) : null,
-    K.ruleStem ? el("p", {}, el("b", { text: "Your rule: " }), S.rule.trim() ? K.ruleStem + " " + S.rule.trim().replace(/^\.\.\.|^…/, "") : V.noRule) : null,
+    K.ruleStem ? el("p", {}, el("b", { text: (K.ruleLabel || "Your rule") + ": " }), S.rule.trim() ? K.ruleStem + " " + S.rule.trim().replace(/^\.\.\.|^…/, "") : V.noRule) : null,
     V.compare ? el("p", { text: V.compare }) : null,
     notes,
     V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
     thinkBox(V), againBtn(renderSort));
 }
 
+/* Optional running totals for sort: K.sums = [{ cat, field, stat, text, prefix?, max?, overText? }] adds item[field] for lines marked cat. */
+// suffix (optional): "$70M of $100M" instead of "$70 of 100".
+function sumFmt(sm, v){ return (sm.prefix || "") + v + (sm.suffix || ""); }
+// base (optional): starting value, e.g. a $12 ticket that each choice moves up or down. notes: [{ min?, max?, text, label? }] shown in the result when the total is in range.
+function sortSum(S, sm){ return (sm.base || 0) + K.items.reduce((a, it, i) => a + (S.picks[i] === sm.cat ? (it[sm.field] || 0) : 0), 0); }
 /* "1 lines are not marked yet" → "1 line is not marked yet" (or use verdict.unansweredOne). */
 function oneLeft(V){
   if (V.unansweredOne) return V.unansweredOne;
-  return V.unanswered.replace(/\{n\} (\S+) (are|have)\b/, (m, w, v) =>
-    "1 " + (w === "people" ? "person" : /(sh|ch|x|ss)es$/.test(w) ? w.slice(0, -2) : w.replace(/s$/, "")) + " " + (v === "are" ? "is" : "has"));
+  const sing = w => w === "people" ? "person" : /(sh|ch|x|ss)es$/.test(w) ? w.slice(0, -2) : w.replace(/s$/, "");
+  const out = V.unanswered.replace(/\{n\} ((?:\S+ )*?)(\S+) (are|have)\b/, (m, pre, w, v) => "1 " + pre + sing(w) + " " + (v === "are" ? "is" : "has"));
+  return out.replace("{n}", "1");
 }
+
 /* Minutes as "18 hrs 40 min" (used by summed totals). */
 function dur(m){ const h = Math.floor(m / 60), r = m % 60; return (h ? h + (h === 1 ? " hr" : " hrs") : "") + (h && r ? " " : "") + (r || !h ? r + " min" : ""); }
 
@@ -1127,10 +1242,18 @@ function numberResult(S){
 // K.thresholdLine { scale, options: [ids], label, stat, none } = first item rated one of those options (shown as a stat and in the result).
 // K.pickClassOnly + K.pickResultLabel + verdict.noPick: the pick (e.g. "the line your group disagreed about") only appears in Classroom Mode.
 // scale.push.rating may be an array; push.text may be omitted so only item-specific pushes show.
+// K.zeroNote { option, text, label? } = shown when no item was rated that option on any scale (e.g. nobody marked anything "yes").
 // Rating rows: K.scales = [{ label, options: [{id,label,name}], push? }], or the older single K.ratings / K.ratingLabel / K.push.
 function thresholdIdx(H){ const T = K.thresholdLine; return T ? K.items.findIndex((_, i) => T.options.includes(H.rates[T.scale][i])) : -1; }
 const ratingHit = (P, r) => Array.isArray(P.rating) ? P.rating.includes(r) : r === P.rating;
 function scales(){ return K.scales || (K.ratings ? [{ label: K.ratingLabel, options: K.ratings, push: K.push }] : []); }
+// Classroom Mode: if no headline was picked but pairs were counted, the clear favorite becomes the class choice (a tie stays unpicked).
+function headlineFromPairs(){
+  const H = state.council;
+  if (!isClass() || H.choice !== null || !H.teams) return;
+  const top = Math.max(...H.teams);
+  if (top > 0 && H.teams.filter(t => t === top).length === 1) H.choice = H.teams.indexOf(top);
+}
 function renderHeadlines(){
   const H = state.council, cls = isClass(), n = K.items.length;
   const written = H.notes.filter(x => x.trim()).length;
@@ -1181,8 +1304,9 @@ function renderHeadlines(){
       K.wordPrompt ? el("label", { class: "field rule" },
         el("span", { text: K.wordPrompt }),
         el("input", { type: "text", id: "hword", "data-fid": "hword", value: H.word, maxlength: "80", autocomplete: "off", oninput: e => { H.word = e.target.value; } })) : null,
+      wtwNote(),
       el("div", { class: "row" },
-        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderHeadlines), text: K.resultButton }),
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => { headlineFromPairs(); showResult(renderHeadlines); }, text: K.resultButton }),
         withAns && K.items.some((x, i) => x.omits && !H.revealed.has(i)) ? el("button", { type: "button", class: "btn ghost", "data-fid": "hrall",
           onclick: () => { K.items.forEach((_, i) => H.revealed.add(i)); renderHeadlines(); }, text: K.revealAllButton || "Show all possible answers" }) : null,
         el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderHeadlines(); }, text: "Clear" })),
@@ -1217,6 +1341,7 @@ function headlineVerdict(){
         SC.map((sc, k) => (SC.length > 1 ? sc.label + " " : "") + (((sc.options.find(r => r.id === H.rates[k][i]) || {}).name) || V.noRating)).join(" · "))))) : null,
     K.countLine ? el("p", { class: "total" }, fill(K.countLine.text, { n: H.rates[K.countLine.scale].filter(r => r === K.countLine.option).length, m: K.items.length })) : null,
     SC.length ? ratingPushes(H) : null,
+    K.zeroNote && !H.rates.some(r => r.some(x => x === K.zeroNote.option)) ? el("p", { class: "link" }, el("b", { text: (K.zeroNote.label || "Push back") + ": " }), K.zeroNote.text) : null,
     top.length ? el("p", {}, el("b", { text: "Team votes: " }), top.map(x => "No. " + (x[0] + 1) + " (" + x[1] + ")").join(", ") + ".") : null,
     V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
     thinkBox(V), againBtn(renderHeadlines));
@@ -1236,7 +1361,22 @@ function ratingPushes(H){
 /* ================= Activity 5 (type "allocate"): (optionally judge each item,) then share out points ================= */
 // Options: judgments (optional), hardButton (optional), step (default 1), typeIn (number box), usedLabel, leaderLabel,
 // item.largestNote / item.leastNote (shown when that item has the most / fewest points), pushLabel.
-function allocUsed(){ return state.council.pts.reduce((a, b) => a + b, 0); }
+// maxEach (cap per item), stars (show ★/☆ instead of "n/total"), allowUnder (the total need not be used up: verdict.underText / allSpentText),
+// criteria: { kicker, prompt, items: [{ id, text }] } = rank these first (verdict.criteriaLabel, criteriaUnmoved),
+// criteriaNotes: [{ above, below, item, pts: "zero"|"some", text }] shown when criterion "above" is ranked higher than "below" and the item got zero / some points,
+// fields: [{ id, kicker?, prompt?, stem?, resultLabel, missing }] = free-answer lines (stem = "finish the sentence").
+function starText(p, m){ return "★".repeat(p) + "☆".repeat(Math.max(0, m - p)); }
+function moveCrit(pos, d){
+  const A = state.council, j = pos + d;
+  if (j < 0 || j >= A.order.length) return;
+  [A.order[pos], A.order[j]] = [A.order[j], A.order[pos]];
+  A.moved = true; A.voted = false; renderAllocate();
+}
+// weight: item.weight (default 1) = units each pick uses (e.g. "two days"). K.cost { field, stat, max, prefix, suffix, text, overText, notes } = a second running total
+// (e.g. money) with an optional limit and range notes. K.hideZeros hides the "no points" line. K.showOutOf === false shows plain counts in the rows too.
+function allocUsed(){ return state.council.pts.reduce((a, b, i) => a + b * (K.items[i].weight || 1), 0); }
+function allocCost(){ const C = K.cost; return C ? state.council.pts.reduce((a, b, i) => a + b * (K.items[i][C.field] || 0), 0) : 0; }
+function costFmt(v){ const C = K.cost; return (C.prefix || "") + v.toLocaleString("en-US") + (C.suffix || ""); }
 function allocStat(){
   const used = allocUsed(), T = K.total, s = $("allocUsed");
   if (s) { s.textContent = used + " of " + T; s.parentNode.classList.toggle("done", used === T); s.parentNode.classList.toggle("over", used > T); }
@@ -1247,7 +1387,8 @@ function renderAllocate(){
   const top = Math.max(...A.pts);
   const leaders = top > 0 ? K.items.filter((_, i) => A.pts[i] === top).map(it => it.short || it.who) : [];
   const unit = K.unit || "point";
-  const setPts = (i, v) => { A.pts[i] = Math.max(0, Math.min(T, v)); A.voted = false; renderAllocate(); };
+  const maxE = K.maxEach || T;
+  const setPts = (i, v) => { A.pts[i] = Math.max(0, Math.min(maxE, v)); A.voted = false; renderAllocate(); };
   paint("p-council", () => {
     const rows = K.items.map((it, i) => {
       const j = A.judge[i];
@@ -1268,8 +1409,9 @@ function renderAllocate(){
                   "aria-label": K.pointsLabel + " for " + it.who, autocomplete: "off",
                   oninput: e => { const v = parseInt(e.target.value.replace(/\D/g, ""), 10); A.pts[i] = isNaN(v) ? 0 : Math.min(T, v); A.voted = false; allocStat(); },
                   onchange: () => renderAllocate() })
-              : el("output", { "aria-live": "polite", "aria-label": K.pointsLabel + " for " + it.who, text: A.pts[i] + "/" + T }),
-            el("button", { type: "button", "data-fid": "ap" + i, "aria-label": step + " " + unit + (step === 1 ? "" : "s") + " more for " + it.who, disabled: used >= T,
+              : el("output", { "aria-live": "polite", "aria-label": K.pointsLabel + " for " + it.who + (K.stars || K.cost ? ": " + A.pts[i] : ""), class: K.stars ? "stars" : null, text: K.stars ? null : K.cost && K.showOutOf === false ? String(A.pts[i]) : A.pts[i] + "/" + T },
+                  K.stars ? [el("span", { text: "★".repeat(A.pts[i]) }), el("span", { class: "off", text: "☆".repeat(Math.max(0, maxE - A.pts[i])) })] : null),
+            el("button", { type: "button", "data-fid": "ap" + i, "aria-label": step + " " + unit + (step === 1 ? "" : "s") + " more for " + it.who, disabled: used >= T || A.pts[i] >= maxE || (it.weight || 1) > T - used,
               onclick: () => setPts(i, A.pts[i] + Math.min(step, T - used)), text: "+" + (step > 1 ? step : "") })),
           K.hardButton ? el("button", { type: "button", class: "weak" + (A.hard === i ? " on" : ""), "data-fid": "ah" + i, "aria-pressed": A.hard === i ? "true" : "false",
             onclick: () => { A.hard = A.hard === i ? null : i; A.voted = false; renderAllocate(); }, text: (A.hard === i ? "✓ " : "") + K.hardButton }) : null,
@@ -1277,16 +1419,37 @@ function renderAllocate(){
             onclick: () => { A.shown.add(i); renderAllocate(); }, text: "Show a challenge" }) : null),
         cls && A.shown.has(i) ? el("p", { class: "why" }, el("b", { text: "Challenge: " }), it.consider) : null);
     });
+    const C = K.criteria, nc = C ? C.items.length : 0;
+    const crit = C ? el("div", { class: "field rule crit" },
+      C.kicker ? el("span", { class: "kicker", text: C.kicker }) : null,
+      el("span", { text: C.prompt }),
+      el("ol", { class: "rank-list", "aria-label": C.prompt }, A.order.map((ci, pos) => el("li", { class: "rrow" + (pos === 0 ? " first" : "") },
+        el("span", { class: "rnum", "aria-hidden": "true", text: String(pos + 1) }),
+        el("div", { class: "rbody" }, el("p", { class: "stext", text: C.items[ci].text })),
+        el("div", { class: "rbtns" },
+          el("button", { type: "button", class: "rbtn", "data-fid": "cup" + ci, disabled: pos === 0,
+            "aria-label": "Move up: " + C.items[ci].text + " (now number " + (pos + 1) + ")", onclick: () => moveCrit(pos, -1), text: "↑" }),
+          el("button", { type: "button", class: "rbtn", "data-fid": "cdn" + ci, disabled: pos === nc - 1,
+            "aria-label": "Move down: " + C.items[ci].text + " (now number " + (pos + 1) + ")", onclick: () => moveCrit(pos, 1), text: "↓" })))))) : null;
+    const fields = (K.fields || []).map(f => el("label", { class: "field rule" },
+      f.kicker ? el("span", { class: "kicker", text: f.kicker }) : null,
+      el("span", { text: f.stem ? "Finish the sentence: " + f.stem + "…" : f.prompt }),
+      el("input", { type: "text", id: "af" + f.id, "data-fid": "af" + f.id, value: A.fields[f.id] || "", maxlength: "200", autocomplete: "off",
+        oninput: e => { A.fields[f.id] = e.target.value; } })));
     return [
       head(5, UI.council),
       el("p", { class: "study" }, el("b", { text: K.scenarioLabel + ": " }), K.scenario),
+      crit,
       el("div", { class: "town" },
         el("div", { class: "stat" + (used === T ? " done" : "") + (used > T ? " over" : "") }, el("b", { id: "allocUsed", "aria-live": "polite", text: used + " of " + T }), el("small", { text: K.usedLabel || "points shared out" })),
-        el("div", { class: "stat" }, el("b", { text: leaders.length ? leaders.join(" & ") : "–" }), el("small", { text: K.leaderLabel || "largest share" }))),
+        K.cost ? el("div", { class: "stat" + (K.cost.max != null && allocCost() > K.cost.max ? " over" : "") }, el("b", { "aria-live": "polite", text: costFmt(allocCost()) + (K.cost.max != null ? " of " + costFmt(K.cost.max) : "") }), el("small", { text: K.cost.stat }))
+          : el("div", { class: "stat" }, el("b", { text: leaders.length ? leaders.join(" & ") : "–" }), el("small", { text: K.leaderLabel || "largest share" }))),
       el("ol", { class: "sort" }, rows),
+      ...fields,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderAllocate), text: K.resultButton }),
-        used || A.hard !== null || A.judge.some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+        used || A.hard !== null || A.judge.some(Boolean) || A.moved || Object.values(A.fields).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
           onclick: () => { resetCouncil(true); renderAllocate(); }, text: "Clear choices" }) : null),
       A.voted ? allocateVerdict() : null,
       panelNav("council")
@@ -1295,8 +1458,8 @@ function renderAllocate(){
 }
 function allocateVerdict(){
   const A = state.council, V = K.verdict, T = K.total;
-  const used = allocUsed();
-  if (used < T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.unfinishedText, { n: used, total: T, left: T - used }) }));
+  const used = allocUsed(), maxE = K.maxEach || T;
+  if (K.allowUnder ? used === 0 : used < T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.unfinishedText, { n: used, total: T, left: T - used }) }));
   if (used > T) return verdictBox(el("h3", { text: V.unfinishedTitle }), el("p", { text: fill(V.overText || V.unfinishedText, { n: used, total: T, over: used - T, left: T - used }) }));
   const judged = K.judgments && K.judgments.length;
   const jLabel = id => (K.judgments.find(c => c.id === id) || {}).label;
@@ -1308,12 +1471,28 @@ function allocateVerdict(){
   const pl = K.pushLabel || "Push back";
   return verdictBox(
     el("h3", { text: V.title }),
-    el("ol", { class: "rank" }, order.map(i => el("li", {},
-      el("b", { text: K.items[i].who + ": " + A.pts[i] + (K.showOutOf === false ? "" : "/" + T) }),
+    el("ol", { class: "rank" }, order.filter(i => !K.hideZeros || A.pts[i] > 0).map(i => el("li", {},
+      el("b", { text: K.items[i].who + ": " + (K.stars ? (A.pts[i] ? "★".repeat(A.pts[i]) : V.noStar || "0") : A.pts[i] + (K.showOutOf === false ? "" : "/" + T)
+        + ((K.items[i].weight || 1) > 1 ? " (" + A.pts[i] * K.items[i].weight + " " + (K.unit || "point") + "s)" : "")) }),
       judged ? el("span", { class: "eff" }, el("b", { text: K.judgeLabel + " " }), jLabel(A.judge[i]) || V.noJudge) : null))),
+    K.allowUnder && used < T && V.underText ? el("p", { class: "link", text: fill(V.underText, { n: used, total: T, left: T - used }) }) : null,
+    K.allowUnder && used === T && V.allSpentText ? el("p", { class: "link", text: V.allSpentText }) : null,
     el("p", {}, el("b", { text: (V.largestLabel || "Largest share") + ": " }), leaders.map(i => K.items[i].who).join(" and ") + (leaders.length > 1 ? " (tied)" : "") + "."),
+    K.criteria ? el("p", {}, el("b", { text: (V.criteriaLabel || "Your order") + ": " }), A.order.map(ci => K.criteria.items[ci].text).join(", ") + ".") : null,
+    K.criteria && !A.moved && V.criteriaUnmoved ? el("p", { class: "link", text: V.criteriaUnmoved }) : null,
+    ...(K.fields || []).map(f => { const t = (A.fields[f.id] || "").trim();
+      return t ? el("p", {}, el("b", { text: f.resultLabel + ": " }), f.stem ? f.stem + " " + t.replace(/^\.\.\.|^…/, "") : t)
+               : el("p", { class: "link" }, el("b", { text: f.resultLabel + ": " }), f.missing); }),
+    ...(K.criteria && A.moved ? (K.criteriaNotes || []).filter(nt => {
+      const ids = A.order.map(ci => K.criteria.items[ci].id);
+      return ids.indexOf(nt.above) < ids.indexOf(nt.below) && (nt.pts === "zero" ? A.pts[nt.item] === 0 : A.pts[nt.item] > 0);
+    }).map(nt => el("p", { class: "link" }, el("b", { text: pl + ": " }), nt.text)) : []),
     K.hardButton ? el("p", {}, el("b", { text: V.hardLabel + ": " }), A.hard === null ? V.noHard : K.items[A.hard].who + ". " + K.items[A.hard].defense) : null,
-    zeros.length ? el("p", {}, el("b", { text: (V.zeroLabel || "No responsibility") + ": " }), zeros.map(i => K.items[i].who).join(", ") + ". " + V.zeroPrompt) : null,
+    K.cost ? (() => { const v = allocCost(), C = K.cost;
+      return C.max != null && v > C.max ? el("p", { class: "link", text: fill(C.overText, { n: costFmt(v), max: costFmt(C.max) }) })
+        : [el("p", { class: "total", text: fill(C.text, { n: costFmt(v), max: C.max != null ? costFmt(C.max) : "" }) }),
+           ...(C.notes || []).filter(nt => (nt.min == null || v >= nt.min) && (nt.max == null || v <= nt.max)).map(nt => el("p", { class: "link" }, el("b", { text: (nt.label || pl) + ": " }), nt.text))]; })() : null,
+    zeros.length && !K.hideZeros ? el("p", {}, el("b", { text: (V.zeroLabel || "No responsibility") + ": " }), zeros.map(i => K.items[i].who).join(", ") + ". " + V.zeroPrompt) : null,
     leaders.filter(i => K.items[i].largestNote).map(i => el("p", { class: "link" }, el("b", { text: pl + ": " }), K.items[i].largestNote)),
     lowest.filter(i => K.items[i].leastNote).map(i => el("p", { class: "link" }, el("b", { text: pl + ": " }), K.items[i].leastNote)),
     K.items.some(it => it.consider) ? el("div", { class: "notes" },
@@ -1323,6 +1502,92 @@ function allocateVerdict(){
     thinkBox(V), againBtn(renderAllocate));
 }
 
+/* ================= Activity 5 (type "grid"): rank the columns 1..m in every row ================= */
+// K.columns [{ id, label }], K.rows [{ text, kind? }], scaleLabel/scaleNote (e.g. "1 = hardest, 4 = easiest").
+// Tapping a column gives it the next free number in that row (tap again to remove), so each number is used once per row.
+// Totals add up finished rows (lowest total = rank 1 overall). verdict.overallText "{first}" / "{last}" / "{firstToLast}" / "{lastToFirst}".
+// K.own { kicker, prompt, resultLabel, firstNote } = optional "your own generation"; firstNote shown when it comes first overall.
+// K.rowPicks [{ id, label, resultLabel, missing, notes: { kind: text } }] = choose one row for each pick; notes by the row's kind.
+function gridNext(r){ const used = Object.values(r); for (let k = 1; k <= K.columns.length; k++) if (!used.includes(k)) return k; return null; }
+function gridDone(r){ return Object.keys(r).length === K.columns.length; }
+function gridTotals(){
+  const G = state.council, t = {}; let used = 0;
+  K.columns.forEach(c => t[c.id] = 0);
+  G.ranks.forEach(r => { if (gridDone(r)) { used++; K.columns.forEach(c => t[c.id] += r[c.id]); } });
+  const order = K.columns.slice().sort((a, b) => t[a.id] - t[b.id]);
+  const lo = used ? t[order[0].id] : null, hi = used ? t[order[order.length - 1].id] : null;
+  return { t, used, order, first: used ? K.columns.filter(c => t[c.id] === lo) : [], last: used ? K.columns.filter(c => t[c.id] === hi && hi !== lo) : [] };
+}
+function renderGrid(){
+  const G = state.council, n = K.rows.length;
+  const full = G.ranks.filter(gridDone).length, T = gridTotals();
+  paint("p-council", () => {
+    const rows = K.rows.map((row, i) => {
+      const r = G.ranks[i];
+      return el("li", { class: "srow" + (gridDone(r) ? " picked" : "") },
+        el("p", { class: "stext", text: row.text }),
+        el("div", { class: "schoices gcols", role: "group", "aria-label": row.text },
+          K.columns.map(c => { const v = r[c.id];
+            return el("button", { type: "button", class: "schoice gcell" + (v ? " on" : ""), "data-fid": "g" + i + c.id, "aria-pressed": v ? "true" : "false",
+              "aria-label": c.label + (v ? ", number " + v : ""),
+              onclick: () => { if (v) delete r[c.id]; else { const k = gridNext(r); if (k) r[c.id] = k; } G.voted = false; renderGrid(); } },
+              el("span", { class: "gnum", "aria-hidden": "true", text: v ? String(v) : "" }), el("span", { text: c.label })); })),
+        K.rowPicks ? el("div", { class: "row gpicks" }, K.rowPicks.map(p => el("button", { type: "button", class: "pick second" + (G.rowPick[p.id] === i ? " on" : ""),
+          "data-fid": "gp" + p.id + i, "aria-pressed": G.rowPick[p.id] === i ? "true" : "false",
+          onclick: () => { G.rowPick[p.id] = G.rowPick[p.id] === i ? null : i; G.voted = false; renderGrid(); }, text: (G.rowPick[p.id] === i ? "✓ " : "") + p.label }))) : null);
+    });
+    return [
+      head(5, UI.council),
+      K.scaleNote ? el("p", { class: "study" }, el("b", { text: (K.scaleLabel || "How to rank") + ": " }), K.scaleNote) : null,
+      el("div", { class: "town" },
+        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: full + " of " + n }), el("small", { text: K.doneStat || "rows finished" })),
+        el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: T.first.length ? T.first.map(c => c.label).join(" & ") : "–" }), el("small", { text: K.firstStat || "first overall" }))),
+      el("ol", { class: "sort" }, rows),
+      K.own ? el("div", { class: "field rule finals" },
+        K.own.kicker ? el("span", { class: "kicker", text: K.own.kicker }) : null,
+        el("div", { class: "schoices", role: "group", "aria-label": K.own.prompt },
+          el("span", { class: "glabel", text: K.own.prompt }),
+          K.columns.map(c => el("button", { type: "button", class: "schoice" + (G.own === c.id ? " on" : ""), "data-fid": "own" + c.id, "aria-pressed": G.own === c.id ? "true" : "false",
+            onclick: () => { G.own = G.own === c.id ? null : c.id; G.voted = false; renderGrid(); }, text: c.label })))) : null,
+      K.textField ? el("label", { class: "field rule" },
+        K.textField.kicker ? el("span", { class: "kicker", text: K.textField.kicker }) : null,
+        el("span", { text: K.textField.prompt }),
+        el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: G.text, maxlength: "200", autocomplete: "off", oninput: e => { G.text = e.target.value; } })) : null,
+      wtwNote(),
+      el("div", { class: "row" },
+        el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderGrid), text: K.resultButton }),
+        el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderGrid(); }, text: "Clear" })),
+      G.voted ? gridVerdict() : null,
+      panelNav("council")
+    ];
+  });
+}
+function gridVerdict(){
+  const G = state.council, V = K.verdict, n = K.rows.length, T = gridTotals(), pl = K.pushLabel || "Think about this";
+  const full = G.ranks.filter(gridDone).length;
+  if (!full) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const names = ids => ids.map(c => c.label).join(" and ");
+  return verdictBox(
+    el("h3", { text: V.title }),
+    el("ol", { class: "rank" }, K.rows.map((row, i) => { const r = G.ranks[i];
+      return el("li", {}, el("b", { text: row.text + ": " }),
+        gridDone(r) ? K.columns.slice().sort((a, b) => r[a.id] - r[b.id]).map(c => r[c.id] + " " + c.label).join(", ") : V.notFinished); })),
+    full < n ? el("p", { class: "link", text: n - full === 1 ? oneLeft(V) : fill(V.unanswered, { n: n - full }) }) : null,
+    el("p", { class: "total" }, el("b", { text: V.totalsLabel + ": " }), T.order.map(c => c.label + " " + T.t[c.id]).join(", ") + "."),
+    el("p", {}, fill(V.overallText, { first: names(T.first), last: T.last.length ? names(T.last) : V.noLast,
+      firstToLast: T.order.map(c => c.label).join(", "), lastToFirst: T.order.slice().reverse().map(c => c.label).join(", ") })),
+    K.own ? (G.own ? [el("p", {}, el("b", { text: K.own.resultLabel + ": " }), K.columns.find(c => c.id === G.own).label),
+      T.first.some(c => c.id === G.own) && K.own.firstNote ? el("p", { class: "link" }, el("b", { text: pl + ": " }), K.own.firstNote) : null] : null) : null,
+    ...(K.rowPicks || []).map(p => { const i = G.rowPick[p.id];
+      if (i == null) return el("p", { class: "link" }, el("b", { text: p.resultLabel + ": " }), p.missing);
+      const note = p.notes && p.notes[K.rows[i].kind];
+      return [el("p", {}, el("b", { text: p.resultLabel + ": " }), K.rows[i].text), note ? el("p", { class: "link" }, el("b", { text: pl + ": " }), note) : null]; }),
+    K.textField ? el("p", G.text.trim() ? {} : { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), G.text.trim() || K.textField.missing) : null,
+    V.compare ? el("p", { text: V.compare }) : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderGrid));
+}
+
 /* ================= Activity 5 (type "rank"): put the items in order, 1 to n ================= */
 function moveRank(pos, d){
   const R = state.council, j = pos + d;
@@ -1330,25 +1595,37 @@ function moveRank(pos, d){
   [R.order[pos], R.order[j]] = [R.order[j], R.order[pos]];
   R.moved = true; R.voted = false; renderRank();
 }
+// Optional: K.scaleNote (+ scaleLabel) replaces the "X is number 1" line; K.drawLine { label, onLabel, resultLabel, resultText "{a}…{b}", noLine }
+// adds a "draw the line here" button between rows (one line at a time, kept at its position while items move).
+// K.askEach { prompt, resultLabel, missing, emptyNote? } = a text box on every row (e.g. "biggest risk"), kept with its item while rows move.
 function renderRank(){
   const R = state.council, n = K.items.length;
   paint("p-council", () => {
-    const rows = R.order.map((idx, pos) => {
+    const lineBtn = pos => el("li", { class: "rline" + (R.line === pos ? " on" : "") },
+      el("button", { type: "button", class: "mini", "data-fid": "line" + pos, "aria-pressed": R.line === pos ? "true" : "false",
+        "aria-label": K.drawLine.label + " (between number " + (pos + 1) + " and number " + (pos + 2) + ")",
+        onclick: () => { R.line = R.line === pos ? null : pos; R.voted = false; renderRank(); }, text: R.line === pos ? K.drawLine.onLabel : K.drawLine.label }));
+    const rows = R.order.flatMap((idx, pos) => {
       const it = K.items[idx];
-      return el("li", { class: "rrow" + (pos === 0 ? " first" : "") },
+      const row = el("li", { class: "rrow" + (pos === 0 ? " first" : "") },
         el("span", { class: "rnum", "aria-hidden": "true", text: String(pos + 1) }),
         el("div", { class: "rbody" },
           el("p", { class: "stext", text: it.text }),
-          it.hint ? el("p", { class: "shint" }, K.hintLabel ? el("b", { text: K.hintLabel + ": " }) : null, it.hint) : null),
+          it.hint ? el("p", { class: "shint" }, K.hintLabel ? el("b", { text: K.hintLabel + ": " }) : null, it.hint) : null,
+          K.askEach ? el("label", { class: "field" }, el("span", { text: K.askEach.prompt }),
+            el("input", { type: "text", id: "rask" + idx, "data-fid": "rask" + idx, value: R.asks[idx], maxlength: "160", autocomplete: "off",
+              oninput: e => { R.asks[idx] = e.target.value; R.voted = false; } })) : null),
         el("div", { class: "rbtns" },
           el("button", { type: "button", class: "rbtn", "data-fid": "up" + idx, disabled: pos === 0,
             "aria-label": "Move up: " + it.text + " (now number " + (pos + 1) + ")", onclick: () => moveRank(pos, -1), text: "↑" }),
           el("button", { type: "button", class: "rbtn", "data-fid": "dn" + idx, disabled: pos === n - 1,
             "aria-label": "Move down: " + it.text + " (now number " + (pos + 1) + ")", onclick: () => moveRank(pos, 1), text: "↓" })));
+      return K.drawLine && pos < n - 1 ? [row, lineBtn(pos)] : [row];
     });
     return [
       head(5, UI.council),
-      K.scale ? el("p", { class: "study" }, el("b", { text: K.scale.top + " " }), "is number 1. ", el("b", { text: K.scale.bottom + " " }), "is number " + n + ".") : null,
+      K.scaleNote ? el("p", { class: "study" }, el("b", { text: (K.scaleLabel || "How to rank") + ": " }), K.scaleNote)
+        : K.scale ? el("p", { class: "study" }, el("b", { text: K.scale.top + " " }), "is number 1. ", el("b", { text: K.scale.bottom + " " }), "is number " + n + ".") : null,
       el("div", { class: "town" },
         el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: K.items[R.order[0]].short || K.items[R.order[0]].text }), el("small", { text: "number 1" }))),
       el("ol", { class: "rank-list", "aria-label": "Your order" }, rows),
@@ -1357,9 +1634,10 @@ function renderRank(){
         el("span", { text: K.textField.prompt }),
         el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: R.text, maxlength: "200", autocomplete: "off",
           oninput: e => { R.text = e.target.value; } })) : null,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderRank), text: K.resultButton }),
-        R.moved || R.text ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+        R.moved || R.text || R.line !== null || R.asks.some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
           onclick: () => { resetCouncil(true); renderRank(); }, text: "Reset the order" }) : null),
       R.voted ? rankVerdict() : null,
       panelNav("council")
@@ -1371,8 +1649,14 @@ function rankVerdict(){
   return verdictBox(
     el("h3", { text: V.title }),
     !R.moved ? el("p", { class: "link", text: V.unmoved }) : null,
-    el("ol", { class: "rank" }, R.order.map(i => el("li", { text: K.items[i].text }))),
+    el("ol", { class: "rank" }, R.order.map(i => K.askEach
+      ? el("li", {}, K.items[i].text, el("span", { class: "eff" }, el("b", { text: K.askEach.resultLabel + ": " }), R.asks[i].trim() || K.askEach.missing))
+      : el("li", { text: K.items[i].text }))),
+    K.askEach && K.askEach.emptyNote && R.asks.some(a => !a.trim()) ? el("p", { class: "link" }, el("b", { text: "Push back: " }), K.askEach.emptyNote) : null,
     el("p", { class: "total" }, fill(V.firstLine, { item: K.items[top].text })),
+    K.drawLine ? (R.line === null
+      ? el("p", { class: "link" }, el("b", { text: K.drawLine.resultLabel + ": " }), K.drawLine.noLine)
+      : el("p", {}, el("b", { text: K.drawLine.resultLabel + ": " }), fill(K.drawLine.resultText, { a: K.items[R.order[R.line]].text, b: K.items[R.order[R.line + 1]].text }))) : null,
     K.textField ? (R.text.trim()
       ? el("p", {}, el("b", { text: K.textField.resultLabel + ": " }), R.text.trim())
       : el("p", { class: "link" }, el("b", { text: K.textField.resultLabel + ": " }), K.textField.missing)) : null,
@@ -1383,6 +1667,338 @@ function rankVerdict(){
       el("ul", {}, R.order.filter(i => K.items[i].note).map(i => el("li", {}, el("b", { text: K.items[i].text + " (you put it number " + (R.order.indexOf(i) + 1) + "): " }), K.items[i].note)))) : null,
     V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
     thinkBox(V), againBtn(renderRank));
+}
+
+/* ================= Activity 5 (type "design"): students create their own rows (e.g. new seasons: name, dates, why) ================= */
+// K.min / K.max rows; K.fields [{ id: "name"|"dates"|"why", label, short? }] (name is required for a row to count); K.addButton, K.removeLabel,
+// K.examples [names] + K.examplesLabel (tap to fill the first empty name), K.kinds { label, options: [{ id, label }] } (optional tag per row),
+// K.countStat, K.kindNotes [{ kind, text, label? }] shown when that kind is the majority, K.evenNote (a tie), K.whyNote (a named row has no reason),
+// K.exampleNote (every name is one of the examples), K.endNote (always shown, e.g. a follow-up challenge).
+// verdict: title, noneTitle, noneText, tooFew "{min}", noValue (for an empty field), kindLine "{counts}", compare, caveat, think box.
+function designNamed(D){ return D.rows.filter(r => r.name.trim()); }
+function renderDesign(){
+  const D = state.council, F = K.fields, max = K.max || 6, min = K.min || 3;
+  const countText = () => String(designNamed(D).length);
+  paint("p-council", () => [
+    head(5, UI.council),
+    K.study ? el("p", { class: "study" }, el("b", { text: (K.studyLabel || "The task") + ": " }), K.study) : null,
+    stats([[countText(), K.countStat || "rows named"]].concat(K.kinds ? K.kinds.options.map(o => [String(D.rows.filter(r => r.name.trim() && r.kind === o.id).length), o.label]) : [])),
+    K.examples ? el("div", { class: "field rule" },
+      el("span", { class: "kicker", text: K.examplesLabel || "Examples" }),
+      el("div", { class: "schoices" }, K.examples.map((x, j) => el("button", { type: "button", class: "schoice c-j", "data-fid": "ex" + j,
+        onclick: () => { let r = D.rows.find(r => !r.name.trim()); if (!r && D.rows.length < max) { r = { name: "", dates: "", why: "", kind: null }; D.rows.push(r); }
+          if (r) { r.name = x; D.voted = false; renderDesign(); } }, text: x })))) : null,
+    el("ol", { class: "sort" }, D.rows.map((r, i) => el("li", { class: "srow" + (r.name.trim() ? " picked" : "") },
+      F.map(f => el("label", { class: "field" },
+        el("span", { text: f.label }),
+        el("input", { type: "text", id: "d" + f.id + i, "data-fid": "d" + f.id + i, value: r[f.id], maxlength: f.id === "why" ? "200" : "80", autocomplete: "off",
+          oninput: e => { r[f.id] = e.target.value; D.voted = false; if (f.id === "name") { const b = $("dCount"); if (b) b.textContent = countText(); } } }))),
+      K.kinds ? el("div", { class: "schoices", role: "group", "aria-label": K.kinds.label + " " + (i + 1) },
+        el("span", { class: "glabel", text: K.kinds.label }),
+        K.kinds.options.map(o => el("button", { type: "button", class: "schoice c-j" + (r.kind === o.id ? " on" : ""), "data-fid": "dk" + i + o.id,
+          "aria-pressed": r.kind === o.id ? "true" : "false", onclick: () => { r.kind = r.kind === o.id ? null : o.id; D.voted = false; renderDesign(); }, text: o.label }))) : null,
+      D.rows.length > min ? el("div", { class: "row" }, el("button", { type: "button", class: "mini", "data-fid": "drm" + i,
+        onclick: () => { D.rows.splice(i, 1); D.voted = false; renderDesign(); }, text: K.removeLabel || "Remove" })) : null))),
+    el("div", { class: "row" },
+      D.rows.length < max ? el("button", { type: "button", class: "btn ghost", "data-fid": "dadd",
+        onclick: () => { D.rows.push({ name: "", dates: "", why: "", kind: null }); D.voted = false; renderDesign(); }, text: K.addButton || "Add a row" }) : null,
+      el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderDesign), text: K.resultButton }),
+      el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderDesign(); }, text: "Clear" })),
+    D.voted ? designVerdict() : null,
+    panelNav("council")
+  ]);
+  const st = $("p-council").querySelector(".stat b"); if (st) st.id = "dCount";
+}
+function designVerdict(){
+  const D = state.council, V = K.verdict, F = K.fields, min = K.min || 3, rows = designNamed(D);
+  if (!rows.length) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const val = (r, id) => r[id].trim() || V.noValue;
+  const kc = K.kinds ? K.kinds.options.map(o => [o, rows.filter(r => r.kind === o.id).length]) : [];
+  const topK = kc.length ? Math.max(...kc.map(x => x[1])) : 0, leaders = kc.filter(x => x[1] === topK && topK > 0);
+  const ex = (K.examples || []).map(x => x.toLowerCase());
+  const link = (label, text) => el("p", { class: "link" }, el("b", { text: (label || "Think about this") + ": " }), text);
+  return verdictBox(
+    el("h3", { text: V.title }),
+    rows.length < min ? el("p", { class: "link", text: fill(V.tooFew, { min, n: rows.length }) }) : null,
+    el("ol", { class: "path" }, rows.map(r => el("li", {}, el("b", { text: r.name.trim() }),
+      F.filter(f => f.id !== "name").map(f => el("span", { class: "eff" }, el("b", { text: (f.short || f.label) + ": " }), val(r, f.id))),
+      K.kinds ? el("span", { class: "eff" }, el("b", { text: K.kinds.label + ": " }), ((K.kinds.options.find(o => o.id === r.kind) || {}).label) || V.noValue) : null))),
+    K.kinds && V.kindLine ? el("p", { class: "total", text: fill(V.kindLine, { counts: kc.map(x => x[1] + " " + x[0].label.toLowerCase()).join(", ") }) }) : null,
+    leaders.length === 1 ? (K.kindNotes || []).filter(k => k.kind === leaders[0][0].id).map(k => link(k.label, k.text)) : null,
+    leaders.length > 1 && K.evenNote ? link(null, K.evenNote) : null,
+    K.whyNote && F.some(f => f.id === "why") && rows.some(r => !r.why.trim()) ? link("Push back", K.whyNote) : null,
+    K.exampleNote && ex.length && rows.every(r => ex.includes(r.name.trim().toLowerCase())) ? link("Push back", K.exampleNote) : null,
+    V.compare ? el("p", { text: V.compare }) : null,
+    K.endNote ? link(K.endNoteLabel, K.endNote) : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderDesign));
+}
+
+/* ================= Activity 5 (type "decisions"): a fixed list of decisions, each with its own answer type and a "what you lose" box ================= */
+// K.clues [text] + K.cluesLabel (shown above), K.study + K.studyLabel. K.rows [{ id, label, type: "choice"|"multi"|"number"|"text", options?: [{ id, label }], n? (multi: pick exactly n), prefix? (number) }].
+// K.loseLabel / K.loseShort = the second box on every row. K.loseNote (a decided row has no "lose" answer), K.multiNote "{n} {k}" (wrong number picked),
+// K.matchNotes [{ row, match: "regex", text, label? }] (text rows), K.choiceNotes [{ row, option, text, label? }].
+// row.note + K.rowNoteLabel: a note shown under that row in the result once it has an answer. K.pairNote: shown when a row has one box filled but not the other. K.valueShort (or row.valueShort): label the first answer in the result (e.g. "They gain"). verdict: title, noneTitle, noneText, noValue, noLose, compare, caveat, think box.
+function decVal(D, r){
+  const v = D.vals[r.id];
+  if (r.type === "multi") return v.length ? v.map(id => r.options.find(o => o.id === id).label).join(", ") : "";
+  if (r.type === "choice") return v ? r.options.find(o => o.id === v).label : "";
+  if (r.type === "number") return String(v).trim() !== "" ? (r.prefix || "") + String(v).trim() : "";
+  return v.trim();
+}
+function decCount(D){ return K.rows.filter(r => decVal(D, r)).length; }
+function renderDecisions(){
+  const D = state.council;
+  paint("p-council", () => [
+    head(5, UI.council),
+    K.study ? el("p", { class: "study" }, el("b", { text: (K.studyLabel || "The task") + ": " }), K.study) : null,
+    K.clues ? el("div", { class: "notes" }, el("span", { class: "kicker", text: K.cluesLabel || "What you know" }), el("ul", {}, K.clues.map(c => el("li", { text: c })))) : null,
+    stats([[decCount(D) + " of " + K.rows.length, K.countStat || "decisions made"]]),
+    el("ol", { class: "sort" }, K.rows.map(r => {
+      const v = D.vals[r.id];
+      let ctl;
+      if (r.type === "choice") ctl = el("div", { class: "schoices", role: "group", "aria-label": r.label },
+        r.options.map(o => el("button", { type: "button", class: "schoice c-j" + (v === o.id ? " on" : ""), "data-fid": "dc" + r.id + o.id, "aria-pressed": v === o.id ? "true" : "false",
+          onclick: () => { D.vals[r.id] = v === o.id ? null : o.id; D.voted = false; renderDecisions(); }, text: o.label })));
+      else if (r.type === "multi") ctl = [el("div", { class: "schoices", role: "group", "aria-label": r.label },
+        r.options.map(o => { const on = v.includes(o.id);
+          return el("button", { type: "button", class: "schoice c-j" + (on ? " on" : ""), "data-fid": "dc" + r.id + o.id, "aria-pressed": on ? "true" : "false", disabled: !on && r.n && v.length >= r.n,
+            onclick: () => { D.vals[r.id] = on ? v.filter(x => x !== o.id) : v.concat(o.id); D.voted = false; renderDecisions(); }, text: o.label }); })),
+        r.n ? el("p", { class: "small", text: v.length + " of " + r.n + " chosen" }) : null];
+      else ctl = el("label", { class: "field" }, el("span", { text: r.prompt || (K.choiceLabel || "Your choice") }),
+        el("input", { type: r.type === "number" ? "number" : "text", min: r.type === "number" ? "0" : null, id: "dv" + r.id, "data-fid": "dv" + r.id, value: v, maxlength: "160", autocomplete: "off",
+          oninput: e => { D.vals[r.id] = e.target.value; D.voted = false; const b = $("decCount"); if (b) b.textContent = decCount(D) + " of " + K.rows.length; } }));
+      return el("li", { class: "srow" + (decVal(D, r) ? " picked" : "") },
+        el("p", { class: "stext", text: r.label }), ctl,
+        el("label", { class: "field" }, el("span", { text: K.loseLabel }),
+          el("input", { type: "text", id: "dl" + r.id, "data-fid": "dl" + r.id, value: D.lose[r.id], maxlength: "200", autocomplete: "off", oninput: e => { D.lose[r.id] = e.target.value; D.voted = false; } })));
+    })),
+    el("div", { class: "row" },
+      el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderDecisions), text: K.resultButton }),
+      el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderDecisions(); }, text: "Clear" })),
+    D.voted ? decisionsVerdict() : null,
+    panelNav("council")
+  ]);
+  const st = $("p-council").querySelector(".stat b"); if (st) st.id = "decCount";
+}
+function decisionsVerdict(){
+  const D = state.council, V = K.verdict;
+  if (!decCount(D)) return verdictBox(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+  const link = (label, text) => el("p", { class: "link" }, el("b", { text: (label || "Think about this") + ": " }), text);
+  return verdictBox(
+    el("h3", { text: V.title }),
+    el("ol", { class: "path" }, K.rows.map(r => el("li", {}, el("b", { text: r.label + " " }),
+      (r.valueShort || K.valueShort) ? el("span", { class: "eff" }, el("b", { text: (r.valueShort || K.valueShort) + ": " }), decVal(D, r) || V.noValue) : decVal(D, r) || V.noValue,
+      el("span", { class: "eff" }, el("b", { text: (K.loseShort || K.loseLabel) + ": " }), D.lose[r.id].trim() || V.noLose || V.noValue),
+      r.note && (decVal(D, r) || D.lose[r.id].trim()) ? el("span", { class: "eff" }, el("b", { text: (K.rowNoteLabel || "Think about this") + ": " }), r.note) : null))),
+    K.rows.filter(r => r.type === "multi" && r.n && D.vals[r.id].length && D.vals[r.id].length !== r.n).map(r => link("Check this", fill(K.multiNote, { n: r.n, k: D.vals[r.id].length }))),
+    (K.choiceNotes || []).filter(c => D.vals[c.row] === c.option).map(c => link(c.label, c.text)),
+    (K.matchNotes || []).filter(m => new RegExp(m.match, "i").test(String(D.vals[m.row] || ""))).map(m => link(m.label, m.text)),
+    K.loseNote && K.rows.some(r => decVal(D, r) && !D.lose[r.id].trim()) ? link("Push back", K.loseNote) : null,
+    K.pairNote && K.rows.some(r => !decVal(D, r) !== !D.lose[r.id].trim()) ? link("Push back", K.pairNote) : null,
+    V.compare ? el("p", { text: V.compare }) : null,
+    V.caveat ? el("p", { class: "small", text: V.caveat }) : null,
+    thinkBox(V), againBtn(renderDecisions));
+}
+
+/* ================= "What the World Thinks" (opt-in: ISSUE.world) =================
+   Anonymous, pooled class results shown under an Activity 5 result. No accounts, no personal data:
+   each reveal adds +1 to a few counters (e.g. "measure 2 passed") in a shared Firestore database, then reads the totals back.
+   ISSUE.world = { room: "overtourism-b", min: 20, title?: "What the World Thinks" }.
+   Classes (Classroom Mode) and solo students are counted separately. One vote per device per activity:
+   every 30 minutes in Classroom Mode (a teacher may teach several classes), every 12 hours in Solo. */
+const WTW_DB = "https://firestore.googleapis.com/v1/projects/perspective-practice-rooms/databases/(default)/documents";
+const WTW_KEY = "AIzaSyAEqJEiBZBeBGiksXaTCILCUknymDoem7k";
+const WTW = { cache: {}, busy: {} };
+function wtwRoom(){ return ISSUE.world.room + "~" + (isClass() ? "class" : "solo"); }
+// What this result contributes, and how to display it. Each row: { label, single?, options: [{ key, label }], mine: [keys] }.
+function wtwModel(){
+  const C = state.council;
+  if (TYPE === "council") {
+    const SQv = "sq", rows = [];
+    const mine = [...C.sel].map(i => "m" + i).concat(C.statusQuo ? [SQv] : []);
+    K.measures.forEach((m, i) => rows.push({ label: m.name, options: [{ key: "m" + i, label: K.passedWord || "Chose this" }], mine }));
+    rows.push({ label: K.statusQuo.name, options: [{ key: SQv, label: K.statusQuo.worldWord || "Chose this" }], mine });
+    const wk = C.weak === null || C.weak === undefined ? null : (C.weak === SQ ? "wsq" : "w" + C.weak);
+    if (K.weakest) rows.push({ label: K.weakest.resultLabel, single: true,
+      options: K.measures.map((m, i) => ({ key: "w" + i, label: m.name })).concat([{ key: "wsq", label: K.statusQuo.name }]), mine: wk ? [wk] : [] });
+    return { has: C.sel.size > 0 || C.statusQuo, keys: mine.concat(wk ? [wk] : []), rows };
+  }
+  // sort: one stacked bar per line, split by category
+  if (TYPE === "sort") {
+    const rows = K.items.map((it, i) => ({ label: (it.tag ? it.tag + " · " : "") + it.text, stack: true, single: true,
+      options: K.categories.map(c => ({ key: "s" + i + "-" + c.id, label: (it.labels && it.labels[c.id]) || c.label, cat: c.id })),
+      mine: C.picks[i] ? ["s" + i + "-" + C.picks[i]] : [] }));
+    const keys = C.picks.map((p, i) => p ? "s" + i + "-" + p : null).filter(Boolean);
+    // finals: e.g. "Worth it in total?" as one bar per question
+    (K.finals || []).forEach(f => {
+      const v = C.finals[f.id], k = v ? "f-" + f.id + "-" + v : null;
+      rows.push({ label: f.label, stack: true, single: true, options: f.options.map(o => ({ key: "f-" + f.id + "-" + o.id, label: o.label, cat: o.id })), mine: k ? [k] : [] });
+      if (k) keys.push(k);
+    });
+    return { has: keys.length > 0, keys, rows };
+  }
+  // allocate: who got the largest share, the hardest defense, and each judgment
+  if (TYPE === "allocate") {
+    const V = K.verdict, name = it => it.who || it.name || it.text, rows = [], keys = [];
+    const tot = C.pts.reduce((a, b) => a + b, 0), top = Math.max(...C.pts);
+    // ties: every item on the top (or bottom) number is counted, so the bars show the share of picks
+    const tied = v => tot > 0 ? K.items.map((_, i) => i).filter(i => C.pts[i] === v) : [];
+    const leads = tied(top);
+    rows.push({ label: ISSUE.world.largestLabel || V.largestLabel || "Largest share", single: true, options: K.items.map((it, i) => ({ key: "L" + i, label: name(it) })), mine: leads.map(i => "L" + i) });
+    leads.forEach(i => keys.push("L" + i));
+    if (!K.judgments && !K.hardButton) {   // nothing else to show: add who got the smallest share
+      const lows = tied(Math.min(...C.pts));
+      rows.push({ label: ISSUE.world.leastLabel || V.leastLabel || "Smallest share", single: true, options: K.items.map((it, i) => ({ key: "S" + i, label: name(it) })), mine: lows.map(i => "S" + i) });
+      lows.forEach(i => keys.push("S" + i));
+    }
+    if (K.hardButton) {
+      rows.push({ label: V.hardLabel || K.hardButton, single: true, options: K.items.map((it, i) => ({ key: "H" + i, label: name(it) })), mine: C.hard === null ? [] : ["H" + C.hard] });
+      if (C.hard !== null) keys.push("H" + C.hard);
+    }
+    if (K.judgments) K.items.forEach((it, i) => {
+      rows.push({ label: name(it) + (K.judgeLabel ? " · " + K.judgeLabel : ""), stack: true, single: true,
+        options: K.judgments.map(j => ({ key: "j" + i + "-" + j.id, label: j.label, cat: j.id })), mine: C.judge[i] ? ["j" + i + "-" + C.judge[i]] : [] });
+      if (C.judge[i]) keys.push("j" + i + "-" + C.judge[i]);
+    });
+    return { has: keys.length > 0, keys, rows };
+  }
+  // rank: which item came first and which came last (only once the order has been changed)
+  if (TYPE === "rank") {
+    const name = it => it.short || it.text, first = C.order[0], last = C.order[C.order.length - 1];
+    const row = (label, pre, pick) => ({ label, single: true, options: K.items.map((it, i) => ({ key: pre + i, label: name(it) })), mine: C.moved ? [pre + pick] : [] });
+    const rows = [row(K.scale ? K.scale.top : "Ranked first", "t", first), row(K.scale ? K.scale.bottom : "Ranked last", "b", last)];
+    return { has: !!C.moved, keys: C.moved ? ["t" + first, "b" + last] : [], rows };
+  }
+  // headlines: which headline the world would pick
+  if (TYPE === "headlines") {
+    const W = ISSUE.world, key = C.choice === null ? null : "h" + C.choice, keys = key ? [key] : [];
+    const rows = [{ label: W.pickLabel || "The headline chosen", single: true,
+      options: K.items.map((it, i) => ({ key: "h" + i, label: it.headline || it.text })), mine: key ? [key] : [] }];
+    // ratings: one stacked bar per row and scale
+    K.items.forEach((it, i) => scales().forEach((sc, si) => {
+      const r = C.rates[si][i], k = r === null || r === undefined ? null : "r" + si + "-" + i + "-" + r;
+      rows.push({ label: (it.headline || it.text).replace(/[.]$/, "") + (sc.label ? " · " + sc.label : ""), stack: true, single: true,
+        options: sc.options.map(o => ({ key: "r" + si + "-" + i + "-" + o.id, label: o.name || o.label, cat: o.id })), mine: k ? [k] : [] });
+      if (k) keys.push(k);
+    }));
+    return { has: keys.length > 0, keys, rows };
+  }
+  return null;
+}
+function wtwCanVote(room){
+  try { const t = +localStorage.getItem("wtw:" + room) || 0; return Date.now() - t > (room.endsWith("~class") ? 30 * 60e3 : 12 * 3600e3); } catch (e) { return true; }
+}
+function wtwMarkVoted(room){ try { localStorage.setItem("wtw:" + room, String(Date.now())); } catch (e) {} }
+function wtwDoc(room, key){ return "tallies/" + encodeURIComponent(room + "~" + key); }
+async function wtwSend(room, keys){
+  const base = "projects/perspective-practice-rooms/databases/(default)/documents/";
+  const writes = ["n"].concat(keys).map(k => ({
+    update: { name: base + "tallies/" + room + "~" + k, fields: { room: { stringValue: room } } },
+    updateMask: { fieldPaths: ["room"] },
+    updateTransforms: [{ fieldPath: "c", increment: { integerValue: "1" } }] }));
+  const r = await fetch(WTW_DB + ":commit?key=" + WTW_KEY, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ writes }) });
+  if (!r.ok) throw new Error("send " + r.status);
+}
+async function wtwReadOne(room){
+  const r = await fetch(WTW_DB + ":runQuery?key=" + WTW_KEY, { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ structuredQuery: { from: [{ collectionId: "tallies" }], where: { fieldFilter: { field: { fieldPath: "room" }, op: "EQUAL", value: { stringValue: room } } } } }) });
+  if (!r.ok) throw new Error("read " + r.status);
+  const out = {};
+  (await r.json()).forEach(x => { if (x.document) { const id = decodeURIComponent(x.document.name.split("/").pop()); out[id.slice(room.length + 1)] = +(x.document.fields.c.integerValue || 0); } });
+  return out;
+}
+// Solo and Classroom votes are stored apart (each response is written to exactly one of the two rooms)
+// and added together only when read, so nothing is counted twice and the stored records never change.
+async function wtwRead(){
+  const base = ISSUE.world.room, parts = await Promise.all([wtwReadOne(base + "~class"), wtwReadOne(base + "~solo")]), out = {};
+  parts.forEach(p => Object.keys(p).forEach(k => { out[k] = (out[k] || 0) + p[k]; }));
+  return out;
+}
+async function wtwGo(){
+  if (!ISSUE.world) return;
+  const M = wtwModel(); if (!M || !M.has) return;
+  if (!document.querySelector("#verdict .think")) return;   // only a finished result counts (not "points don't add up yet")
+  const room = wtwRoom();
+  if (WTW.busy[room]) return;
+  WTW.busy[room] = true; WTW.cache[room] = { status: "loading" }; wtwAttach();
+  try {
+    if (wtwCanVote(room)) { await wtwSend(room, M.keys); wtwMarkVoted(room); }
+    WTW.cache[room] = { status: "ok", counts: await wtwRead() };
+  } catch (e) { WTW.cache[room] = { status: "error" }; }
+  WTW.busy[room] = false; wtwAttach();
+}
+/* ISSUE.world: a short notice before the vote button, so nobody is counted without knowing. */
+function wtwNote(){
+  if (!ISSUE.world || !wtwModel()) return null;
+  const c = isClass(), act = TYPE === "council" ? "hold the vote" : "press “" + K.resultButton + "”";
+  return el("p", { class: "wtw-note" },
+    el("b", { text: (ISSUE.world.title || "What the World Thinks") + ": " }),
+    "When you " + act + ", " + (c ? "your class’s answers go" : "your answers go") + " into a world count. Then you see how others answered. No names, no accounts, nothing about you.");
+}
+// Bar colors: well-known answer ids get meaning colors; anything else gets a color by its position.
+const WTW_GOOD = ["fine", "ok", "eat", "keep", "yes", "safe", "fair", "worth", "genuine", "trust", "plus"], WTW_BAD = ["cheat", "throw", "no", "not", "cant", "avoid", "unfair", "minus"], WTW_MID = ["unsure", "gray", "partly", "depends", "notreally", "both", "same", "unclear", "mixed", "none"];
+// ISSUE.world.neutral: no green/red meaning colors (for opinion questions on political topics).
+function wtwColor(cat, i){
+  if (ISSUE.world.neutral) return ["var(--navy)", "#b8862f", "#6b7280", "#3f7f7a"][i % 4];
+  if (WTW_GOOD.includes(cat)) return "var(--good)";
+  if (WTW_BAD.includes(cat)) return "var(--bad)";
+  if (WTW_MID.includes(cat)) return "#6b7280";
+  return ["var(--navy)", "#b8862f", "#9c4f6a", "#5b6fb3", "#3f7f7a"][i % 5];
+}
+function wtwBox(){
+  const W = ISSUE.world, room = wtwRoom(), st = WTW.cache[room], M = wtwModel();
+  const min = W.min || 3;
+  const box = el("div", { class: "wtw", id: "wtw", "aria-live": "polite" }, el("span", { class: "kicker", text: W.title || "What the World Thinks" }));
+  if (!st || st.status === "loading") { box.append(el("p", { text: "Checking the world results…" })); return box; }
+  if (st.status === "error") { box.append(el("p", { text: "The world results can’t be reached right now. Try again later." })); return box; }
+  const n = st.counts.n || 0;
+  if (n < min) { box.append(el("p", { text: "The world results will appear soon. Thanks for being one of the first to answer!" })); return box; }
+  box.append(el("p", { class: "wtw-n", text: "Based on " + n + " responses." }));
+  // ISSUE.world.note: a line under the count, e.g. "This shows what people chose, not what is safe."
+  if (W.note) box.append(el("p", { class: "wtw-caution", text: W.note }));
+  M.rows.forEach(row => {
+    const total = row.single ? row.options.reduce((a, o) => a + (st.counts[o.key] || 0), 0) : n;
+    if (!total) return;
+    const youTag = isClass() ? " ✓ your class’s answer" : " ✓ your answer";
+    if (row.stack) {
+      const parts = row.options.map((o, k) => ({ o, col: wtwColor(o.cat, k), c: st.counts[o.key] || 0, pc: Math.round(100 * (st.counts[o.key] || 0) / total), you: row.mine.includes(o.key) }));
+      box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
+        el("span", { class: "wtw-stack", "aria-hidden": "true" }, parts.filter(p => p.c > 0).map(p => el("span", { class: p.you ? "you" : "", style: "flex:" + p.c + " 1 0;background:" + p.col }))),
+        el("p", { class: "wtw-legend" }, parts.map(p => el("span", { class: p.you ? "you" : "" }, el("i", { "aria-hidden": "true", style: "background:" + p.col }), p.o.label + " " + p.pc + "%" + (p.you ? youTag : ""))))));
+      return;
+    }
+    box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
+      row.options.map(o => { const pc = Math.round(100 * (st.counts[o.key] || 0) / total), you = row.mine.includes(o.key);
+        return el("div", { class: "wtw-opt" + (you ? " you" : "") },
+          el("span", { class: "wtw-name", text: o.label + (you ? youTag : "") }),
+          el("span", { class: "wtw-bar", "aria-hidden": "true" }, el("span", { style: "width:" + pc + "%" })),
+          el("b", { class: "wtw-pc", text: pc + "%" })); })));
+  });
+  return box;
+}
+function wtwAttach(){
+  if (!ISSUE.world) return;
+  const v = $("verdict"); if (!v || !state.council.voted || !v.querySelector(".think")) return;
+  const M = wtwModel(); if (!M || !M.has || !WTW.cache[wtwRoom()]) return;
+  const old = $("wtw"), box = wtwBox();
+  if (old) old.replaceWith(box); else { const t = v.querySelector(".think"); t ? v.insertBefore(box, t) : v.append(box); }
+}
+function wtwStyle(){
+  if (!ISSUE.world || $("wtw-css")) return;
+  document.head.append(el("style", { id: "wtw-css", text:
+    ".wtw{background:var(--surface);color:var(--ink);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}" +
+    ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
+    ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +
+        ".wtw-stack{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line)}.wtw-stack span{height:100%;opacity:.8}.wtw-stack span.you{opacity:1}" +
+    ".wtw-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font-size:.88rem}.wtw-legend span{display:inline-flex;align-items:center;gap:5px}.wtw-legend i{width:10px;height:10px;border-radius:2px;background:var(--navy)}.wtw-legend .you{font-weight:700}.is-class .wtw-stack{height:20px}.is-class .wtw-legend{font-size:1.05rem}" +
+    ".wtw-caution{margin:0;font-size:.9rem;font-weight:700;color:var(--bad)}" +
+    ".wtw-row{display:flex;flex-direction:column;gap:4px}.wtw-label{font-weight:700}" +
+    ".wtw-opt{display:grid;grid-template-columns:minmax(0,1fr) 3.2em;grid-template-areas:'name pc' 'bar pc';column-gap:10px;align-items:center}" +
+    ".wtw-name{grid-area:name;font-size:.92rem}.wtw-pc{grid-area:pc;text-align:right;font-size:1.05rem}" +
+    ".wtw-bar{grid-area:bar;height:10px;border-radius:5px;background:var(--line);overflow:hidden}" +
+    ".wtw-bar span{display:block;height:100%;background:var(--navy);opacity:.55}.wtw-opt.you .wtw-bar span{opacity:1}" +
+    ".wtw-opt.you .wtw-name{font-weight:700}.is-class .wtw-bar{height:16px}.is-class .wtw-pc{font-size:1.3rem}" }));
 }
 
 /* ---------------- tabs ---------------- */
@@ -1489,6 +2105,7 @@ function start(){
   if (location.hash === "#classroom") mode = "class";
   else if (location.hash !== "#solo") { try { if (localStorage.getItem("pe-practice-mode") === "class") mode = "class"; } catch (e) {} }
   setMode(mode, true);
+  wtwStyle(); teamStyle();
 }
 start();
 })();
