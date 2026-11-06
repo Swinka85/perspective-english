@@ -229,48 +229,83 @@
 
     /* Editorial introduction beneath the homepage image */
     .showcase-intro {
-      max-width: 850px;
+      max-width: 1050px;
       margin: 0 auto;
-      padding: 35px 16px 38px;
+      padding: 30px 16px 42px;
       text-align: center;
     }
     .showcase-intro h2 {
-      margin: 0;
+      max-width: 900px;
+      margin: 0 auto 24px;
       color: var(--navy);
       font-family: "Playfair Display", Georgia, serif;
-      font-size: clamp(30px, 4.5vw, 49px);
-      line-height: 1.13;
-      letter-spacing: -1.3px;
+      font-size: clamp(29px, 3.6vw, 43px);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -1px;
+      text-wrap: balance;
     }
     .showcase-intro h2::after {
       content: "";
       display: block;
-      width: 54px;
-      height: 2px;
-      margin: 19px auto 0;
+      width: 60px;
+      height: 3px;
+      margin: 20px auto 0;
       background: var(--gold);
     }
     .showcase-intro p {
-      max-width: 620px;
-      margin: 17px auto 18px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
+      max-width: 850px;
+      margin: 0 auto 13px;
+      color: #293954;
+      font-size: clamp(15px, 1.55vw, 18px);
+      font-weight: 600;
+      line-height: 1.55;
     }
-    .showcase-intro a {
-      color: var(--navy);
+    .showcase-intro .showcase-price-note {
+      margin: 5px auto 23px;
+      color: #48536A;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .showcase-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .showcase-intro .showcase-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      padding: 14px 21px;
+      background: var(--navy);
+      color: #FFFFFF;
+      border: 2px solid var(--navy);
+      border-radius: 3px;
       text-decoration: none;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 1.3px;
+      letter-spacing: .8px;
       text-transform: uppercase;
-      border-bottom: 1px solid var(--gold);
-      padding-bottom: 5px;
+      transition: background .2s ease, color .2s ease;
     }
-    .showcase-intro a:hover { color: var(--gold); }
-    .showcase-intro .showcase-price-note { margin: 0 auto 18px; font-size: 11px; }
-    .showcase-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; }
-
+    .showcase-intro .showcase-actions a:last-child {
+      background: #FFFFFF;
+      color: var(--navy);
+    }
+    .showcase-intro .showcase-actions a:hover,
+    .showcase-intro .showcase-actions a:focus-visible {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #FFFFFF;
+    }
+    @media (max-width: 520px) {
+      .showcase-intro { padding: 26px 8px 34px; }
+      .showcase-intro p { font-size: 15px; }
+      .showcase-actions { flex-direction: column; }
+      .showcase-intro .showcase-actions a { width: 100%; }
+    }
 
     /* ========================================================
        FEATURED ISSUE
