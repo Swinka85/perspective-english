@@ -469,7 +469,7 @@ const ISSUE = {
     }
   },
 
-  world: { room: "ai-in-education-c", min: 20, pickLabel: "The headline to print" },
+  world: { room: "ai-in-education-c", min: 3, pickLabel: "The headline to print" },
 
   // Wording for each activity: solo = Solo Practice, cls = Classroom Mode, team = team prompt
   ui: {
@@ -1789,6 +1789,24 @@ function wtwModel(){
     const keys = C.picks.map((p, i) => p ? "s" + i + "-" + p : null).filter(Boolean);
     return { has: keys.length > 0, keys, rows };
   }
+  // allocate: who got the largest share, the hardest defense, and each judgment
+  if (TYPE === "allocate") {
+    const V = K.verdict, name = it => it.who || it.name || it.text, rows = [], keys = [];
+    const tot = C.pts.reduce((a, b) => a + b, 0), top = Math.max(...C.pts);
+    const lead = tot > 0 && C.pts.filter(p => p === top).length === 1 ? C.pts.indexOf(top) : null;
+    rows.push({ label: V.largestLabel || "Largest share", single: true, options: K.items.map((it, i) => ({ key: "L" + i, label: name(it) })), mine: lead === null ? [] : ["L" + lead] });
+    if (lead !== null) keys.push("L" + lead);
+    if (K.hardButton) {
+      rows.push({ label: V.hardLabel || K.hardButton, single: true, options: K.items.map((it, i) => ({ key: "H" + i, label: name(it) })), mine: C.hard === null ? [] : ["H" + C.hard] });
+      if (C.hard !== null) keys.push("H" + C.hard);
+    }
+    if (K.judgments) K.items.forEach((it, i) => {
+      rows.push({ label: name(it) + (K.judgeLabel ? " · " + K.judgeLabel : ""), stack: true, single: true,
+        options: K.judgments.map(j => ({ key: "j" + i + "-" + j.id, label: j.label, cat: j.id })), mine: C.judge[i] ? ["j" + i + "-" + C.judge[i]] : [] });
+      if (C.judge[i]) keys.push("j" + i + "-" + C.judge[i]);
+    });
+    return { has: keys.length > 0, keys, rows };
+  }
   // headlines: which headline the world would pick
   if (TYPE === "headlines") {
     const W = ISSUE.world, key = C.choice === null ? null : "h" + C.choice;
@@ -1812,7 +1830,7 @@ async function wtwSend(room, keys){
   const r = await fetch(WTW_DB + ":commit?key=" + WTW_KEY, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ writes }) });
   if (!r.ok) throw new Error("send " + r.status);
 }
-async function wtwRead(room){
+async function wtwReadOne(room){
   const r = await fetch(WTW_DB + ":runQuery?key=" + WTW_KEY, { method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ structuredQuery: { from: [{ collectionId: "tallies" }], where: { fieldFilter: { field: { fieldPath: "room" }, op: "EQUAL", value: { stringValue: room } } } } }) });
   if (!r.ok) throw new Error("read " + r.status);
@@ -1820,15 +1838,23 @@ async function wtwRead(room){
   (await r.json()).forEach(x => { if (x.document) { const id = decodeURIComponent(x.document.name.split("/").pop()); out[id.slice(room.length + 1)] = +(x.document.fields.c.integerValue || 0); } });
   return out;
 }
+// Solo and Classroom votes are stored apart (each response is written to exactly one of the two rooms)
+// and added together only when read, so nothing is counted twice and the stored records never change.
+async function wtwRead(){
+  const base = ISSUE.world.room, parts = await Promise.all([wtwReadOne(base + "~class"), wtwReadOne(base + "~solo")]), out = {};
+  parts.forEach(p => Object.keys(p).forEach(k => { out[k] = (out[k] || 0) + p[k]; }));
+  return out;
+}
 async function wtwGo(){
   if (!ISSUE.world) return;
   const M = wtwModel(); if (!M || !M.has) return;
+  if (!document.querySelector("#verdict .think")) return;   // only a finished result counts (not "points don't add up yet")
   const room = wtwRoom();
   if (WTW.busy[room]) return;
   WTW.busy[room] = true; WTW.cache[room] = { status: "loading" }; wtwAttach();
   try {
     if (wtwCanVote(room)) { await wtwSend(room, M.keys); wtwMarkVoted(room); }
-    WTW.cache[room] = { status: "ok", counts: await wtwRead(room) };
+    WTW.cache[room] = { status: "ok", counts: await wtwRead() };
   } catch (e) { WTW.cache[room] = { status: "error" }; }
   WTW.busy[room] = false; wtwAttach();
 }
@@ -1838,26 +1864,36 @@ function wtwNote(){
   const c = isClass(), act = TYPE === "council" ? "hold the vote" : "press “" + K.resultButton + "”";
   return el("p", { class: "wtw-note" },
     el("b", { text: (ISSUE.world.title || "What the World Thinks") + ": " }),
-    "When you " + act + ", " + (c ? "your class’s answers go" : "your answers go") + " into a world count. Then you see how other " + (c ? "classes" : "students") + " answered. No names, no accounts, nothing about you.");
+    "When you " + act + ", " + (c ? "your class’s answers go" : "your answers go") + " into a world count. Then you see how others answered. No names, no accounts, nothing about you.");
+}
+// Bar colors: well-known answer ids get meaning colors; anything else gets a color by its position.
+const WTW_GOOD = ["fine", "ok", "eat", "keep", "yes", "safe", "fair", "worth", "genuine", "trust"], WTW_BAD = ["cheat", "throw", "no", "not", "cant", "avoid", "unfair"], WTW_MID = ["unsure", "gray", "partly", "depends", "notreally", "both", "same"];
+function wtwColor(cat, i){
+  if (WTW_GOOD.includes(cat)) return "var(--good)";
+  if (WTW_BAD.includes(cat)) return "var(--bad)";
+  if (WTW_MID.includes(cat)) return "#6b7280";
+  return ["var(--navy)", "#b8862f", "#6b7280", "#3f7f7a", "#9c4f6a", "#5b6fb3"][i % 6];
 }
 function wtwBox(){
   const W = ISSUE.world, room = wtwRoom(), st = WTW.cache[room], M = wtwModel();
-  const who = isClass() ? "classes" : "students", min = W.min || 20;
+  const min = W.min || 3;
   const box = el("div", { class: "wtw", id: "wtw", "aria-live": "polite" }, el("span", { class: "kicker", text: W.title || "What the World Thinks" }));
-  if (!st || st.status === "loading") { box.append(el("p", { text: "Checking how other " + who + " answered…" })); return box; }
+  if (!st || st.status === "loading") { box.append(el("p", { text: "Checking the world results…" })); return box; }
   if (st.status === "error") { box.append(el("p", { text: "The world results can’t be reached right now. Try again later." })); return box; }
   const n = st.counts.n || 0;
-  if (n < min) { box.append(el("p", { text: "You’re one of the first " + who + " to answer this: " + n + " so far. Results appear once " + min + " " + who + " have answered. Check back soon!" })); return box; }
-  box.append(el("p", { class: "wtw-n", text: "Based on " + n + " " + who + "." }));
+  if (n < min) { box.append(el("p", { text: "The world results will appear soon. Thanks for being one of the first to answer!" })); return box; }
+  box.append(el("p", { class: "wtw-n", text: "Based on " + n + " responses." }));
+  // ISSUE.world.note: a line under the count, e.g. "This shows what people chose, not what is safe."
+  if (W.note) box.append(el("p", { class: "wtw-caution", text: W.note }));
   M.rows.forEach(row => {
     const total = row.single ? row.options.reduce((a, o) => a + (st.counts[o.key] || 0), 0) : n;
     if (!total) return;
     const youTag = isClass() ? " · your class" : " · you";
     if (row.stack) {
-      const parts = row.options.map(o => ({ o, pc: Math.round(100 * (st.counts[o.key] || 0) / total), you: row.mine.includes(o.key) }));
+      const parts = row.options.map((o, k) => ({ o, col: wtwColor(o.cat, k), c: st.counts[o.key] || 0, pc: Math.round(100 * (st.counts[o.key] || 0) / total), you: row.mine.includes(o.key) }));
       box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
-        el("span", { class: "wtw-stack", "aria-hidden": "true" }, parts.filter(p => p.pc > 0).map(p => el("span", { class: "c-" + p.o.cat + (p.you ? " you" : ""), style: "width:" + p.pc + "%" }))),
-        el("p", { class: "wtw-legend" }, parts.map(p => el("span", { class: "c-" + p.o.cat + (p.you ? " you" : "") }, el("i", { "aria-hidden": "true" }), p.o.label + " " + p.pc + "%" + (p.you ? youTag : ""))))));
+        el("span", { class: "wtw-stack", "aria-hidden": "true" }, parts.filter(p => p.c > 0).map(p => el("span", { class: p.you ? "you" : "", style: "flex:" + p.c + " 1 0;background:" + p.col }))),
+        el("p", { class: "wtw-legend" }, parts.map(p => el("span", { class: p.you ? "you" : "" }, el("i", { "aria-hidden": "true", style: "background:" + p.col }), p.o.label + " " + p.pc + "%" + (p.you ? youTag : ""))))));
       return;
     }
     box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
@@ -1871,7 +1907,7 @@ function wtwBox(){
 }
 function wtwAttach(){
   if (!ISSUE.world) return;
-  const v = $("verdict"); if (!v || !state.council.voted) return;
+  const v = $("verdict"); if (!v || !state.council.voted || !v.querySelector(".think")) return;
   const M = wtwModel(); if (!M || !M.has || !WTW.cache[wtwRoom()]) return;
   const old = $("wtw"), box = wtwBox();
   if (old) old.replaceWith(box); else { const t = v.querySelector(".think"); t ? v.insertBefore(box, t) : v.append(box); }
@@ -1883,9 +1919,8 @@ function wtwStyle(){
     ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
     ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +
         ".wtw-stack{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line)}.wtw-stack span{height:100%;opacity:.8}.wtw-stack span.you{opacity:1}" +
-    ".wtw-stack .c-fine,.wtw-stack .c-ok,.wtw-legend .c-fine i,.wtw-legend .c-ok i{background:var(--good)}.wtw-stack .c-cheat,.wtw-legend .c-cheat i{background:var(--bad)}" +
-    ".wtw-stack .c-gray,.wtw-stack .c-unsure,.wtw-legend .c-gray i,.wtw-legend .c-unsure i{background:#6b7280}.wtw-stack span:not([class*=c-fine]):not([class*=c-ok]):not([class*=c-cheat]):not([class*=c-gray]):not([class*=c-unsure]){background:var(--navy)}" +
     ".wtw-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font-size:.88rem}.wtw-legend span{display:inline-flex;align-items:center;gap:5px}.wtw-legend i{width:10px;height:10px;border-radius:2px;background:var(--navy)}.wtw-legend .you{font-weight:700}.is-class .wtw-stack{height:20px}.is-class .wtw-legend{font-size:1.05rem}" +
+    ".wtw-caution{margin:0;font-size:.9rem;font-weight:700;color:var(--bad)}" +
     ".wtw-row{display:flex;flex-direction:column;gap:4px}.wtw-label{font-weight:700}" +
     ".wtw-opt{display:grid;grid-template-columns:minmax(0,1fr) 3.2em;grid-template-areas:'name pc' 'bar pc';column-gap:10px;align-items:center}" +
     ".wtw-name{grid-area:name;font-size:.92rem}.wtw-pc{grid-area:pc;text-align:right;font-size:1.05rem}" +
