@@ -599,7 +599,7 @@ function freshThink(){
   if (TYPE === "decisions") return { vals: Object.fromEntries(K.rows.map(r => [r.id, r.type === "multi" ? [] : (r.type === "choice" ? null : "")])), lose: Object.fromEntries(K.rows.map(r => [r.id, ""])), voted: false };
   if (TYPE === "design") return { rows: Array.from({ length: K.min || 3 }, () => ({ name: "", dates: "", why: "", kind: null })), voted: false };
   if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, second: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
-  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0).concat([0]), voted: false };
+  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0).concat([0]), total: 4, voted: false };
 }
 function resetCouncil(full){
   if (!state.council || full) state.council = freshThink();
@@ -881,16 +881,37 @@ function toggleWeak(id){
   C.weak = C.weak === id ? null : id;
   C.voted = false; renderCouncil();
 }
+/* Classroom Mode: teams vote with counters, and the class result comes from the counts.
+   A rule passes when more than half of the teams want it. A team that wants to change nothing
+   can't also back a rule, so a rule's count is capped at (teams − change-nothing teams). */
+function teamCap(i){
+  const C = state.council, n = K.measures.length;
+  if (i === n) return C.total - Math.max(0, ...C.teams.slice(0, n));
+  return C.total - C.teams[n];
+}
 function setTeams(i, d){
   const C = state.council;
-  C.teams[i] = Math.max(0, Math.min(MAX_TEAMS, C.teams[i] + d));
-  renderCouncil();
+  C.teams[i] = Math.max(0, Math.min(teamCap(i), C.teams[i] + d));
+  C.voted = false; syncClass(); renderCouncil();
+}
+function setTotal(d){
+  const C = state.council, n = K.measures.length;
+  const low = Math.max(1, Math.max(0, ...C.teams.slice(0, n)) + C.teams[n]);
+  C.total = Math.max(low, Math.min(MAX_TEAMS, C.total + d));
+  C.voted = false; syncClass(); renderCouncil();
+}
+function syncClass(){
+  if (!isClass()) return;
+  const C = state.council, n = K.measures.length, half = C.total / 2;
+  C.sel = new Set(K.measures.map((m, i) => i).filter(i => C.teams[i] > half));
+  C.statusQuo = !C.sel.size && C.teams.some(t => t > 0);
 }
 function renderCouncil(){
   const C = state.council, cls = isClass(), M = K.measures;
+  syncClass();
   paint("p-council", () => {
     const passedLabel = C.statusQuo ? "None" : C.sel.size + " of " + M.length;
-    const tile = (m, on, onclick, fid) => el("button", { type: "button", class: "measure", "data-fid": fid, "aria-pressed": on ? "true" : "false", onclick },
+    const tile = (m, on, onclick, fid) => el(cls ? "div" : "button", cls ? { class: "measure" } : { type: "button", class: "measure", "data-fid": fid, "aria-pressed": on ? "true" : "false", onclick },
       el("span", { class: "box", "aria-hidden": "true", text: on ? "✓" : "" }),
       el("span", { class: "mtxt" },
         el("strong", { text: m.name }),
@@ -906,7 +927,7 @@ function renderCouncil(){
       el("span", { text: "Teams in favor" }),
       el("button", { type: "button", "data-fid": "tm" + i, "aria-label": "One fewer team in favor of " + name, disabled: C.teams[i] === 0, onclick: () => setTeams(i, -1), text: "−" }),
       el("output", { "aria-live": "polite", "aria-label": "Teams in favor of " + name, text: String(C.teams[i]) }),
-      el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null;
+      el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + name, disabled: C.teams[i] >= teamCap(i), onclick: () => setTeams(i, 1), text: "+" })) : null;
     const list = M.map((m, i) => {
       const on = C.sel.has(i);
       return el("div", { class: "mwrap" + (on ? " on" : "") + (C.weak === i ? " is-weak" : "") },
@@ -922,13 +943,20 @@ function renderCouncil(){
       el("div", { class: "town" },
         K.stats.map(s => el("div", { class: "stat" }, el("b", { text: s.value }), el("small", { text: s.label }))),
         el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: passedLabel }), el("small", { text: K.passedLabel }))),
+      cls ? el("div", { class: "council-how" },
+        el("p", {}, el("b", { text: "How to vote: " }), K.classHow || "Each team picks its rules, or change nothing. Count the teams for each option with + and −. A rule passes when more than half of the teams want it."),
+        el("div", { class: "tally inline-start" },
+          el("span", { text: "Teams in the class" }),
+          el("button", { type: "button", "data-fid": "tt-", "aria-label": "One fewer team in the class", onclick: () => setTotal(-1), text: "−" }),
+          el("output", { "aria-live": "polite", text: String(C.total) }),
+          el("button", { type: "button", "data-fid": "tt+", "aria-label": "One more team in the class", disabled: C.total === MAX_TEAMS, onclick: () => setTotal(1), text: "+" }))) : null,
       el("div", { class: "measures" }, list),
       el("p", { class: "or", text: "or" }),
       sq,
       wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: holdVote, text: "Hold the vote" }),
-        (C.sel.size || C.statusQuo || C.weak !== null) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
+        (C.sel.size || C.statusQuo || C.weak !== null || C.teams.some(t => t > 0)) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
           onclick: () => { resetCouncil(true); renderCouncil(); }, text: "Clear choices" }) : null),
       C.voted ? verdict() : null,
       panelNav("council")
@@ -960,13 +988,17 @@ function verdict(){
   }
 
   if (!C.sel.size && !C.statusQuo) {
-    return box(el("h3", { text: V.noneTitle }), el("p", { text: V.noneText }));
+    return box(el("h3", { text: V.noneTitle }), el("p", { text: cls ? "Count the teams first: use + and − on each option." : V.noneText }));
   }
+  const n = K.measures.length;
+  const counts = cls ? el("p", { class: "small team-counts" }, el("b", { text: "Team votes: " }),
+    K.measures.map((m, i) => m.name + " " + C.teams[i]).concat([K.statusQuo.name + " " + C.teams[n]]).join(" · ") + " (out of " + C.total + " teams).") : null;
   if (C.statusQuo) {
     const q = K.statusQuo;
     return box(
       el("h3", { text: V.nothingTitle }),
-      cls && C.teams[K.measures.length] ? el("p", {}, el("b", { text: q.name }), " (" + C.teams[K.measures.length] + (C.teams[K.measures.length] === 1 ? " team" : " teams") + " in favor)") : null,
+      cls ? el("p", { text: C.teams[n] > C.total / 2 ? "More than half of the teams wanted to change nothing." : "No rule got more than half of the teams, so nothing changes." }) : null,
+      counts,
       el("div", { class: "effs" }, effects(q)),
       q.group && V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), q.group + ".") : null,
       weakLine, caveat, think, again);
@@ -981,12 +1013,13 @@ function verdict(){
       const m = K.measures[i];
       return el("li", {},
         el("b", { text: m.name }),
-        cls && C.teams[i] ? " (" + C.teams[i] + (C.teams[i] === 1 ? " team" : " teams") + " in favor)" : null,
+        cls ? " (" + C.teams[i] + " of " + C.total + " teams)" : null,
         effects(m));
     })),
     V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), passed.map(i => K.measures[i].group).join("; ") + ".") : null,
     extra.map(l => el("p", { class: "link" }, el("b", { text: V.linkLabel + ": " }), l.text)),
     el("p", { text: note }),
+    counts,
     weakLine, caveat, think, again);
 }
 
@@ -1871,6 +1904,7 @@ function wtwStyle(){
     ".wtw{background:var(--surface);color:var(--ink);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}" +
     ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
     ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +
+    ".council-how{margin:0 0 12px;font-size:.95rem;display:flex;flex-direction:column;gap:8px}.council-how p{margin:0}.council-how b{color:var(--navy)}.tally.inline-start{padding:0}div.measure{cursor:default}" +
     ".wtw-row{display:flex;flex-direction:column;gap:4px}.wtw-label{font-weight:700}" +
     ".wtw-opt{display:grid;grid-template-columns:minmax(0,1fr) 3.2em;grid-template-areas:'name pc' 'bar pc';column-gap:10px;align-items:center}" +
     ".wtw-name{grid-area:name;font-size:.92rem}.wtw-pc{grid-area:pc;text-align:right;font-size:1.05rem}" +
