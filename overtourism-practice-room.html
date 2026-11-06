@@ -1813,10 +1813,16 @@ function wtwModel(){
   }
   // sort: one stacked bar per line, split by category
   if (TYPE === "sort") {
-    const rows = K.items.map((it, i) => ({ label: it.text, stack: true, single: true,
+    const rows = K.items.map((it, i) => ({ label: (it.tag ? it.tag + " · " : "") + it.text, stack: true, single: true,
       options: K.categories.map(c => ({ key: "s" + i + "-" + c.id, label: (it.labels && it.labels[c.id]) || c.label, cat: c.id })),
       mine: C.picks[i] ? ["s" + i + "-" + C.picks[i]] : [] }));
     const keys = C.picks.map((p, i) => p ? "s" + i + "-" + p : null).filter(Boolean);
+    // finals: e.g. "Worth it in total?" as one bar per question
+    (K.finals || []).forEach(f => {
+      const v = C.finals[f.id], k = v ? "f-" + f.id + "-" + v : null;
+      rows.push({ label: f.label, stack: true, single: true, options: f.options.map(o => ({ key: "f-" + f.id + "-" + o.id, label: o.label, cat: o.id })), mine: k ? [k] : [] });
+      if (k) keys.push(k);
+    });
     return { has: keys.length > 0, keys, rows };
   }
   // allocate: who got the largest share, the hardest defense, and each judgment
@@ -1839,10 +1845,17 @@ function wtwModel(){
   }
   // headlines: which headline the world would pick
   if (TYPE === "headlines") {
-    const W = ISSUE.world, key = C.choice === null ? null : "h" + C.choice;
+    const W = ISSUE.world, key = C.choice === null ? null : "h" + C.choice, keys = key ? [key] : [];
     const rows = [{ label: W.pickLabel || "The headline chosen", single: true,
       options: K.items.map((it, i) => ({ key: "h" + i, label: it.headline || it.text })), mine: key ? [key] : [] }];
-    return { has: key !== null, keys: key ? [key] : [], rows };
+    // ratings: one stacked bar per row and scale
+    K.items.forEach((it, i) => scales().forEach((sc, si) => {
+      const r = C.rates[si][i], k = r === null || r === undefined ? null : "r" + si + "-" + i + "-" + r;
+      rows.push({ label: (it.headline || it.text).replace(/[.]$/, "") + (sc.label ? " · " + sc.label : ""), stack: true, single: true,
+        options: sc.options.map(o => ({ key: "r" + si + "-" + i + "-" + o.id, label: o.name || o.label, cat: o.id })), mine: k ? [k] : [] });
+      if (k) keys.push(k);
+    }));
+    return { has: keys.length > 0, keys, rows };
   }
   return null;
 }
@@ -1897,8 +1910,10 @@ function wtwNote(){
     "When you " + act + ", " + (c ? "your class’s answers go" : "your answers go") + " into a world count. Then you see how others answered. No names, no accounts, nothing about you.");
 }
 // Bar colors: well-known answer ids get meaning colors; anything else gets a color by its position.
-const WTW_GOOD = ["fine", "ok", "eat", "keep", "yes", "safe", "fair", "worth", "genuine", "trust"], WTW_BAD = ["cheat", "throw", "no", "not", "cant", "avoid", "unfair"], WTW_MID = ["unsure", "gray", "partly", "depends", "notreally", "both", "same"];
+const WTW_GOOD = ["fine", "ok", "eat", "keep", "yes", "safe", "fair", "worth", "genuine", "trust", "plus"], WTW_BAD = ["cheat", "throw", "no", "not", "cant", "avoid", "unfair", "minus"], WTW_MID = ["unsure", "gray", "partly", "depends", "notreally", "both", "same", "unclear"];
+// ISSUE.world.neutral: no green/red meaning colors (for opinion questions on political topics).
 function wtwColor(cat, i){
+  if (ISSUE.world.neutral) return ["var(--navy)", "#b8862f", "#6b7280", "#3f7f7a"][i % 4];
   if (WTW_GOOD.includes(cat)) return "var(--good)";
   if (WTW_BAD.includes(cat)) return "var(--bad)";
   if (WTW_MID.includes(cat)) return "#6b7280";
@@ -1918,7 +1933,7 @@ function wtwBox(){
   M.rows.forEach(row => {
     const total = row.single ? row.options.reduce((a, o) => a + (st.counts[o.key] || 0), 0) : n;
     if (!total) return;
-    const youTag = isClass() ? " · your class" : " · you";
+    const youTag = isClass() ? " ✓ your class’s answer" : " ✓ your answer";
     if (row.stack) {
       const parts = row.options.map((o, k) => ({ o, col: wtwColor(o.cat, k), c: st.counts[o.key] || 0, pc: Math.round(100 * (st.counts[o.key] || 0) / total), you: row.mine.includes(o.key) }));
       box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
