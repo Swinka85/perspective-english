@@ -611,7 +611,7 @@ function freshThink(){
   if (TYPE === "decisions") return { vals: Object.fromEntries(K.rows.map(r => [r.id, r.type === "multi" ? [] : (r.type === "choice" ? null : "")])), lose: Object.fromEntries(K.rows.map(r => [r.id, ""])), voted: false };
   if (TYPE === "design") return { rows: Array.from({ length: K.min || 3 }, () => ({ name: "", dates: "", why: "", kind: null })), voted: false };
   if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, second: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
-  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0), voted: false };
+  return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0).concat([0]), voted: false };
 }
 function resetCouncil(full){
   if (!state.council || full) state.council = freshThink();
@@ -913,19 +913,21 @@ function renderCouncil(){
         "aria-pressed": C.weak === id ? "true" : "false", "aria-label": K.weakest.button + ": " + name,
         onclick: () => toggleWeak(id), text: (C.weak === id ? "✓ " : "") + K.weakest.button })) : null;
 
+    // Classroom Mode: a "Teams in favor" counter on every option, "Change nothing" included (index M.length).
+    const tally = (i, name) => cls ? el("div", { class: "tally" },
+      el("span", { text: "Teams in favor" }),
+      el("button", { type: "button", "data-fid": "tm" + i, "aria-label": "One fewer team in favor of " + name, disabled: C.teams[i] === 0, onclick: () => setTeams(i, -1), text: "−" }),
+      el("output", { "aria-live": "polite", "aria-label": "Teams in favor of " + name, text: String(C.teams[i]) }),
+      el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null;
     const list = M.map((m, i) => {
       const on = C.sel.has(i);
       return el("div", { class: "mwrap" + (on ? " on" : "") + (C.weak === i ? " is-weak" : "") },
         tile(m, on, () => toggleMeasure(i), "m" + i),
-        cls ? el("div", { class: "tally" },
-          el("span", { text: "Teams in favor" }),
-          el("button", { type: "button", "data-fid": "tm" + i, "aria-label": "One fewer team in favor of " + m.name, disabled: C.teams[i] === 0, onclick: () => setTeams(i, -1), text: "−" }),
-          el("output", { "aria-live": "polite", "aria-label": "Teams in favor of " + m.name, text: String(C.teams[i]) }),
-          el("button", { type: "button", "data-fid": "tp" + i, "aria-label": "One more team in favor of " + m.name, disabled: C.teams[i] === MAX_TEAMS, onclick: () => setTeams(i, 1), text: "+" })) : null,
+        tally(i, m.name),
         weakBtn(i, m.name));
     });
     const sq = el("div", { class: "mwrap sq" + (C.statusQuo ? " on" : "") + (C.weak === SQ ? " is-weak" : "") },
-      tile(K.statusQuo, C.statusQuo, toggleStatusQuo, "msq"), weakBtn(SQ, K.statusQuo.name));
+      tile(K.statusQuo, C.statusQuo, toggleStatusQuo, "msq"), tally(M.length, K.statusQuo.name), weakBtn(SQ, K.statusQuo.name));
 
     return [
       head(5, UI.council),
@@ -976,6 +978,7 @@ function verdict(){
     const q = K.statusQuo;
     return box(
       el("h3", { text: V.nothingTitle }),
+      cls && C.teams[K.measures.length] ? el("p", {}, el("b", { text: q.name }), " (" + C.teams[K.measures.length] + (C.teams[K.measures.length] === 1 ? " team" : " teams") + " in favor)") : null,
       el("div", { class: "effs" }, effects(q)),
       q.group && V.groupLabel ? el("p", {}, el("b", { text: V.groupLabel + ": " }), q.group + ".") : null,
       weakLine, caveat, think, again);
