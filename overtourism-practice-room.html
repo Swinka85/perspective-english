@@ -1095,6 +1095,7 @@ function renderSort(){
         el("span", { text: "Finish the sentence: " + K.ruleStem + "…" }),
         el("input", { type: "text", id: "rule", "data-fid": "rule", value: S.rule, maxlength: "200", autocomplete: "off",
           oninput: e => { S.rule = e.target.value; } })) : null,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderSort), text: K.resultButton }),
         done || S.rule || S.text || S.text2 || S.num || S.nums.length || Object.values(S.finals).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
@@ -1283,6 +1284,7 @@ function renderHeadlines(){
       K.wordPrompt ? el("label", { class: "field rule" },
         el("span", { text: K.wordPrompt }),
         el("input", { type: "text", id: "hword", "data-fid": "hword", value: H.word, maxlength: "80", autocomplete: "off", oninput: e => { H.word = e.target.value; } })) : null,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderHeadlines), text: K.resultButton }),
         withAns && K.items.some((x, i) => x.omits && !H.revealed.has(i)) ? el("button", { type: "button", class: "btn ghost", "data-fid": "hrall",
@@ -1424,6 +1426,7 @@ function renderAllocate(){
           : el("div", { class: "stat" }, el("b", { text: leaders.length ? leaders.join(" & ") : "–" }), el("small", { text: K.leaderLabel || "largest share" }))),
       el("ol", { class: "sort" }, rows),
       ...fields,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderAllocate), text: K.resultButton }),
         used || A.hard !== null || A.judge.some(Boolean) || A.moved || Object.values(A.fields).some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
@@ -1530,6 +1533,7 @@ function renderGrid(){
         K.textField.kicker ? el("span", { class: "kicker", text: K.textField.kicker }) : null,
         el("span", { text: K.textField.prompt }),
         el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: G.text, maxlength: "200", autocomplete: "off", oninput: e => { G.text = e.target.value; } })) : null,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderGrid), text: K.resultButton }),
         el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderGrid(); }, text: "Clear" })),
@@ -1610,6 +1614,7 @@ function renderRank(){
         el("span", { text: K.textField.prompt }),
         el("input", { type: "text", id: "tfield", "data-fid": "tfield", value: R.text, maxlength: "200", autocomplete: "off",
           oninput: e => { R.text = e.target.value; } })) : null,
+      wtwNote(),
       el("div", { class: "row" },
         el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderRank), text: K.resultButton }),
         R.moved || R.text || R.line !== null || R.asks.some(Boolean) ? el("button", { type: "button", class: "btn ghost", "data-fid": "vclear",
@@ -1799,6 +1804,21 @@ function wtwModel(){
       options: K.measures.map((m, i) => ({ key: "w" + i, label: m.name })).concat([{ key: "wsq", label: K.statusQuo.name }]), mine: wk ? [wk] : [] });
     return { has: C.sel.size > 0 || C.statusQuo, keys: mine.concat(wk ? [wk] : []), rows };
   }
+  // sort: one stacked bar per line, split by category
+  if (TYPE === "sort") {
+    const rows = K.items.map((it, i) => ({ label: it.text, stack: true, single: true,
+      options: K.categories.map(c => ({ key: "s" + i + "-" + c.id, label: (it.labels && it.labels[c.id]) || c.label, cat: c.id })),
+      mine: C.picks[i] ? ["s" + i + "-" + C.picks[i]] : [] }));
+    const keys = C.picks.map((p, i) => p ? "s" + i + "-" + p : null).filter(Boolean);
+    return { has: keys.length > 0, keys, rows };
+  }
+  // headlines: which headline the world would pick
+  if (TYPE === "headlines") {
+    const W = ISSUE.world, key = C.choice === null ? null : "h" + C.choice;
+    const rows = [{ label: W.pickLabel || "The headline chosen", single: true,
+      options: K.items.map((it, i) => ({ key: "h" + i, label: it.headline || it.text })), mine: key ? [key] : [] }];
+    return { has: key !== null, keys: key ? [key] : [], rows };
+  }
   return null;
 }
 function wtwCanVote(room){
@@ -1837,17 +1857,17 @@ async function wtwGo(){
 }
 /* ISSUE.world: a short notice before the vote button, so nobody is counted without knowing. */
 function wtwNote(){
-  if (!ISSUE.world) return null;
-  const c = isClass();
+  if (!ISSUE.world || !wtwModel()) return null;
+  const c = isClass(), act = TYPE === "council" ? "hold the vote" : "press “" + K.resultButton + "”";
   return el("p", { class: "wtw-note" },
     el("b", { text: (ISSUE.world.title || "What the World Thinks") + ": " }),
-    "When you hold the vote, " + (c ? "your class’s answers go" : "your answers go") + " into a world count. Then you see how other " + (c ? "classes" : "students") + " voted. No names, no accounts, nothing about you.");
+    "When you " + act + ", " + (c ? "your class’s answers go" : "your answers go") + " into a world count. Then you see how other " + (c ? "classes" : "students") + " answered. No names, no accounts, nothing about you.");
 }
 function wtwBox(){
   const W = ISSUE.world, room = wtwRoom(), st = WTW.cache[room], M = wtwModel();
   const who = isClass() ? "classes" : "students", min = W.min || 20;
   const box = el("div", { class: "wtw", id: "wtw", "aria-live": "polite" }, el("span", { class: "kicker", text: W.title || "What the World Thinks" }));
-  if (!st || st.status === "loading") { box.append(el("p", { text: "Checking how other " + who + " voted…" })); return box; }
+  if (!st || st.status === "loading") { box.append(el("p", { text: "Checking how other " + who + " answered…" })); return box; }
   if (st.status === "error") { box.append(el("p", { text: "The world results can’t be reached right now. Try again later." })); return box; }
   const n = st.counts.n || 0;
   if (n < min) { box.append(el("p", { text: "You’re one of the first " + who + " to answer this: " + n + " so far. Results appear once " + min + " " + who + " have answered. Check back soon!" })); return box; }
@@ -1855,10 +1875,18 @@ function wtwBox(){
   M.rows.forEach(row => {
     const total = row.single ? row.options.reduce((a, o) => a + (st.counts[o.key] || 0), 0) : n;
     if (!total) return;
+    const youTag = isClass() ? " · your class" : " · you";
+    if (row.stack) {
+      const parts = row.options.map(o => ({ o, pc: Math.round(100 * (st.counts[o.key] || 0) / total), you: row.mine.includes(o.key) }));
+      box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
+        el("span", { class: "wtw-stack", "aria-hidden": "true" }, parts.filter(p => p.pc > 0).map(p => el("span", { class: "c-" + p.o.cat + (p.you ? " you" : ""), style: "width:" + p.pc + "%" }))),
+        el("p", { class: "wtw-legend" }, parts.map(p => el("span", { class: "c-" + p.o.cat + (p.you ? " you" : "") }, el("i", { "aria-hidden": "true" }), p.o.label + " " + p.pc + "%" + (p.you ? youTag : ""))))));
+      return;
+    }
     box.append(el("div", { class: "wtw-row" }, el("p", { class: "wtw-label", text: row.label }),
       row.options.map(o => { const pc = Math.round(100 * (st.counts[o.key] || 0) / total), you = row.mine.includes(o.key);
         return el("div", { class: "wtw-opt" + (you ? " you" : "") },
-          el("span", { class: "wtw-name", text: o.label + (you ? (isClass() ? " · your class" : " · you") : "") }),
+          el("span", { class: "wtw-name", text: o.label + (you ? youTag : "") }),
           el("span", { class: "wtw-bar", "aria-hidden": "true" }, el("span", { style: "width:" + pc + "%" })),
           el("b", { class: "wtw-pc", text: pc + "%" })); })));
   });
@@ -1877,7 +1905,11 @@ function wtwStyle(){
     ".wtw{background:var(--surface);color:var(--ink);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}" +
     ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
     ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +
-        ".wtw-row{display:flex;flex-direction:column;gap:4px}.wtw-label{font-weight:700}" +
+        ".wtw-stack{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line)}.wtw-stack span{height:100%;opacity:.8}.wtw-stack span.you{opacity:1}" +
+    ".wtw-stack .c-fine,.wtw-stack .c-ok,.wtw-legend .c-fine i,.wtw-legend .c-ok i{background:var(--good)}.wtw-stack .c-cheat,.wtw-legend .c-cheat i{background:var(--bad)}" +
+    ".wtw-stack .c-gray,.wtw-stack .c-unsure,.wtw-legend .c-gray i,.wtw-legend .c-unsure i{background:#6b7280}.wtw-stack span:not([class*=c-fine]):not([class*=c-ok]):not([class*=c-cheat]):not([class*=c-gray]):not([class*=c-unsure]){background:var(--navy)}" +
+    ".wtw-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font-size:.88rem}.wtw-legend span{display:inline-flex;align-items:center;gap:5px}.wtw-legend i{width:10px;height:10px;border-radius:2px;background:var(--navy)}.wtw-legend .you{font-weight:700}.is-class .wtw-stack{height:20px}.is-class .wtw-legend{font-size:1.05rem}" +
+    ".wtw-row{display:flex;flex-direction:column;gap:4px}.wtw-label{font-weight:700}" +
     ".wtw-opt{display:grid;grid-template-columns:minmax(0,1fr) 3.2em;grid-template-areas:'name pc' 'bar pc';column-gap:10px;align-items:center}" +
     ".wtw-name{grid-area:name;font-size:.92rem}.wtw-pc{grid-area:pc;text-align:right;font-size:1.05rem}" +
     ".wtw-bar{grid-area:bar;height:10px;border-radius:5px;background:var(--line);overflow:hidden}" +
