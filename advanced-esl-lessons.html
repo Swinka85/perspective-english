@@ -411,7 +411,15 @@
       color: #fff;
     }
 
-  </style>
+  
+/* Same one-line menu on the Beginner, Intermediate and Advanced pages */
+.site-header .nav-links { gap: 16px; flex-wrap: wrap; }
+.site-header .nav-links a { white-space: nowrap; }
+@media (min-width: 851px) {
+  .site-header .nav { flex-wrap: wrap; row-gap: 14px; }
+  .site-header .nav-links { flex-shrink: 0; }
+}
+</style>
 <style>
     /* ADVANCED LEVEL BRAND OVERRIDES */
     .level-switcher a[aria-current="page"] {
@@ -532,6 +540,8 @@
 <a href="#lessons">Lessons</a>
 <a href="esl-lesson-collections.html">Collections</a>
 <a href="perspective-discussion-books.html">Volumes</a>
+<a href="practice-rooms.html">Practice Rooms</a>
+<a href="esl-discussion-questions.html">Discussion Questions</a>
 <a href="resources.html">Resources</a>
 <a href="about.html">About</a>
 </nav>

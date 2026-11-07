@@ -452,7 +452,15 @@
       color: #fff;
     }
 
-  </style>
+  
+/* Same one-line menu on the Beginner, Intermediate and Advanced pages */
+.site-header .nav-links { gap: 16px; flex-wrap: wrap; }
+.site-header .nav-links a { white-space: nowrap; }
+@media (min-width: 851px) {
+  .site-header .nav { flex-wrap: wrap; row-gap: 14px; }
+  .site-header .nav-links { flex-shrink: 0; }
+}
+</style>
 
 <style>
 /* LEVEL BRAND: matches the individual lesson pages */
