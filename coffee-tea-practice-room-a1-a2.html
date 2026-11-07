@@ -478,6 +478,7 @@ const ISSUE = {
     }
   },
 
+  world: { room: "coffee-tea-a", min: 3 },
   // Wording for each activity: solo = Solo Practice, cls = Classroom Mode, team = team prompt
   ui: {
     tabs: { cards: "Flashcards", match: "Match", gap: "Fill the gap", tf: "True or false", council: "Open one café" },
@@ -1862,19 +1863,20 @@ function wtwModel(){
   // sort: one stacked bar per line, split by category
   if (TYPE === "sort") {
     // quota with one category ("keep exactly 2"): one row, the share of responses that kept each line
-    const one = K.quota && K.categories.length === 1, c0 = K.categories[0].id;
-    const rows = one ? [{ label: ISSUE.world.keepLabel || K.categories[0].label, options: K.items.map((it, i) => ({ key: "s" + i + "-" + c0, label: (it.tag ? it.tag + " · " : "") + it.text })),
-      mine: C.picks.map((p, i) => p ? "s" + i + "-" + p : null).filter(Boolean) }] : K.items.map((it, i) => ({ label: (it.tag ? it.tag + " · " : "") + it.text, stack: true, single: true,
+    const one = K.categories.length === 1, c0 = K.categories[0].id;   // one category ("Yes" / "Keep"): the share that chose each line
+    const rows = one ? [{ label: ISSUE.world.keepLabel || K.categories[0].label, options: K.items.map((it, i) => ({ key: "s" + i + "-" + c0, label: (it.tag && !ISSUE.world.noTags ? it.tag + " · " : "") + it.text })),
+      mine: C.picks.map((p, i) => p ? "s" + i + "-" + p : null).filter(Boolean) }] : K.items.map((it, i) => ({ label: (ISSUE.world.rowLabels || [])[i] || (it.tag ? it.tag + " · " : "") + it.text, stack: true, single: true,
       options: K.categories.map(c => ({ key: "s" + i + "-" + c.id, label: (it.labels && it.labels[c.id]) || c.label, cat: c.id })),
       mine: C.picks[i] ? ["s" + i + "-" + C.picks[i]] : [] }));
     const keys = C.picks.map((p, i) => p ? "s" + i + "-" + p : null).filter(Boolean);
     // finals: e.g. "Worth it in total?" as one bar per question
     (K.finals || []).forEach(f => {
       const v = C.finals[f.id], k = v ? "f-" + f.id + "-" + v : null;
-      rows.push({ label: f.label, stack: true, single: true, options: f.options.map(o => ({ key: "f-" + f.id + "-" + o.id, label: o.label, cat: o.id })), mine: k ? [k] : [] });
+      rows.push({ label: (ISSUE.world.finalLabels || {})[f.id] || f.label, stack: true, single: true, options: f.options.map(o => ({ key: "f-" + f.id + "-" + o.id, label: o.label, cat: o.id })), mine: k ? [k] : [] });
       if (k) keys.push(k);
     });
     if (K.quota && C.picks.filter(Boolean).length !== K.quota.n) return { has: false, keys: [], rows };   // "keep exactly N" must be exactly N
+    if ((K.sums || []).some(sm => sm.max != null && sortSum(C, sm) > sm.max)) return { has: false, keys: [], rows };   // over a limit (e.g. 10 hours) doesn't count
     return { has: keys.length > 0, keys, rows };
   }
   // allocate: who got the largest share, the hardest defense, and each judgment
@@ -1886,7 +1888,19 @@ function wtwModel(){
     const leads = tied(top);
     rows.push({ label: ISSUE.world.largestLabel || V.largestLabel || "Largest share", single: true, options: K.items.map((it, i) => ({ key: "L" + i, label: name(it) })), mine: leads.map(i => "L" + i) });
     leads.forEach(i => keys.push("L" + i));
-    if (!K.judgments && !K.hardButton) {   // nothing else to show: add who got the smallest share
+    // stars: the share of responses that gave each one at least one star
+    if (K.stars || ISSUE.world.anyLabel) {   // ISSUE.world.anyLabel: also for other point activities, e.g. "Included in the trip"
+      rows.push({ label: ISSUE.world.anyLabel || "Given at least one star", options: K.items.map((it, i) => ({ key: "G" + i, label: name(it) })), mine: K.items.map((_, i) => C.pts[i] > 0 ? "G" + i : null).filter(Boolean) });
+      K.items.forEach((_, i) => { if (C.pts[i] > 0) keys.push("G" + i); });
+    }
+    // criteria ranked first: the most important one (only once the order was changed)
+    if (K.criteria) {
+      const ci = C.order[0];
+      rows.push({ label: ISSUE.world.criteriaLabel || "The most important criterion", single: true, options: K.criteria.items.map((c, j) => ({ key: "C" + j, label: c.text })), mine: C.moved ? ["C" + ci] : [] });
+      if (C.moved) keys.push("C" + ci);
+    }
+    if (K.cost && K.cost.max != null && K.items.reduce((a, it, i) => a + C.pts[i] * (it[K.cost.field] || 0), 0) > K.cost.max) return { has: false, keys: [], rows };   // over budget doesn't count
+    if (!K.judgments && !K.hardButton && !K.stars && !ISSUE.world.anyLabel) {   // nothing else to show: add who got the smallest share
       const lows = tied(Math.min(...C.pts));
       rows.push({ label: ISSUE.world.leastLabel || V.leastLabel || "Smallest share", single: true, options: K.items.map((it, i) => ({ key: "S" + i, label: name(it) })), mine: lows.map(i => "S" + i) });
       lows.forEach(i => keys.push("S" + i));
@@ -1906,8 +1920,64 @@ function wtwModel(){
   if (TYPE === "rank") {
     const name = it => it.short || it.text, first = C.order[0], last = C.order[C.order.length - 1];
     const row = (label, pre, pick) => ({ label, single: true, options: K.items.map((it, i) => ({ key: pre + i, label: name(it) })), mine: C.moved ? [pre + pick] : [] });
-    const rows = [row(K.scale ? K.scale.top : "Ranked first", "t", first), row(K.scale ? K.scale.bottom : "Ranked last", "b", last)];
-    return { has: !!C.moved, keys: C.moved ? ["t" + first, "b" + last] : [], rows };
+    const W = ISSUE.world, rows = [row(W.firstLabel || (K.scale ? K.scale.top : "Ranked first"), "t", first), row(W.lastLabel || (K.scale ? K.scale.bottom : "Ranked last"), "b", last)];
+    const keys = C.moved ? ["t" + first, "b" + last] : [];
+    // drawLine: the share of responses that put each item above their line
+    if (K.drawLine) {
+      const above = C.moved && C.line !== null ? C.order.slice(0, C.line + 1) : [];
+      rows.push({ label: W.lineLabel || "Above the line", options: K.items.map((it, i) => ({ key: "a" + i, label: name(it) })), mine: above.map(i => "a" + i) });
+      above.forEach(i => keys.push("a" + i));
+    }
+    return { has: !!C.moved, keys, rows };
+  }
+  // grid: which column each finished row ranked hardest (number 1); the optional "your own generation" is never sent
+  if (TYPE === "grid") {
+    const rows = [], keys = [], m = K.columns.length;
+    K.rows.forEach((row, ri) => {
+      const r = C.ranks[ri] || {}, done = K.columns.every(c => r[c.id]), top = done ? K.columns.find(c => r[c.id] === 1) : null;
+      rows.push({ label: ((ISSUE.world.rowLabels || [])[ri] || row.text) + (ISSUE.world.rowSuffix !== undefined ? ISSUE.world.rowSuffix : " · number 1"), stack: true, single: true,
+        options: K.columns.map(c => ({ key: "g" + ri + "-" + c.id, label: c.label, cat: c.id })), mine: top ? ["g" + ri + "-" + top.id] : [] });
+      if (top) keys.push("g" + ri + "-" + top.id);
+    });
+    return { has: keys.length > 0, keys, rows };
+  }
+  // design: only tapped or counted choices are sent, never the typed names, dates or reasons.
+  // How many rows were named, which example names were used, and (with kinds) what most rows were made by.
+  if (TYPE === "design") {
+    const W = ISSUE.world, named = designNamed(C), n = named.length, min = K.min || 3, max = K.max || 6, rows = [], keys = [];
+    const ok = n >= min && n <= max, nums = []; for (let k = min; k <= max; k++) nums.push(k);
+    rows.push({ label: W.countLabel || "How many were made", stack: true, single: true, options: nums.map(k => ({ key: "n" + k, label: String(k), cat: String(k) })), mine: ok ? ["n" + n] : [] });
+    if (ok) keys.push("n" + n);
+    if (K.examples) {
+      const used = K.examples.map((x, j) => named.some(r => r.name.trim().toLowerCase() === x.toLowerCase()) ? "e" + j : null).filter(Boolean);
+      rows.push({ label: W.exampleLabel || "Used this example", options: K.examples.map((x, j) => ({ key: "e" + j, label: x })), mine: ok ? used : [] });
+      if (ok) used.forEach(k => keys.push(k));
+    }
+    if (K.kinds) {
+      const kc = K.kinds.options.map(o => named.filter(r => r.kind === o.id).length), top = Math.max(...kc), lead = kc.filter(v => v === top).length;
+      const k = !ok || top === 0 ? null : lead > 1 ? "k-even" : "k-" + K.kinds.options[kc.indexOf(top)].id;
+      rows.push({ label: W.kindLabel || "Mostly made by", stack: true, single: true,
+        options: K.kinds.options.map(o => ({ key: "k-" + o.id, label: o.label, cat: o.id })).concat([{ key: "k-even", label: W.evenLabel || "Half and half", cat: "mixed" }]), mine: k ? [k] : [] });
+      if (k) keys.push(k);
+    }
+    return { has: ok, keys, rows };
+  }
+  // decisions: only the tapped rows are sent. A choice row is one stacked bar; a multi row shows the share that picked each option
+  // (only when exactly n were picked). Number and text rows, and every "what you lose" box, are never sent.
+  if (TYPE === "decisions") {
+    const W = ISSUE.world, rows = [], keys = [], cap = x => x.charAt(0).toUpperCase() + x.slice(1);
+    K.rows.forEach(r => {
+      const v = C.vals[r.id], label = (W.rowLabels || {})[r.id] || r.label;
+      if (r.type === "choice") {
+        rows.push({ label, stack: true, single: true, options: r.options.map(o => ({ key: "d-" + r.id + "-" + o.id, label: o.label, cat: o.id })), mine: v ? ["d-" + r.id + "-" + v] : [] });
+        if (v) keys.push("d-" + r.id + "-" + v);
+      } else if (r.type === "multi") {
+        const ok = v.length > 0 && (!r.n || v.length === r.n), mine = ok ? v.map(id => "d-" + r.id + "-" + id) : [];
+        rows.push({ label, options: r.options.map(o => ({ key: "d-" + r.id + "-" + o.id, label: cap(o.label) })), mine });
+        mine.forEach(k => keys.push(k));
+      }
+    });
+    return { has: keys.length > 0, keys, rows };
   }
   // headlines: which headline the world would pick
   if (TYPE === "headlines") {
@@ -1925,7 +1995,7 @@ function wtwModel(){
       const r = C.rates[si][i], k = r === null || r === undefined ? null : "r" + si + "-" + i + "-" + r;
       const scl = W.scaleLabel !== undefined ? W.scaleLabel : sc.label;   // ISSUE.world.scaleLabel: "" hides e.g. "· Your number"
       rows.push({ label: (it.headline || it.text).replace(/[.]$/, "") + (scl ? " · " + scl : ""), stack: true, single: true,
-        options: sc.options.map(o => ({ key: "r" + si + "-" + i + "-" + o.id, label: o.name || o.label, cat: o.id })), mine: k ? [k] : [] });
+        options: sc.options.map(o => ({ key: "r" + si + "-" + i + "-" + o.id, label: o.name && o.name.toLowerCase() !== o.label.toLowerCase() ? o.name : o.label, cat: o.id })), mine: k ? [k] : [] });
       if (k) keys.push(k);
     }));
     return { has: keys.length > 0, keys, rows };
@@ -1983,12 +2053,13 @@ function wtwNote(){
     "When you " + act + ", " + (c ? "your class’s answers go" : "your answers go") + " into a world count. Then you see how others answered. No names, no accounts, nothing about you.");
 }
 // Bar colors: well-known answer ids get meaning colors; anything else gets a color by its position.
-const WTW_GOOD = ["fine", "ok", "eat", "keep", "yes", "safe", "fair", "worth", "genuine", "trust", "plus"], WTW_BAD = ["cheat", "throw", "no", "not", "cant", "avoid", "unfair", "minus"], WTW_MID = ["unsure", "gray", "partly", "depends", "notreally", "both", "same", "unclear", "mixed", "none"];
+const WTW_GOOD = ["fine", "ok", "eat", "keep", "yes", "safe", "fair", "worth", "genuine", "trust", "plus", "real", "helps"], WTW_BAD = ["cheat", "throw", "no", "not", "cant", "avoid", "unfair", "minus", "fake", "holds"], WTW_MID = ["unsure", "gray", "partly", "depends", "notreally", "both", "same", "unclear", "mixed", "none"];
 // ISSUE.world.neutral: no green/red meaning colors (for opinion questions on political topics).
 function wtwColor(cat, i, all){
   // number scales (1–5): one color from light to dark, so the bar reads as a scale
-  if (all && all.length > 2 && all.every(o => /^\d+$/.test(o.cat))) return "color-mix(in srgb, var(--navy) " + Math.round(25 + 75 * i / (all.length - 1)) + "%, #fff)";
-  if (ISSUE.world.neutral) return ["var(--navy)", "#b8862f", "#6b7280", "#3f7f7a"][i % 4];
+  // ISSUE.world.gradient: the options form a scale (e.g. Normal … Too far), so use the same light-to-dark color
+  if (all && all.length > 2 && (ISSUE.world.gradient || all.every(o => /^\d+$/.test(o.cat)))) return "color-mix(in srgb, var(--navy) " + Math.round(25 + 75 * i / (all.length - 1)) + "%, #fff)";
+  if (ISSUE.world.neutral) return ["var(--navy)", "#b8862f", "#6b7280", "#8a5aa8", "#5b6fb3", "#9c4f6a"][i % 6];
   if (WTW_GOOD.includes(cat)) return "var(--good)";
   if (WTW_BAD.includes(cat)) return "var(--bad)";
   if (WTW_MID.includes(cat)) return "#6b7280";
@@ -2005,6 +2076,7 @@ function wtwBox(){
   box.append(el("p", { class: "wtw-n", text: "Based on " + n + " responses." }));
   // ISSUE.world.note: a line under the count, e.g. "This shows what people chose, not what is safe."
   if (W.note) box.append(el("p", { class: "wtw-caution", text: W.note }));
+  if (W.intro) box.append(el("p", { class: "wtw-n", text: W.intro }));   // ISSUE.world.intro: one plain line explaining the bars
   M.rows.forEach(row => {
     const total = row.single ? row.options.reduce((a, o) => a + (st.counts[o.key] || 0), 0) : n;
     if (!total) return;
@@ -2039,7 +2111,7 @@ function wtwStyle(){
     ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
     ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +
         ".wtw-stack{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--line)}.wtw-stack span{height:100%;opacity:.8}.wtw-stack span.you{opacity:1}" +
-    ".wtw-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font-size:.88rem}.wtw-legend span{display:inline-flex;align-items:center;gap:5px}.wtw-legend i{width:10px;height:10px;border-radius:2px;background:var(--navy)}.wtw-legend .you{font-weight:700}.is-class .wtw-stack{height:20px}.is-class .wtw-legend{font-size:1.05rem}" +
+    ".wtw-legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font-size:.88rem}.wtw-legend span{display:inline-flex;align-items:center;gap:5px}.wtw-legend i{flex:0 0 10px;width:10px;height:10px;border-radius:2px;background:var(--navy)}.wtw-legend .you{font-weight:700}.is-class .wtw-stack{height:20px}.is-class .wtw-legend{font-size:1.05rem}" +
     ".wtw-caution{margin:0;font-size:.9rem;font-weight:700;color:var(--bad)}" +
     ".wtw-row{display:flex;flex-direction:column;gap:4px}.wtw-label{font-weight:700}" +
     ".wtw-opt{display:grid;grid-template-columns:minmax(0,1fr) 3.2em;grid-template-areas:'name pc' 'bar pc';column-gap:10px;align-items:center}" +
