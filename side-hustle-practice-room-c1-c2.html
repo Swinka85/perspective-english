@@ -351,6 +351,16 @@ header:has(.mast) h1,h2,.cta h2{color:#451a2a}
 .is-class .rbtn{width:54px;height:48px;font-size:1.3rem}
 .is-class .crit .rnum{width:36px;height:36px;font-size:1.1rem}
 @media(max-width:520px){.weakrow{padding-left:12px}.tally.inline{margin-left:0}.rrow{padding:10px}.rnum{width:34px;height:34px;font-size:1.05rem}}
+/* Shared return-to-lesson navigation and no-JavaScript fallback */
+.no-js-info{margin-top:20px;padding:18px;border:1px solid var(--line);border-radius:8px;background:var(--tint)}
+.no-js-info h2{font-size:1.4rem}
+.no-js-info p{margin:10px 0 0}
+.lesson-return{margin-top:20px}
+@media(max-width:520px){.lesson-return-link{max-width:100%;text-align:center}}
+.lesson-return-link{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 20px;border:1px solid #1a2a5e;border-radius:10px;background:#fff;color:#1a2a5e;text-decoration:none;font-size:16px;font-weight:700}
+.lesson-return-link:hover{background:#f3f0e8}
+.lesson-return-link:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+
 </style>
 
 </head>
@@ -363,6 +373,15 @@ header:has(.mast) h1,h2,.cta h2{color:#451a2a}
     <span class="level" id="issueLevel"></span>
     <div class="levels" id="levelSwitch" role="navigation" aria-label="Practice Room levels"></div>
   </header>
+  <div class="lesson-return"><a class="lesson-return-link" id="backToLesson" href="https://perspectiveenglish.com/side-hustle-esl-lesson-c1-c2.html">← Back to Lesson</a></div>
+
+  <noscript>
+    <section class="no-js-info" aria-label="Practice Room information">
+      <h2>The Side Hustle — C1–C2 Practice Room</h2>
+      <p>This free Practice Room accompanies the Perspective English lesson. Interactive activities require JavaScript. Please enable JavaScript to use Solo Practice or Classroom Mode, or return to the <a href="https://perspectiveenglish.com/side-hustle-esl-lesson-c1-c2.html">The Side Hustle C1–C2 lesson</a>.</p>
+    </section>
+  </noscript>
+
 
   <div class="modebar">
     <div class="seg" role="group" aria-label="Practice mode">
@@ -2129,6 +2148,7 @@ function start(){
   $("issueTitle").textContent = ISSUE.title;
   $("issueDek").textContent = ISSUE.dek;
   $("issueLevel").textContent = ISSUE.level;
+  $("backToLesson").href = ISSUE.lessonUrl;
   const ls = $("levelSwitch");
   if (ls && ISSUE.levels) ls.replaceChildren(...ISSUE.levels.map(l =>
     el("a", { href: l.href, "aria-current": l.label === ISSUE.level ? "page" : null, text: l.label + " " + l.name })));
