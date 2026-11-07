@@ -1,0 +1,83 @@
+/* ===== Free Practice Room panel + purchase box (lesson pages) ===== */
+.pr-panel { background:#0d3b2a; color:#fff; display:flex; gap:32px; align-items:center; padding:24px 24px 24px 32px; margin:0 0 28px; }
+.pr-panel-text { flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:10px; }
+.pr-free { margin:0; display:flex; gap:10px; align-items:center; font-size:11px; font-weight:700; letter-spacing:3px; color:#a8e0c2; }
+.pr-free span { background:#fff; color:#0d3b2a; padding:4px 8px; letter-spacing:2px; }
+.pr-panel h2 { margin:0; font-family:"Playfair Display", Georgia, serif; font-size:28px; line-height:1.15; color:#fff; }
+.pr-panel p.pr-desc { margin:0; font-size:15px; line-height:1.55; color:#e3f2ea; }
+.pr-actions { display:flex; gap:12px; margin-top:4px; flex-wrap:wrap; }
+.pr-btn { text-decoration:none; font-weight:700; text-align:center; display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+.pr-btn-main { padding:12px 20px; background:#fff; color:#0d3b2a !important; font-size:15px; }
+.pr-btn-alt { padding:10px 16px; border:2px solid #a8e0c2; color:#fff !important; font-size:14px; }
+.pr-btn .pr-short { display:none; }
+.pr-shot { flex:0 0 360px; background:#fff; padding:6px; box-shadow:0 10px 24px rgba(0,0,0,.22); }
+.pr-shot img { width:348px; height:180px; object-fit:cover; object-position:top; display:block; }
+
+.buy-box { padding:32px 36px 30px; background:#f7f8fa; border:1px solid #d7dce3; display:flex; flex-direction:column; gap:22px; color:#071f3d; }
+.buy-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.buy-head h2 { margin:0; font-family:"Playfair Display", Georgia, serif; font-size:30px; }
+.buy-head p { margin:0; font-size:14px; color:#33435a; }
+.buy-cards { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px; align-items:stretch; }
+.buy-card { background:#fff; border:1px solid #d7dce3; padding:24px; display:flex; flex-direction:column; gap:10px; position:relative; }
+.buy-card.best { border:2px solid var(--navy, #071f3d); padding:23px; }
+.buy-badge { position:absolute; top:-13px; left:22px; background:#b8862f; color:#fff; font-size:11px; font-weight:700; letter-spacing:2px; padding:5px 10px; }
+.buy-kicker { margin:0; font-size:11px; font-weight:700; letter-spacing:3px; color:#5a6878; }
+.buy-card h3 { margin:0; font-size:20px; color:#071f3d; }
+.buy-card p.buy-desc { margin:0; font-size:14px; color:#33435a; line-height:1.5; }
+.buy-price { display:flex; align-items:baseline; gap:8px; margin-top:auto; padding-top:8px; }
+.buy-price strong { font-size:32px; }
+.buy-price span { font-size:14px; color:#5a6878; }
+.buy-btn { text-decoration:none; text-align:center; padding:14px; border:2px solid var(--navy, #071f3d); font-weight:700; font-size:15px; color:var(--navy, #071f3d) !important; display:block; }
+.buy-btn.solid { background:var(--navy, #071f3d); color:#fff !important; }
+.buy-trust { display:flex; gap:28px; flex-wrap:wrap; font-size:13px; color:#33435a; margin:0; padding:0; list-style:none; }
+.buy-trust li { display:flex; gap:8px; align-items:center; }
+.buy-files { border-top:1px solid #d7dce3; padding-top:18px; display:flex; flex-direction:column; gap:12px; }
+.buy-files-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; }
+.buy-file { display:flex; gap:10px; align-items:center; font-size:14px; line-height:1.3; }
+.buy-file small { display:block; color:#5a6878; font-size:14px; }
+.buy-file svg { flex-shrink:0; color:var(--navy, #071f3d); }
+.buy-price-inline { display:none; }
+.buy-cards.n2 { grid-template-columns:repeat(2, minmax(0,1fr)); }
+.buy-cards.n1 { grid-template-columns:minmax(0, 420px); }
+.buy-card.soon { background:#f7f8fa; border-style:dashed; color:#5a6878; }
+.buy-card.soon h3 { color:#5a6878; }
+.buy-soon { margin-top:auto; padding-top:8px; font-size:14px; font-weight:700; color:#5a6878; }
+
+@media (max-width: 760px) {
+  .pr-panel { flex-direction:column; align-items:stretch; padding:18px 16px 16px; gap:10px; margin:0 0 20px; }
+  .pr-panel-text { gap:10px; }
+  .pr-free { font-size:10px; letter-spacing:2px; gap:8px; }
+  .pr-panel h2 { font-size:23px; line-height:1.2; }
+  .pr-panel p.pr-desc { font-size:14px; line-height:1.5; }
+  .pr-shot { display:none; }
+  .pr-actions { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; margin-top:2px; }
+  .pr-btn-main { padding:14px 6px; }
+  .pr-btn-alt { padding:12px 6px; font-size:15px; }
+  .pr-btn .pr-long { display:none; }
+  .pr-btn .pr-short { display:inline; }
+  .pr-btn svg { display:none; }
+
+  .buy-box { padding:22px 16px 20px; gap:16px; }
+  .buy-head { flex-direction:column; align-items:flex-start; gap:4px; }
+  .buy-head h2 { font-size:26px; }
+  .buy-cards, .buy-cards.n2, .buy-cards.n1 { grid-template-columns:1fr; gap:16px; }
+  .buy-card { padding:16px; gap:8px; }
+  .buy-card.lesson { border:2px solid var(--navy, #071f3d); padding:18px 16px 16px; }
+  .buy-card.lesson .buy-title-row { display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+  .buy-card.lesson .buy-price { display:none; }
+  .buy-card.lesson .buy-price-inline { display:inline; font-size:30px; font-weight:700; }
+  .buy-card.lesson .buy-btn { background:var(--navy, #071f3d); color:#fff !important; padding:16px; font-size:16px; margin-top:4px; }
+  .buy-card.best { margin-top:6px; padding:22px 16px 16px; }
+  .buy-badge { top:-12px; left:14px; font-size:10px; padding:5px 9px; }
+  .buy-kicker { font-size:10px; }
+  .buy-card h3 { font-size:18px; }
+  .buy-card.lesson h3 { font-size:20px; }
+  .buy-price { padding-top:0; }
+  .buy-price strong { font-size:28px; }
+  .buy-price span { font-size:13px; }
+  .buy-btn { padding:15px; font-size:16px; }
+  .buy-trust { flex-direction:column; gap:10px; font-size:14px; padding-top:4px; }
+  .buy-files { padding-top:16px; }
+  .buy-files-grid { grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px 12px; }
+  .buy-file svg { display:none; }
+}
