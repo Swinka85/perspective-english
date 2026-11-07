@@ -488,7 +488,7 @@
 .hero .pack-hero-intro > p.pack-hero-lead { font-size: clamp(16px, 1.9vw, 19px); line-height: 1.65; color: #555d6b; margin: 0 auto; max-width: 690px; }
 .teaching-pack-visual { margin: 0 auto; max-width: 1100px; }
 .teaching-pack-visual img { display: block; width: 100%; height: auto; border-radius: 8px; }
-.pack-contents { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin: 23px auto 0; max-width: 920px; }
+.pack-contents { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 14px; margin: 23px auto 0; max-width: 920px; }
 .pack-content-item { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 8px; border-top: 1px solid #d8dce4; border-bottom: 1px solid #d8dce4; color: #177b79; font-size: 14px; font-weight: 700; }
 .pack-content-item svg { flex: 0 0 22px; width: 22px; height: 22px; stroke: #a88a43; stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .pack-hero-detail { max-width: 780px; margin: 31px auto 0; text-align: center; }
@@ -506,6 +506,9 @@
  .pack-hero-detail { margin-top: 23px; }
  .hero .pack-hero-detail p { font-size: 14px; }
 }
+</style>
+<style>
+@media (max-width: 680px) { .pack-contents .pack-content-item:last-child { grid-column: 1 / -1; justify-content: center; } }
 </style>
 </head>
 <body>
@@ -555,6 +558,7 @@
       <div class="pack-content-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1zM12 6v14"/></svg><span>Teacher Guide</span></div>
       <div class="pack-content-item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="14" rx="1"/><path d="M12 17v4M8 21h8M9 7l6 3-6 3z"/></svg><span>PowerPoint</span></div>
       <div class="pack-content-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-3a8 8 0 0 1 16 0v3M4 14h3v6H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2zM20 14h-3v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2z"/></svg><span>MP3 Audio</span></div>
+       <div class="pack-content-item"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h5M15 15l2 2 4-4"/></svg><span>Free Solo &amp; Classroom Practice Rooms</span></div>
     </div>
 
     <div class="pack-hero-detail">
