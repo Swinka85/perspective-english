@@ -2306,6 +2306,7 @@ function renderResults(){
   const input = el("input", { id: "resName", type: "text", maxlength: "40", autocomplete: "off", placeholder: "Your name (optional)", "aria-label": "Your name (optional)",
     oninput: e => { TOOLS.name = e.target.value; const h = $("resWho"); if (h) h.textContent = e.target.value.trim() || "My results"; } });
   input.value = TOOLS.name || "";
+  const rmsg = el("p", { class: "tool-note", role: "status", "aria-live": "polite" });
   p.replaceChildren(
     el("div", { class: "res-card" },
       el("div", { class: "res-top" },
@@ -2319,8 +2320,67 @@ function renderResults(){
           el("span", { class: "res-s", text: (full ? "✓ " : "") + text })))),
       el("p", { class: "res-site", text: "perspectiveenglish.com" })),
     input,
-    el("p", { class: "tool-note", text: "Take a screenshot to show your teacher. Nothing is sent or saved." }));
+    el("div", { class: "res-actions" },
+      canShareFiles() ? el("button", { type: "button", class: "btn", onclick: () => sendResults(rmsg), text: "Send to my teacher" }) : null,
+      el("button", { type: "button", class: canShareFiles() ? "btn ghost" : "btn", onclick: () => saveResults(rmsg), text: "Save as image" })),
+    rmsg);
+  rmsg.textContent = "Send or save your card for your teacher, or take a screenshot. Nothing is sent to Perspective English.";
   if (keep) { input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
+}
+
+/* Draw the results card as a PNG (no outside library), for "Save as image" and "Send to my teacher". */
+function resultsPng(){
+  const cs = getComputedStyle(document.documentElement), v = k => cs.getPropertyValue(k).trim();
+  const navy = v("--navy") || "#1a2a5e", good = v("--good") || "#1b7d52", muted = v("--muted-strong") || "#475569",
+        tint = v("--tint") || "#f3f0e8", kick = document.querySelector(".res-top .kicker"), gold = kick ? getComputedStyle(kick).color : "#8a6420", line = v("--line") || "#d8dce4";
+  const disp = v("--display") || "Georgia,serif", body = v("--body") || "Arial,sans-serif";
+  const rows = resultRows(), W = 800, P = 48, rowH = 74, H = 250 + rows.length * rowH + 70, S = 2;
+  const c = document.createElement("canvas"); c.width = W * S; c.height = H * S;
+  const g = c.getContext("2d"); g.scale(S, S);
+  g.fillStyle = "#fff"; g.fillRect(0, 0, W, H);
+  g.strokeStyle = navy; g.lineWidth = 4; g.beginPath(); g.roundRect ? g.roundRect(10, 10, W - 20, H - 20, 22) : g.rect(10, 10, W - 20, H - 20); g.stroke();
+  g.textBaseline = "alphabetic";
+  g.fillStyle = gold; g.font = "700 20px " + body; g.letterSpacing = "3px";
+  g.fillText(("Issue " + ISSUE.number + " · " + ISSUE.level).toUpperCase(), P, 70);
+  g.letterSpacing = "0px";
+  g.fillStyle = navy; g.font = "700 46px " + disp; g.fillText(((TOOLS.name || "").trim() || "My results").slice(0, 40), P, 128);
+  const d = new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+  g.fillStyle = muted; g.font = "22px " + body; g.fillText(ISSUE.title + " Practice Room · " + d, P, 168);
+  g.fillStyle = line; g.fillRect(P, 194, W - 2 * P, 2);
+  rows.forEach(([label, text, full], i) => {
+    const y = 236 + i * rowH;
+    g.fillStyle = full ? good : tint; g.beginPath(); g.arc(P + 17, y + 6, 17, 0, Math.PI * 2); g.fill();
+    g.fillStyle = full ? "#fff" : navy; g.font = "700 18px " + body; g.textAlign = "center"; g.fillText(String(i + 1), P + 17, y + 12); g.textAlign = "left";
+    g.fillStyle = navy; g.font = "700 25px " + body; g.fillText(label, P + 52, y + 14);
+    g.fillStyle = full ? good : muted; g.font = (full ? "700 " : "") + "22px " + body; g.fillText((full ? "✓ " : "") + text, P + 52, y + 46);
+  });
+  g.fillStyle = muted; g.font = "18px " + body; g.textAlign = "right"; g.fillText("perspectiveenglish.com", W - P, H - 40); g.textAlign = "left";
+  return new Promise(res => c.toBlob(res, "image/png"));
+}
+function resultsFileName(){
+  const who = ((TOOLS.name || "").trim() || "my").replace(/[^A-Za-z0-9가-힣]+/g, "-").replace(/^-|-$/g, "") || "my";
+  return who + "-results-issue" + ISSUE.number + "-" + ISSUE.level.replace(/[^A-Za-z0-9]+/g, "") + ".png";
+}
+function saveResults(msg){
+  resultsPng().then(blob => {
+    const a = el("a", { href: URL.createObjectURL(blob), download: resultsFileName() });
+    document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    msg.textContent = "Saved as an image. Send it to your teacher.";
+  }).catch(() => { msg.textContent = "Couldn't save the image here. Take a screenshot instead."; });
+}
+function sendResults(msg){
+  resultsPng().then(blob => {
+    const file = new File([blob], resultsFileName(), { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      return navigator.share({ files: [file], title: roomName() + " results", text: "My results: " + roomName() })
+        .then(() => { msg.textContent = "Sent."; }, e => { if (e && e.name !== "AbortError") saveResults(msg); });
+    }
+    msg.textContent = "Sharing isn't available on this device, so the image was saved instead.";
+    saveResults(msg);
+  }).catch(() => { msg.textContent = "Couldn't make the image here. Take a screenshot instead."; });
+}
+function canShareFiles(){
+  try { return !!(navigator.canShare && navigator.canShare({ files: [new File([""], "x.png", { type: "image/png" })] })); } catch (e) { return false; }
 }
 
 /* Timer (Classroom) */
@@ -2452,6 +2512,7 @@ function toolsStyle(){
     ".res-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}.res-list li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:2px 8px;align-items:baseline}" +
     ".res-n{grid-row:span 2;width:24px;height:24px;border-radius:50%;background:var(--tint);color:var(--navy);font-weight:700;font-size:.8rem;display:flex;align-items:center;justify-content:center}" +
     ".res-a{font-weight:700;font-size:.95rem}.res-s{font-size:.9rem;color:var(--muted-strong)}.res-list li.full .res-s{color:var(--good);font-weight:700}.res-list li.full .res-n{background:var(--good);color:#fff}" +
+    ".res-actions{display:flex;flex-wrap:wrap;gap:8px}" +
     ".res-site{margin:0;font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-align:right}" +
     "#resName{max-width:520px;border:1.5px solid var(--line);border-radius:6px;padding:9px 10px;font:inherit;min-height:44px;background:var(--surface);color:var(--ink)}" +
     ".timer-presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.timer-custom{display:inline-flex;gap:6px;align-items:center;margin-left:6px}" +
