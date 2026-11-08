@@ -575,14 +575,23 @@ function el(tag, props, ...kids){
 }
 
 /* Re-render a panel, keeping keyboard focus on the same control (data-fid). */
+/* Some phone browsers jump up the page when a panel is redrawn after a tap. Keep the reader where they were,
+   unless the room itself chose to scroll (intendScroll), e.g. to show a result or a new activity. */
+let scrollIntent = 0;
+function intendScroll(){ scrollIntent = Date.now(); }
+function holdScroll(y){
+  const back = () => { try { if (Date.now() - scrollIntent > 1500 && Math.abs(window.scrollY - y) > 2) window.scrollTo(0, y); } catch (e) {} };
+  back(); (window.requestAnimationFrame || (f => setTimeout(f, 16)))(back); setTimeout(back, 80);
+}
 function paint(id, build){
-  const p = $(id);
+  const p = $(id), y = window.scrollY;
   const a = document.activeElement;
   const fid = a && p.contains(a) ? a.getAttribute("data-fid") : null;
   p.replaceChildren(...build().filter(Boolean));
   if (id === "p-council" && typeof wtwAttach === "function") wtwAttach();
   if (fid) { const t = p.querySelector('[data-fid="' + fid + '"]'); if (t) t.focus({ preventScroll: true }); }
   if (typeof TOOLS !== "undefined" && TOOLS.open === "results") renderResults();
+  holdScroll(y);
 }
 
 /* ---------------- state ---------------- */
@@ -952,7 +961,7 @@ function renderCouncil(){
 function holdVote(){
   state.council.voted = true; renderCouncil(); wtwGo();
   const v = $("verdict");
-  if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
+  intendScroll(); if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
 }
 function effects(m){
   const L = K.effectLabels;
@@ -961,7 +970,7 @@ function effects(m){
 function verdict(){
   const C = state.council, V = K.verdict, cls = isClass();
   const box = (...kids) => el("div", { class: "verdict", id: "verdict", tabindex: "-1", role: "region", "aria-label": "Vote result" }, ...kids);
-  const again = el("button", { type: "button", class: "btn ghost", "data-fid": "vagain", onclick: () => { resetCouncil(true); renderCouncil(); $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
+  const again = el("button", { type: "button", class: "btn ghost", "data-fid": "vagain", onclick: () => { resetCouncil(true); renderCouncil(); intendScroll(), $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
   const think = thinkBox(V);
   const caveat = el("p", { class: "small", text: V.caveat });
   let weakLine = null;
@@ -1017,11 +1026,11 @@ function verdictBox(...kids){ return el("div", { class: "verdict", id: "verdict"
 function showResult(render){
   state.council.voted = true; render(); wtwGo();
   const v = $("verdict");
-  if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
+  intendScroll(); if (v) { v.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" }); v.focus({ preventScroll: true }); }
 }
 function againBtn(render){
   return el("button", { type: "button", class: "btn ghost", "data-fid": "vagain",
-    onclick: () => { resetCouncil(true); render(); $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
+    onclick: () => { resetCouncil(true); render(); intendScroll(), $("p-council").scrollIntoView({ block: "start" }); }, text: "Start again" });
 }
 function stats(list){
   return el("div", { class: "town" }, list.map(s => el("div", { class: "stat" }, el("b", { "aria-live": "polite", text: s[0] }), el("small", { text: s[1] }))));
@@ -2174,7 +2183,7 @@ function goTab(id, scroll){
     $("p-" + t.id).hidden = !on;
   });
   if (scroll) {
-    $("tabs").scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    intendScroll(); $("tabs").scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     $("tab-" + id).focus({ preventScroll: true });
   }
 }
@@ -2228,7 +2237,7 @@ function updateFsLabel(){ $("fsBtn").textContent = fsElement() ? "Exit full scre
    - Timer (Classroom): a countdown that stays on screen across activities.
    - Clicker / keyboard (Classroom): Page Down / Right arrow = next step, Page Up / Left arrow = back.
    Panels open only when clicked. PAGE_QR (an SVG string) is added at build time. */
-const TOOLS = { open: null, timer: { total: 0, left: 0, run: false, id: null, end: 0 } };
+const TOOLS = { open: null, name: null, cls: "", timer: { total: 0, left: 0, run: false, id: null, end: 0 } };
 function pageUrl(){ const c = document.querySelector('link[rel="canonical"]'); return c ? c.href : location.href.split("#")[0]; }
 function roomName(){ return ISSUE.title + " Practice Room (" + ISSUE.level + ")"; }
 function copyText(text, done){
@@ -2297,35 +2306,48 @@ function resultRows(){
   rows.push([UI.tabs.council, state.council.voted ? "Completed" : "Not finished yet", state.council.voted]);
   return rows;
 }
+/* Name and class are optional and stay on this device only (localStorage), so students don't retype them in every room. */
+function loadStudent(){ try { const o = JSON.parse(localStorage.getItem("pe-student") || "{}"); TOOLS.name = o.name || ""; TOOLS.cls = o.cls || ""; } catch (e) { TOOLS.name = TOOLS.name || ""; TOOLS.cls = TOOLS.cls || ""; } }
+function saveStudent(){ try { if (TOOLS.name.trim() || TOOLS.cls.trim()) localStorage.setItem("pe-student", JSON.stringify({ name: TOOLS.name, cls: TOOLS.cls })); else localStorage.removeItem("pe-student"); } catch (e) {} }
+function resSub(){ const d = new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" }); return ISSUE.title + " Practice Room · " + d; }
 function renderResults(){
   const p = $("toolp-results");
   if (!p || p.hidden) return;
-  const a = document.activeElement, keep = a && a.id === "resName";
-  const name = (TOOLS.name || "").trim();
-  const d = new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
-  const input = el("input", { id: "resName", type: "text", maxlength: "40", autocomplete: "off", placeholder: "Your name (optional)", "aria-label": "Your name (optional)",
-    oninput: e => { TOOLS.name = e.target.value; const h = $("resWho"); if (h) h.textContent = e.target.value.trim() || "My results"; } });
-  input.value = TOOLS.name || "";
+  if (TOOLS.name == null) loadStudent();
+  const a = document.activeElement, keep = a && (a.id === "resName" || a.id === "resClass") ? a.id : null;
+  const live = () => {
+    $("resWho").textContent = TOOLS.name.trim() || "My results";
+    const c = $("resCls"); c.textContent = TOOLS.cls.trim(); c.hidden = !TOOLS.cls.trim();
+    $("resForget").hidden = !(TOOLS.name.trim() || TOOLS.cls.trim());
+    saveStudent();
+  };
+  const field = (id, ph, key, max) => { const x = el("input", { id, type: "text", maxlength: String(max), autocomplete: "off", placeholder: ph, "aria-label": ph,
+    oninput: e => { TOOLS[key] = e.target.value; live(); } }); x.value = TOOLS[key]; return x; };
   const rmsg = el("p", { class: "tool-note", role: "status", "aria-live": "polite" });
   p.replaceChildren(
     el("div", { class: "res-card" },
       el("div", { class: "res-top" },
         el("span", { class: "kicker", text: "Issue " + ISSUE.number + " · " + ISSUE.level }),
-        el("h3", { id: "resWho", text: name || "My results" }),
-        el("p", { text: ISSUE.title + " Practice Room · " + d })),
+        el("h3", { id: "resWho", text: TOOLS.name.trim() || "My results" }),
+        el("p", { class: "res-cls", id: "resCls", hidden: !TOOLS.cls.trim(), text: TOOLS.cls.trim() }),
+        el("p", { text: resSub() })),
       el("ol", { class: "res-list" }, resultRows().map(([label, text, full], i) =>
         el("li", { class: full ? "full" : null },
           el("span", { class: "res-n", text: String(i + 1) }),
           el("span", { class: "res-a", text: label }),
           el("span", { class: "res-s", text: (full ? "✓ " : "") + text })))),
       el("p", { class: "res-site", text: "perspectiveenglish.com" })),
-    input,
+    el("div", { class: "res-fields" },
+      field("resName", "Your name (optional)", "name", 40),
+      field("resClass", "Class (optional), e.g. Section 3", "cls", 30)),
+    el("button", { type: "button", class: "res-forget", id: "resForget", hidden: !(TOOLS.name.trim() || TOOLS.cls.trim()),
+      onclick: () => { TOOLS.name = ""; TOOLS.cls = ""; saveStudent(); renderResults(); }, text: "Not you? Clear name and class" }),
     el("div", { class: "res-actions" },
       canShareFiles() ? el("button", { type: "button", class: "btn", onclick: () => sendResults(rmsg), text: "Send to my teacher" }) : null,
       el("button", { type: "button", class: canShareFiles() ? "btn ghost" : "btn", onclick: () => saveResults(rmsg), text: "Save as image" })),
     rmsg);
-  rmsg.textContent = "Send or save your card for your teacher, or take a screenshot. Nothing is sent to Perspective English.";
-  if (keep) { input.focus(); input.setSelectionRange(input.value.length, input.value.length); }
+  rmsg.textContent = "Send or save your card for your teacher, or take a screenshot. Your name and class stay on this device. Nothing is sent to Perspective English.";
+  if (keep) { const x = $(keep); x.focus(); x.setSelectionRange(x.value.length, x.value.length); }
 }
 
 /* Draw the results card as a PNG (no outside library), for "Save as image" and "Send to my teacher". */
@@ -2334,7 +2356,7 @@ function resultsPng(){
   const navy = v("--navy") || "#1a2a5e", good = v("--good") || "#1b7d52", muted = v("--muted-strong") || "#475569",
         tint = v("--tint") || "#f3f0e8", kick = document.querySelector(".res-top .kicker"), gold = kick ? getComputedStyle(kick).color : "#8a6420", line = v("--line") || "#d8dce4";
   const disp = v("--display") || "Georgia,serif", body = v("--body") || "Arial,sans-serif";
-  const rows = resultRows(), W = 800, P = 48, rowH = 74, H = 250 + rows.length * rowH + 70, S = 2;
+  const rows = resultRows(), cls = (TOOLS.cls || "").trim(), X = cls ? 38 : 0, W = 800, P = 48, rowH = 74, H = 250 + X + rows.length * rowH + 70, S = 2;
   const c = document.createElement("canvas"); c.width = W * S; c.height = H * S;
   const g = c.getContext("2d"); g.scale(S, S);
   g.fillStyle = "#fff"; g.fillRect(0, 0, W, H);
@@ -2344,11 +2366,11 @@ function resultsPng(){
   g.fillText(("Issue " + ISSUE.number + " · " + ISSUE.level).toUpperCase(), P, 70);
   g.letterSpacing = "0px";
   g.fillStyle = navy; g.font = "700 46px " + disp; g.fillText(((TOOLS.name || "").trim() || "My results").slice(0, 40), P, 128);
-  const d = new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" });
-  g.fillStyle = muted; g.font = "22px " + body; g.fillText(ISSUE.title + " Practice Room · " + d, P, 168);
-  g.fillStyle = line; g.fillRect(P, 194, W - 2 * P, 2);
+  if (cls) { g.fillStyle = navy; g.font = "700 24px " + body; g.fillText(cls.slice(0, 30), P, 168); }
+  g.fillStyle = muted; g.font = "22px " + body; g.fillText(resSub(), P, 168 + X);
+  g.fillStyle = line; g.fillRect(P, 194 + X, W - 2 * P, 2);
   rows.forEach(([label, text, full], i) => {
-    const y = 236 + i * rowH;
+    const y = 236 + X + i * rowH;
     g.fillStyle = full ? good : tint; g.beginPath(); g.arc(P + 17, y + 6, 17, 0, Math.PI * 2); g.fill();
     g.fillStyle = full ? "#fff" : navy; g.font = "700 18px " + body; g.textAlign = "center"; g.fillText(String(i + 1), P + 17, y + 12); g.textAlign = "left";
     g.fillStyle = navy; g.font = "700 25px " + body; g.fillText(label, P + 52, y + 14);
@@ -2358,7 +2380,8 @@ function resultsPng(){
   return new Promise(res => c.toBlob(res, "image/png"));
 }
 function resultsFileName(){
-  const who = ((TOOLS.name || "").trim() || "my").replace(/[^A-Za-z0-9가-힣]+/g, "-").replace(/^-|-$/g, "") || "my";
+  const tidy = x => (x || "").trim().replace(/[^A-Za-z0-9가-힣]+/g, "-").replace(/^-|-$/g, "");
+  const who = [tidy(TOOLS.name) || "my", tidy(TOOLS.cls)].filter(Boolean).join("-");
   return who + "-results-issue" + ISSUE.number + "-" + ISSUE.level.replace(/[^A-Za-z0-9]+/g, "") + ".png";
 }
 function saveResults(msg){
@@ -2420,7 +2443,7 @@ function renderTimerPanel(){
 }
 
 /* Clicker and keyboard (Classroom) */
-function stepTo(sel){ requestAnimationFrame(() => { const x = document.querySelector(sel); if (x) x.scrollIntoView({ block: "nearest" }); }); }
+function stepTo(sel){ intendScroll(); requestAnimationFrame(() => { const x = document.querySelector(sel); if (x) x.scrollIntoView({ block: "nearest" }); }); }
 // After a clicker step, keep focus off the tab row so the next press is the clicker's, not the tabs'.
 function clickerFocus(){ const a = document.activeElement; if (a && a.blur) a.blur(); }
 function clickerNext(){
@@ -2514,7 +2537,10 @@ function toolsStyle(){
     ".res-a{font-weight:700;font-size:.95rem}.res-s{font-size:.9rem;color:var(--muted-strong)}.res-list li.full .res-s{color:var(--good);font-weight:700}.res-list li.full .res-n{background:var(--good);color:#fff}" +
     ".res-actions{display:flex;flex-wrap:wrap;gap:8px}" +
     ".res-site{margin:0;font-size:.75rem;letter-spacing:.08em;color:var(--muted);text-align:right}" +
-    "#resName{max-width:520px;border:1.5px solid var(--line);border-radius:6px;padding:9px 10px;font:inherit;min-height:44px;background:var(--surface);color:var(--ink)}" +
+    ".res-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:520px}@media (max-width:520px){.res-fields{grid-template-columns:1fr}}" +
+    ".res-cls{font-weight:700;color:var(--navy) !important;font-size:.95rem !important}" +
+    ".res-forget{align-self:flex-start;border:0;background:none;padding:4px 0;color:var(--muted-strong);text-decoration:underline;font-size:.85rem;min-height:32px}" +
+    "#resName,#resClass{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:6px;padding:9px 10px;font:inherit;min-height:44px;background:var(--surface);color:var(--ink)}" +
     ".timer-presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.timer-custom{display:inline-flex;gap:6px;align-items:center;margin-left:6px}" +
     "#timerMin{width:70px;border:1.5px solid var(--line);border-radius:6px;padding:8px;font:inherit;min-height:40px;background:var(--surface);color:var(--ink)}" +
     ".timer-float{position:fixed;top:14px;right:14px;z-index:50;display:flex;align-items:center;gap:8px;background:var(--navy);color:var(--onnavy);border-radius:12px;padding:8px 10px 8px 18px;box-shadow:0 8px 24px rgba(0,0,0,.25)}" +
