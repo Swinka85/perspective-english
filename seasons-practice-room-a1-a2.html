@@ -575,7 +575,7 @@ function paint(id, build){
   const a = document.activeElement;
   const fid = a && p.contains(a) ? a.getAttribute("data-fid") : null;
   p.replaceChildren(...build().filter(Boolean));
-  if (id === "p-council" && typeof wtwAttach === "function") wtwAttach();
+  if (id === "p-council" && typeof wtwAttach === "function") { wtwAttach(); wtwPeekAttach(); }
   if (fid) { const t = p.querySelector('[data-fid="' + fid + '"]'); if (t) t.focus({ preventScroll: true }); }
   if (typeof TOOLS !== "undefined" && TOOLS.open === "results") renderResults();
   holdScroll(y);
@@ -1872,7 +1872,7 @@ function decisionsVerdict(){
    every 30 minutes in Classroom Mode (a teacher may teach several classes), every 12 hours in Solo. */
 const WTW_DB = "https://firestore.googleapis.com/v1/projects/perspective-practice-rooms/databases/(default)/documents";
 const WTW_KEY = "AIzaSyAEqJEiBZBeBGiksXaTCILCUknymDoem7k";
-const WTW = { cache: {}, busy: {} };
+const WTW = { cache: {}, busy: {}, peek: false };
 function wtwRoom(){ return ISSUE.world.room + "~" + (isClass() ? "class" : "solo"); }
 // What this result contributes, and how to display it. Each row: { label, single?, options: [{ key, label }], mine: [keys] }.
 function wtwModel(){
@@ -2063,6 +2063,7 @@ async function wtwGo(){
   if (!ISSUE.world) return;
   const M = wtwModel(); if (!M || !M.has) return;
   if (!document.querySelector("#verdict .think")) return;   // only a finished result counts (not "points don't add up yet")
+  wtwMarkDone();
   const room = wtwRoom();
   if (WTW.busy[room]) return;
   WTW.busy[room] = true; WTW.cache[room] = { status: "loading" }; wtwAttach();
@@ -2093,15 +2094,39 @@ function wtwColor(cat, i, all){
   if (WTW_MID.includes(cat)) return "#6b7280";
   return ["var(--navy)", "#b8862f", "#9c4f6a", "#5b6fb3", "#8a5aa8"][i % 5];
 }
-function wtwBox(){
+/* "See what the world thinks" (read-only): only on a device that has already finished Activity 5 in this room,
+   so nobody sees the world's answers before giving their own. Looking never adds a vote. */
+function wtwDoneKey(){ return "wtwdone:" + ISSUE.number + ":" + ISSUE.level; }
+function wtwMarkDone(){ try { localStorage.setItem(wtwDoneKey(), "1"); } catch (e) {} }
+function wtwDone(){ try { return localStorage.getItem(wtwDoneKey()) === "1"; } catch (e) { return false; } }
+async function wtwPeekLoad(){
+  const room = wtwRoom();
+  WTW.cache[room] = { status: "loading" }; wtwPeekAttach();
+  try { WTW.cache[room] = { status: "ok", counts: await wtwRead() }; } catch (e) { WTW.cache[room] = { status: "error" }; }
+  wtwPeekAttach();
+}
+function wtwPeekAttach(){
+  const p = $("p-council"), old = $("wtwPeek");
+  if (old) old.remove();
+  if (!ISSUE.world || !p || !wtwModel() || state.council.voted || !wtwDone()) return;
+  const btn = el("button", { type: "button", class: "btn ghost", "data-fid": "wtwpeek", "aria-expanded": WTW.peek ? "true" : "false",
+    onclick: () => { WTW.peek = !WTW.peek; if (WTW.peek) wtwPeekLoad(); else wtwPeekAttach(); },
+    text: (WTW.peek ? "🌍 Hide what the world thinks" : "🌍 See what the world thinks") });
+  const wrap = el("div", { class: "wtw-peek", id: "wtwPeek" }, btn);
+  if (WTW.peek && !WTW.cache[wtwRoom()]) { p.prepend(wrap); return wtwPeekLoad(); }
+  if (WTW.peek && WTW.cache[wtwRoom()]) { const b = wtwBox(true); b.id = "wtwPeekBox"; wrap.append(b); }
+  p.prepend(wrap);
+}
+function wtwBox(peek){
   const W = ISSUE.world, room = wtwRoom(), st = WTW.cache[room], M = wtwModel();
+  if (peek) M.rows.forEach(r => { r.mine = []; });
   const min = W.min || 3;
   const box = el("div", { class: "wtw", id: "wtw", "aria-live": "polite" }, el("span", { class: "kicker", text: W.title || "What the World Thinks" }));
   if (!st || st.status === "loading") { box.append(el("p", { text: "Checking the world results…" })); return box; }
   if (st.status === "error") { box.append(el("p", { text: "The world results can’t be reached right now. Try again later." })); return box; }
   const n = st.counts.n || 0;
   if (n < min) { box.append(el("p", { text: "The world results will appear soon. Thanks for being one of the first to answer!" })); return box; }
-  box.append(el("p", { class: "wtw-n", text: "Based on " + n + " responses." }));
+  box.append(el("p", { class: "wtw-n", text: "Based on " + n + " responses." + (peek ? " The latest results. Looking doesn't add a vote." : "") }));
   // ISSUE.world.note: a line under the count, e.g. "This shows what people chose, not what is safe."
   if (W.note) box.append(el("p", { class: "wtw-caution", text: W.note }));
   if (W.intro) box.append(el("p", { class: "wtw-n", text: W.intro }));   // ISSUE.world.intro: one plain line explaining the bars
@@ -2135,6 +2160,7 @@ function wtwAttach(){
 function wtwStyle(){
   if (!ISSUE.world || $("wtw-css")) return;
   document.head.append(el("style", { id: "wtw-css", text:
+    ".wtw-peek{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:14px}.wtw-peek .wtw{align-self:stretch;border:1px solid var(--line)}" +
     ".wtw{background:var(--surface);color:var(--ink);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}" +
     ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
     ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +

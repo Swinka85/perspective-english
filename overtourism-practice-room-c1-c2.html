@@ -2153,7 +2153,7 @@ function wtwPeekAttach(){
   if (!ISSUE.world || !p || !wtwModel() || state.council.voted || !wtwDone()) return;
   const btn = el("button", { type: "button", class: "btn ghost", "data-fid": "wtwpeek", "aria-expanded": WTW.peek ? "true" : "false",
     onclick: () => { WTW.peek = !WTW.peek; if (WTW.peek) wtwPeekLoad(); else wtwPeekAttach(); },
-    text: WTW.peek ? "Hide what the world thinks" : "See what the world thinks" });
+    text: (WTW.peek ? "🌍 Hide what the world thinks" : "🌍 See what the world thinks") });
   const wrap = el("div", { class: "wtw-peek", id: "wtwPeek" }, btn);
   if (WTW.peek && !WTW.cache[wtwRoom()]) { p.prepend(wrap); return wtwPeekLoad(); }
   if (WTW.peek && WTW.cache[wtwRoom()]) { const b = wtwBox(true); b.id = "wtwPeekBox"; wrap.append(b); }
