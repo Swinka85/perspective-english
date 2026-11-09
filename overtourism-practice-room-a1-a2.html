@@ -608,6 +608,7 @@ function paint(id, build){
   if (id === "p-council" && typeof wtwAttach === "function") { wtwAttach(); wtwPeekAttach(); }
   if (fid) { const t = p.querySelector('[data-fid="' + fid + '"]'); if (t) t.focus({ preventScroll: true }); }
   if (typeof TOOLS !== "undefined" && TOOLS.open === "results") renderResults();
+  if (typeof trackProgress === "function") trackProgress();
   holdScroll(y);
 }
 
@@ -2140,7 +2141,7 @@ function wtwPeekAttach(){
   if (old) old.remove();
   if (!ISSUE.world || !p || !wtwModel() || state.council.voted || !wtwDone()) return;
   const btn = el("button", { type: "button", class: "btn ghost", "data-fid": "wtwpeek", "aria-expanded": WTW.peek ? "true" : "false",
-    onclick: () => { WTW.peek = !WTW.peek; if (WTW.peek) wtwPeekLoad(); else wtwPeekAttach(); },
+    onclick: () => { WTW.peek = !WTW.peek; if (WTW.peek) { track("world_peek"); wtwPeekLoad(); } else wtwPeekAttach(); },
     text: (WTW.peek ? "🌍 Hide what the world thinks" : "🌍 See what the world thinks") });
   const wrap = el("div", { class: "wtw-peek", id: "wtwPeek" }, btn);
   if (WTW.peek && !WTW.cache[wtwRoom()]) { p.prepend(wrap); return wtwPeekLoad(); }
@@ -2251,6 +2252,7 @@ function setMode(m, initial){
   try { localStorage.setItem("pe-practice-mode", m); } catch (e) {}
   try { history.replaceState(null, "", m === "class" ? "#classroom" : "#solo"); } catch (e) {}
   toolsMode(m);
+  if (!initial) track("mode_switch", { to: m });
 }
 function renderAll(){ renderCards(); renderMatch(); renderGap(); renderTF(); renderThink(); }
 
@@ -2272,6 +2274,23 @@ function toggleFullscreen(){
   } catch (e) { fsFallback(); }
 }
 function updateFsLabel(){ $("fsBtn").textContent = fsElement() ? "Exit full screen" : "Full screen"; }
+
+/* ---------------- Google Analytics events (only if the page's GA tag loaded; no personal data, never typed text) ---------------- */
+const TRACKED = new Set();
+function track(name, params){
+  try { if (typeof gtag === "function") gtag("event", name, Object.assign({ issue: ISSUE.number, level: ISSUE.level, mode: isClass() ? "class" : "solo" }, params || {})); } catch (e) {}
+}
+function trackOnce(key, name, params){ const k = (isClass() ? "c:" : "s:") + key; if (TRACKED.has(k)) return; TRACKED.add(k); track(name, params); }
+function trackProgress(){
+  const cls = isClass(), V = ISSUE.vocab;
+  if (state.cards.seen.size === V.length) trackOnce("cards", "activity_complete", { activity: "flashcards" });
+  if (state.match.done.size === V.length) trackOnce("match", "activity_complete", { activity: "match", tries: state.match.tries });
+  const G = state.gap, ng = ISSUE.gaps.length;
+  if (cls ? G.revealed.size === ng : G.checked) trackOnce("gap", "activity_complete", { activity: "gap", score: cls ? undefined : ISSUE.gaps.filter((g, i) => G.vals[i] === g.answer).length });
+  const T = state.tf, Q = ISSUE.truefalse;
+  if (cls ? T.revealed.size === Q.length : T.ans.every(a => a !== null)) trackOnce("tf", "activity_complete", { activity: "true_false", score: cls ? undefined : Q.filter((q, i) => T.ans[i] === q.a).length });
+  if (state.council.voted) trackOnce("council", "activity_complete", { activity: "critical_thinking" });
+}
 
 /* ---------------- teacher and student tools ----------------
    Buttons in the mode bar, none of which change an activity:
@@ -2297,6 +2316,7 @@ function toolPanel(id){
     if (p) p.hidden = !on;
   });
   TOOLS.open = id;
+  if (id) track("tool_open", { tool: id });
   if (id === "results") renderResults();
 }
 function toggleTool(id){ toolPanel(TOOLS.open === id ? null : id); }
@@ -2316,17 +2336,17 @@ function renderShare(){
     el("p", { text: "Paste this code into your website or LMS page:" }), code,
     el("button", { type: "button", class: "btn", onclick: () => copyText(embed, ok => msg.textContent = ok ? "Embed code copied." : "Select the code above and copy it."), text: "Copy embed code" }));
   const sub = (box, b) => { box.hidden = !box.hidden; b.setAttribute("aria-expanded", box.hidden ? "false" : "true"); };
-  const qrBtn = el("button", { type: "button", class: "share-opt", "aria-expanded": "false", onclick: () => sub(qr, qrBtn) },
+  const qrBtn = el("button", { type: "button", class: "share-opt", "aria-expanded": "false", onclick: () => { sub(qr, qrBtn); if (!qr.hidden) track("share", { method: "qr" }); } },
     el("strong", { text: "Show QR code" }), el("span", { text: "Students scan it to practice on their own phones" }));
-  const embBtn = el("button", { type: "button", class: "share-opt", "aria-expanded": "false", onclick: () => sub(emb, embBtn) },
+  const embBtn = el("button", { type: "button", class: "share-opt", "aria-expanded": "false", onclick: () => { sub(emb, embBtn); if (!emb.hidden) track("share", { method: "embed" }); } },
     el("strong", { text: "Embed" }), el("span", { text: "Put it on your school or class website" }));
   $("toolp-share").replaceChildren(
     el("h3", { text: "Share this Practice Room with your class" }),
     el("p", { text: "Free for your students. No sign-up, no app, nothing to install." }),
     el("div", { class: "share-opts" },
-      el("a", { class: "share-opt", href: gc, target: "_blank", rel: "noopener" },
+      el("a", { class: "share-opt", href: gc, target: "_blank", rel: "noopener", onclick: () => track("share", { method: "google_classroom" }) },
         el("strong", { text: "Google Classroom" }), el("span", { text: "Post it to a class or set it as homework" })),
-      el("button", { type: "button", class: "share-opt", onclick: () => copyText(url, ok => msg.textContent = (ok ? "Link copied: " : "Copy this link: ") + url) },
+      el("button", { type: "button", class: "share-opt", onclick: () => { track("share", { method: "copy_link" }); copyText(url, ok => msg.textContent = (ok ? "Link copied: " : "Copy this link: ") + url); } },
         el("strong", { text: "Copy link" }), el("span", { text: "For KakaoTalk, Padlet, Canvas or email" })),
       qrBtn, embBtn),
     qr, emb, msg);
@@ -2431,7 +2451,7 @@ function saveResults(msg){
   resultsPng().then(blob => {
     const a = el("a", { href: URL.createObjectURL(blob), download: resultsFileName() });
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    msg.textContent = "Saved as an image. Send it to your teacher.";
+    msg.textContent = "Saved as an image. Send it to your teacher."; track("results_saved");
   }).catch(() => { msg.textContent = "Couldn't save the image here. Take a screenshot instead."; });
 }
 function sendResults(msg){
@@ -2439,7 +2459,7 @@ function sendResults(msg){
     const file = new File([blob], resultsFileName(), { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       return navigator.share({ files: [file], title: roomName() + " results", text: "My results: " + roomName() })
-        .then(() => { msg.textContent = "Sent."; }, e => { if (e && e.name !== "AbortError") saveResults(msg); });
+        .then(() => { msg.textContent = "Sent."; track("results_sent"); }, e => { if (e && e.name !== "AbortError") saveResults(msg); });
     }
     msg.textContent = "Sharing isn't available on this device, so the image was saved instead.";
     saveResults(msg);
@@ -2465,7 +2485,7 @@ function timerTick(){
 function timerStart(min){
   const T = TOOLS.timer; clearInterval(T.id);
   T.total = Math.round(min * 60); T.left = T.total; T.end = Date.now() + T.total * 1000; T.run = true;
-  T.id = setInterval(timerTick, 250); timerTick(); toolPanel(null);
+  T.id = setInterval(timerTick, 250); timerTick(); toolPanel(null); track("timer_start", { minutes: min });
 }
 function timerPause(){
   const T = TOOLS.timer; if (!T.total || T.left <= 0) return;
@@ -2556,6 +2576,12 @@ function toolsInit(){
     el("button", { type: "button", id: "timerPause", class: "tf-b", onclick: timerPause, text: "Pause" }),
     el("button", { type: "button", class: "tf-b", "aria-label": "Close timer", onclick: timerStop, text: "✕" })));
   document.addEventListener("keydown", clickerKey, true);
+  document.addEventListener("click", e => {
+    const a = e.target.closest && e.target.closest("a[href]"); if (!a) return;
+    const h = a.getAttribute("href");
+    if (/-esl-lesson(-a1-a2|-c1-c2)?\.html/.test(h)) track("lesson_link_click", { link: h });
+    else if (/-practice-room(-a1-a2|-c1-c2)?\.html/.test(h)) track("level_switch", { link: h });
+  });
   toolsStyle();
 }
 function toolsStyle(){
