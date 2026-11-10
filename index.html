@@ -865,28 +865,32 @@
 
     .footer-social {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      gap: 12px;
       margin-top: 16px;
     }
 
     .footer-social a {
       display: inline-flex;
       align-items: center;
-      min-height: 32px;
-      padding: 0 14px;
-      border: 1px solid rgba(255,255,255,.35);
-      border-radius: 999px;
-      color: #FFFFFF;
-      text-decoration: none;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .4px;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .15s ease;
     }
 
-    .footer-social a:hover {
-      border-color: #D4AF37;
-      color: #D4AF37;
+    .footer-social a:hover,
+    .footer-social a:focus-visible {
+      transform: translateY(-2px);
+    }
+
+    .footer-social .social-tt {
+      background: #000000;
+    }
+
+    .footer-social img {
+      display: block;
     }
 
     .footer-col h4 {
@@ -1535,10 +1539,13 @@
           Lessons Worth Talking About
         </div>
 
-        <div class="footer-social" aria-label="Follow Perspective English">
-          <a href="https://www.instagram.com/perspective.english.esl/" target="_blank" rel="noopener">Instagram</a>
-          <a href="https://www.tiktok.com/@perspectiveenglish" target="_blank" rel="noopener">TikTok</a>
-          <a href="https://www.pinterest.com/perspectiveenglish/" target="_blank" rel="noopener">Pinterest</a>
+        <div class="footer-social">
+          <a class="social-ig" href="https://www.instagram.com/perspective.english.esl/" target="_blank" rel="noopener" aria-label="Perspective English on Instagram" title="Instagram">
+            <img src="images/icon-instagram.webp" alt="" width="40" height="40">
+          </a>
+          <a class="social-tt" href="https://www.tiktok.com/@perspectiveenglish" target="_blank" rel="noopener" aria-label="Perspective English on TikTok" title="TikTok">
+            <img src="images/icon-tiktok.webp" alt="" width="22" height="22">
+          </a>
         </div>
 
       </div>
