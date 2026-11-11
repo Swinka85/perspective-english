@@ -513,7 +513,7 @@ const ISSUE = {
     }
   },
 
-  world: { room: "protein-boom-bc", min: 3, neutral: true, note: "This shows what people chose, not health advice. For advice about your own diet, ask a doctor or a registered dietitian." },
+  world: { room: "protein-boom-bc", min: 1, neutral: true, note: "This shows what people chose, not health advice. For advice about your own diet, ask a doctor or a registered dietitian." },
 
   // Wording for each activity: solo = Solo Practice, cls = Classroom Mode, team = team prompt
   ui: {
@@ -627,7 +627,7 @@ function freshThink(){
   if (TYPE === "allocate") return { judge: K.items.map(() => null), pts: K.items.map(() => 0), hard: null, shown: new Set(), voted: false,
     order: K.criteria ? K.criteria.items.map((_, i) => i) : [], moved: false, fields: {} };
   if (TYPE === "grid") return { ranks: K.rows.map(() => ({})), own: null, rowPick: {}, text: "", voted: false };
-  if (TYPE === "decisions") return { tv: {}, vals: Object.fromEntries(K.rows.map(r => [r.id, r.type === "multi" ? [] : (r.type === "choice" ? null : "")])), lose: Object.fromEntries(K.rows.map(r => [r.id, ""])), voted: false };
+  if (TYPE === "decisions") return { tv: {}, vals: Object.fromEntries(K.rows.map(r => [r.id, r.type === "multi" ? [] : (r.type === "choice" ? null : "")])), lose: Object.fromEntries(K.rows.map(r => [r.id, ""])), rc: {}, fc: null, voted: false };
   if (TYPE === "design") return { rows: Array.from({ length: K.min || 3 }, () => ({ name: "", dates: "", why: "", kind: null })), voted: false };
   if (TYPE === "headlines") return { notes: K.items.map(() => ""), rates: scales().map(() => K.items.map(() => null)), choice: null, second: null, word: "", revealed: new Set(), teams: K.items.map(() => 0), voted: false };
   return { sel: new Set(), statusQuo: false, weak: null, teams: K.measures.map(() => 0).concat([0]), voted: false };
@@ -1818,6 +1818,8 @@ function designVerdict(){
 // K.clues [text] + K.cluesLabel (shown above), K.study + K.studyLabel. K.rows [{ id, label, type: "choice"|"multi"|"number"|"text", options?: [{ id, label }], n? (multi: pick exactly n), prefix? (number) }].
 // K.loseLabel / K.loseShort = the second box on every row. K.loseNote (a decided row has no "lose" answer), K.multiNote "{n} {k}" (wrong number picked),
 // K.matchNotes [{ row, match: "regex", text, label? }] (text rows), K.choiceNotes [{ row, option, text, label? }].
+// K.rowChoice { label, short?, options: [{ id, label }] } (opt-in): one more tick per row, e.g. "Overall: Better / Worse / About the same".
+// K.finalChoice { label, short?, options: [{ id, label }] } (opt-in): one pick under the list, e.g. "Who loses the most?". Both feed What the World Thinks.
 // row.note + K.rowNoteLabel: a note shown under that row in the result once it has an answer. K.pairNote: shown when a row has one box filled but not the other. K.valueShort (or row.valueShort): label the first answer in the result (e.g. "They gain"). verdict: title, noneTitle, noneText, noValue, noLose, compare, caveat, think box.
 function decVal(D, r){
   const v = D.vals[r.id];
@@ -1855,8 +1857,10 @@ function renderDecisions(){
       return el("li", { class: "srow" + (decVal(D, r) ? " picked" : "") },
         el("p", { class: "stext", text: r.label }), ctl,
         el("label", { class: "field" }, el("span", { text: K.loseLabel }),
-          el("input", { type: "text", id: "dl" + r.id, "data-fid": "dl" + r.id, value: D.lose[r.id], maxlength: "200", autocomplete: "off", oninput: e => { D.lose[r.id] = e.target.value; D.voted = false; } })));
+          el("input", { type: "text", id: "dl" + r.id, "data-fid": "dl" + r.id, value: D.lose[r.id], maxlength: "200", autocomplete: "off", oninput: e => { D.lose[r.id] = e.target.value; D.voted = false; } })),
+        K.rowChoice ? decChoice(K.rowChoice, D.rc[r.id], "rc" + r.id, x => { D.rc[r.id] = x; }) : null);
     })),
+    K.finalChoice ? el("div", { class: "dec-final" }, decChoice(K.finalChoice, D.fc, "fc", x => { D.fc = x; })) : null,
     el("div", { class: "row" },
       el("button", { type: "button", class: "btn", "data-fid": "vote", onclick: () => showResult(renderDecisions), text: K.resultButton }),
       el("button", { type: "button", class: "btn ghost", "data-fid": "vclear", onclick: () => { resetCouncil(true); renderDecisions(); }, text: "Clear" })),
@@ -1864,6 +1868,13 @@ function renderDecisions(){
     panelNav("council")
   ]);
   const st = $("p-council").querySelector(".stat b"); if (st) st.id = "decCount";
+}
+// One row of tick buttons for K.rowChoice / K.finalChoice. Tapping the chosen one again clears it.
+function decChoice(spec, v, fid, set){
+  return el("div", { class: "dec-choice" }, el("span", { class: "dec-choice-label", text: spec.label }),
+    el("div", { class: "schoices", role: "group", "aria-label": spec.label },
+      spec.options.map(o => el("button", { type: "button", class: "schoice c-j" + (v === o.id ? " on" : ""), "data-fid": fid + o.id, "aria-pressed": v === o.id ? "true" : "false",
+        onclick: () => { set(v === o.id ? null : o.id); state.council.voted = false; renderDecisions(); }, text: o.label }))));
 }
 function decisionsVerdict(){
   const D = state.council, V = K.verdict;
@@ -1875,7 +1886,9 @@ function decisionsVerdict(){
       (r.valueShort || K.valueShort) ? el("span", { class: "eff" }, el("b", { text: (r.valueShort || K.valueShort) + ": " }), decVal(D, r) || V.noValue) : decVal(D, r) || V.noValue,
       teamOn() && r.type === "choice" ? teamLine(r.options, D.tv[r.id] || {}) : null,
       el("span", { class: "eff" }, el("b", { text: (K.loseShort || K.loseLabel) + ": " }), D.lose[r.id].trim() || V.noLose || V.noValue),
+      K.rowChoice ? el("span", { class: "eff" }, el("b", { text: (K.rowChoice.short || K.rowChoice.label) + " " }), D.rc[r.id] ? K.rowChoice.options.find(o => o.id === D.rc[r.id]).label : (V.noChoice || "not ticked yet")) : null,
       r.note && (decVal(D, r) || D.lose[r.id].trim()) ? el("span", { class: "eff" }, el("b", { text: (K.rowNoteLabel || "Think about this") + ": " }), r.note) : null))),
+    K.finalChoice ? el("p", {}, el("b", { text: (K.finalChoice.short || K.finalChoice.label) + " " }), D.fc ? K.finalChoice.options.find(o => o.id === D.fc).label : (V.noChoice || "not ticked yet")) : null,
     K.rows.filter(r => r.type === "multi" && r.n && D.vals[r.id].length && D.vals[r.id].length !== r.n).map(r => link("Check this", fill(K.multiNote, { n: r.n, k: D.vals[r.id].length }))),
     (K.choiceNotes || []).filter(c => D.vals[c.row] === c.option).map(c => link(c.label, c.text)),
     (K.matchNotes || []).filter(m => new RegExp(m.match, "i").test(String(D.vals[m.row] || ""))).map(m => link(m.label, m.text)),
@@ -2026,7 +2039,17 @@ function wtwModel(){
         rows.push({ label, options: r.options.map(o => ({ key: "d-" + r.id + "-" + o.id, label: cap(o.label) })), mine });
         mine.forEach(k => keys.push(k));
       }
+      if (K.rowChoice) {   // the per-row tick: one stacked bar per row
+        const t = C.rc[r.id];
+        rows.push({ label, stack: true, single: true, options: K.rowChoice.options.map(o => ({ key: "rc-" + r.id + "-" + o.id, label: o.label, cat: o.id })), mine: t ? ["rc-" + r.id + "-" + t] : [] });
+        if (t) keys.push("rc-" + r.id + "-" + t);
+      }
     });
+    if (K.finalChoice) {
+      const f = C.fc;
+      rows.push({ label: W.finalLabel || K.finalChoice.label, single: true, options: K.finalChoice.options.map(o => ({ key: "fc-" + o.id, label: o.label })), mine: f ? ["fc-" + f] : [] });
+      if (f) keys.push("fc-" + f);
+    }
     return { has: keys.length > 0, keys, rows };
   }
   // headlines: which headline the world would pick
@@ -2130,11 +2153,13 @@ async function wtwPeekLoad(){
 function wtwPeekAttach(){
   const p = $("p-council"), old = $("wtwPeek");
   if (old) old.remove();
-  if (!ISSUE.world || !p || !wtwModel() || state.council.voted || !wtwDone()) return;
+  // Solo: only after finishing on this device. Classroom: always, for the teacher (with a reminder to show it after the vote).
+  if (!ISSUE.world || !p || !wtwModel() || state.council.voted || (!isClass() && !wtwDone())) return;
   const btn = el("button", { type: "button", class: "btn ghost", "data-fid": "wtwpeek", "aria-expanded": WTW.peek ? "true" : "false",
     onclick: () => { WTW.peek = !WTW.peek; if (WTW.peek) { track("world_peek"); wtwPeekLoad(); } else wtwPeekAttach(); },
     text: (WTW.peek ? "🌍 Hide what the world thinks" : "🌍 See what the world thinks") });
-  const wrap = el("div", { class: "wtw-peek", id: "wtwPeek" }, btn);
+  const wrap = el("div", { class: "wtw-peek", id: "wtwPeek" }, btn,
+    isClass() && !wtwDone() ? el("p", { class: "wtw-peek-tip", text: "Best shown after your class has voted, so nobody is swayed." }) : null);
   if (WTW.peek && !WTW.cache[wtwRoom()]) { p.prepend(wrap); return wtwPeekLoad(); }
   if (WTW.peek && WTW.cache[wtwRoom()]) { const b = wtwBox(true); b.id = "wtwPeekBox"; wrap.append(b); }
   p.prepend(wrap);
@@ -2142,13 +2167,13 @@ function wtwPeekAttach(){
 function wtwBox(peek){
   const W = ISSUE.world, room = wtwRoom(), st = WTW.cache[room], M = wtwModel();
   if (peek) M.rows.forEach(r => { r.mine = []; });
-  const min = W.min || 3;
+  const min = W.min || 1;
   const box = el("div", { class: "wtw", id: "wtw", "aria-live": "polite" }, el("span", { class: "kicker", text: W.title || "What the World Thinks" }));
   if (!st || st.status === "loading") { box.append(el("p", { text: "Checking the world results…" })); return box; }
   if (st.status === "error") { box.append(el("p", { text: "The world results can’t be reached right now. Try again later." })); return box; }
   const n = st.counts.n || 0;
-  if (n < min) { box.append(el("p", { text: "The world results will appear soon. Thanks for being one of the first to answer!" })); return box; }
-  box.append(el("p", { class: "wtw-n", text: "Based on " + n + " responses." + (peek ? " The latest results. Looking doesn't add a vote." : "") }));
+  if (n < min) { box.append(el("p", { text: peek ? "Nobody has answered this one yet. Be the first!" : "The world results will appear soon. Thanks for being one of the first to answer!" })); return box; }
+  box.append(el("p", { class: "wtw-n", text: "Based on " + n + (n === 1 ? " response." : " responses.") + (peek ? " The latest results. Looking doesn't add a vote." : "") }));
   // ISSUE.world.note: a line under the count, e.g. "This shows what people chose, not what is safe."
   if (W.note) box.append(el("p", { class: "wtw-caution", text: W.note }));
   if (W.intro) box.append(el("p", { class: "wtw-n", text: W.intro }));   // ISSUE.world.intro: one plain line explaining the bars
@@ -2182,7 +2207,7 @@ function wtwAttach(){
 function wtwStyle(){
   if (!ISSUE.world || $("wtw-css")) return;
   document.head.append(el("style", { id: "wtw-css", text:
-    ".wtw-peek{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:14px}.wtw-peek .wtw{align-self:stretch;border:1px solid var(--line)}" +
+    ".wtw-peek-tip{margin:0;font-size:.85rem;color:var(--muted)}.wtw-peek{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:14px}.wtw-peek .wtw{align-self:stretch;border:1px solid var(--line)}" +
     ".wtw{background:var(--surface);color:var(--ink);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}" +
     ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
     ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +
@@ -2600,6 +2625,7 @@ function toolsStyle(){
     ".res-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:520px}@media (max-width:520px){.res-fields{grid-template-columns:1fr}}" +
     ".res-cls{font-weight:700;color:var(--navy) !important;font-size:.95rem !important}" +
     ".res-forget{align-self:flex-start;border:0;background:none;padding:4px 0;color:var(--muted-strong);text-decoration:underline;font-size:.85rem;min-height:32px}" +
+    ".dec-choice{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:10px}.dec-choice-label{font-weight:700;font-size:.92rem;color:var(--ink)}.dec-final{margin:14px 0 4px;padding:12px 14px;background:var(--tint);border-radius:10px}" +
     "#resName,#resClass{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:6px;padding:9px 10px;font:inherit;min-height:44px;background:var(--surface);color:var(--ink)}" +
     ".timer-presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.timer-custom{display:inline-flex;gap:6px;align-items:center;margin-left:6px}" +
     "#timerMin{width:70px;border:1.5px solid var(--line);border-radius:6px;padding:8px;font:inherit;min-height:40px;background:var(--surface);color:var(--ink)}" +

@@ -509,7 +509,7 @@ const ISSUE = {
     }
   },
 
-  world: { room: "no-place-like-home-abc", min: 3, neutral: true },
+  world: { room: "no-place-like-home-abc", min: 1, neutral: true },
 
   // Wording for each activity: solo = Solo Practice, cls = Classroom Mode, team = team prompt
   ui: {
@@ -2149,11 +2149,13 @@ async function wtwPeekLoad(){
 function wtwPeekAttach(){
   const p = $("p-council"), old = $("wtwPeek");
   if (old) old.remove();
-  if (!ISSUE.world || !p || !wtwModel() || state.council.voted || !wtwDone()) return;
+  // Solo: only after finishing on this device. Classroom: always, for the teacher (with a reminder to show it after the vote).
+  if (!ISSUE.world || !p || !wtwModel() || state.council.voted || (!isClass() && !wtwDone())) return;
   const btn = el("button", { type: "button", class: "btn ghost", "data-fid": "wtwpeek", "aria-expanded": WTW.peek ? "true" : "false",
     onclick: () => { WTW.peek = !WTW.peek; if (WTW.peek) { track("world_peek"); wtwPeekLoad(); } else wtwPeekAttach(); },
     text: (WTW.peek ? "🌍 Hide what the world thinks" : "🌍 See what the world thinks") });
-  const wrap = el("div", { class: "wtw-peek", id: "wtwPeek" }, btn);
+  const wrap = el("div", { class: "wtw-peek", id: "wtwPeek" }, btn,
+    isClass() && !wtwDone() ? el("p", { class: "wtw-peek-tip", text: "Best shown after your class has voted, so nobody is swayed." }) : null);
   if (WTW.peek && !WTW.cache[wtwRoom()]) { p.prepend(wrap); return wtwPeekLoad(); }
   if (WTW.peek && WTW.cache[wtwRoom()]) { const b = wtwBox(true); b.id = "wtwPeekBox"; wrap.append(b); }
   p.prepend(wrap);
@@ -2161,13 +2163,13 @@ function wtwPeekAttach(){
 function wtwBox(peek){
   const W = ISSUE.world, room = wtwRoom(), st = WTW.cache[room], M = wtwModel();
   if (peek) M.rows.forEach(r => { r.mine = []; });
-  const min = W.min || 3;
+  const min = W.min || 1;
   const box = el("div", { class: "wtw", id: "wtw", "aria-live": "polite" }, el("span", { class: "kicker", text: W.title || "What the World Thinks" }));
   if (!st || st.status === "loading") { box.append(el("p", { text: "Checking the world results…" })); return box; }
   if (st.status === "error") { box.append(el("p", { text: "The world results can’t be reached right now. Try again later." })); return box; }
   const n = st.counts.n || 0;
-  if (n < min) { box.append(el("p", { text: "The world results will appear soon. Thanks for being one of the first to answer!" })); return box; }
-  box.append(el("p", { class: "wtw-n", text: "Based on " + n + " responses." + (peek ? " The latest results. Looking doesn't add a vote." : "") }));
+  if (n < min) { box.append(el("p", { text: peek ? "Nobody has answered this one yet. Be the first!" : "The world results will appear soon. Thanks for being one of the first to answer!" })); return box; }
+  box.append(el("p", { class: "wtw-n", text: "Based on " + n + (n === 1 ? " response." : " responses.") + (peek ? " The latest results. Looking doesn't add a vote." : "") }));
   // ISSUE.world.note: a line under the count, e.g. "This shows what people chose, not what is safe."
   if (W.note) box.append(el("p", { class: "wtw-caution", text: W.note }));
   if (W.intro) box.append(el("p", { class: "wtw-n", text: W.intro }));   // ISSUE.world.intro: one plain line explaining the bars
@@ -2201,7 +2203,7 @@ function wtwAttach(){
 function wtwStyle(){
   if (!ISSUE.world || $("wtw-css")) return;
   document.head.append(el("style", { id: "wtw-css", text:
-    ".wtw-peek{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:14px}.wtw-peek .wtw{align-self:stretch;border:1px solid var(--line)}" +
+    ".wtw-peek-tip{margin:0;font-size:.85rem;color:var(--muted)}.wtw-peek{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:14px}.wtw-peek .wtw{align-self:stretch;border:1px solid var(--line)}" +
     ".wtw{background:var(--surface);color:var(--ink);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px}" +
     ".wtw .kicker{color:var(--navy)}.wtw-n{font-size:.9rem;color:var(--muted-strong)}" +
     ".wtw-note{font-size:.92rem;margin:14px 0 4px;padding:10px 12px;border-left:3px solid var(--navy);background:var(--surface);color:var(--ink);border-radius:4px;line-height:1.45}.wtw-note b{color:var(--navy)}.is-class .wtw-note{font-size:1.15rem}" +
