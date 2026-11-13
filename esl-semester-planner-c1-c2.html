@@ -211,6 +211,20 @@
       .route .route-sub, .route .homework { font-size: 11px; margin-bottom: 6px; }
       .route li { grid-template-columns: 46px 1fr; }
     }
+
+    .exams-h { margin: 0 0 12px; color: #0b2c5f; font-family: "Playfair Display", Georgia, serif; font-size: clamp(30px, 4.5vw, 44px); line-height: 1.1; }
+    .exams-lead { max-width: 760px; margin: 0 0 30px; color: #334155; font-size: 18px; line-height: 1.7; }
+    .exams-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+    .exams-grid figure { margin: 0; border: 1px solid var(--line); background: #fff; }
+    .exams-grid figure.wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1.9fr 1fr; align-items: center; }
+    .exams-grid figure.wide img { border-bottom: 0; border-right: 1px solid var(--line); }
+    .exams-grid img { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+    .exams-grid figcaption { padding: 16px 18px 18px; font-size: 15px; line-height: 1.6; color: #475569; }
+    .exams-grid figure.wide figcaption { padding: 24px 28px; font-size: 16px; }
+    .exams-grid figcaption b { display: block; margin-bottom: 4px; color: var(--navy); font-size: 16px; }
+    .exams-grid figure.wide figcaption b { font-size: 20px; margin-bottom: 8px; }
+    @media (max-width: 900px) { .exams-grid, .exams-grid figure.wide { grid-template-columns: 1fr; } .exams-grid figure.wide img { border-right: 0; border-bottom: 1px solid var(--line); } }
+    @media print { #exams { display: none !important; } }
   </style>
 </head>
 <body class="level-c">
@@ -361,6 +375,19 @@
 <p class="week-note">Covers Units 3 and 4. The ready-made final in Volume One works the same way as the midterm, with two versions, a quick-grade answer key and an optional speaking test.</p></div>
 </div>
 
+</div>
+</div>
+</section>
+
+<section class="section no-print" id="exams">
+<div class="container">
+<p class="section-label">INCLUDED IN VOLUME ONE</p>
+<h2 class="exams-h">Exams that grade in minutes.</h2>
+<p class="exams-lead">The midterm and final come ready to print, each in two versions, with a cut-out answer key and an optional speaking test. Here is what they look like.</p>
+<div class="exams-grid">
+<figure class="wide"><img src="images/semester-c1-c2-grading.webp" alt="Answer key strip laid beside a student’s answer boxes, with two wrong answers circled" width="1600" height="830" loading="lazy"/><figcaption><b>Grade with the key strip</b>Cut out the answer key and lay it beside the student’s answer boxes. Read across, circle anything that doesn’t match, and move on. About 30 seconds a test. Score = number correct × 2.</figcaption></figure>
+<figure><img src="images/semester-c1-c2-test.webp" alt="Sample page from the C1–C2 midterm exam with answer boxes down the margin" width="1200" height="900" loading="lazy"/><figcaption><b>One folded sheet</b>50 multiple-choice questions in a 4-page A3 booklet. Students write each answer in a box down the right-hand margin.</figcaption></figure>
+<figure><img src="images/semester-c1-c2-speaking.webp" alt="Speaking test topic card and an example class score sheet" width="1200" height="900" loading="lazy"/><figcaption><b>Optional speaking test</b>Students draw a topic card from the unit, and you score them on one sheet while they talk. No marking afterward.</figcaption></figure>
 </div>
 </div>
 </section>
