@@ -2684,7 +2684,7 @@ function gameOpen(){
   GAME.tiles = Array.from({ length: n }, (_, k) => k).sort(() => Math.random() - .5);
   const tiles = el("div", { class: "lr-tiles", style: "grid-template-columns:repeat(" + cols + ",1fr)" },
     Array.from({ length: n }, (_, k) => el("span", { class: "lr-tile", id: "lrt" + k })));
-  const pic = el("div", { class: "lr-pic" }, el("img", { src: gameCover(), alt: "", onerror: function(){ this.parentNode.classList.add("noimg"); } }), tiles);
+  const pic = el("div", { class: "lr-pic" }, el("img", { src: gameCover(), alt: "", onerror: function(){ const alt = "images/issue" + ISSUE.number + "-images.webp"; if (!ISSUE.cover && this.getAttribute("src") !== alt) this.src = alt; else this.parentNode.classList.add("noimg"); } }), tiles);
   const box = el("div", { class: "lr", id: "lrBox", role: "dialog", "aria-modal": "true", "aria-label": "Lightning Round" },
     el("div", { class: "lr-top" },
       el("span", { class: "lr-brand", text: "⚡ Lightning Round · " + ISSUE.title }),
