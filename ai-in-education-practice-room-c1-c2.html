@@ -2297,6 +2297,7 @@ function trackProgress(){
    - My results (Solo): a summary card to screenshot for the teacher. Nothing is sent or stored.
    - Timer (Classroom): a countdown that stays on screen across activities.
    - Clicker / keyboard (Classroom): Page Down / Right arrow = next step, Page Up / Left arrow = back.
+   - Lightning Round (Classroom): a full-screen quiz game from this room's own content (see game section).
    Panels open only when clicked. PAGE_QR (an SVG string) is added at build time. */
 const TOOLS = { open: null, name: null, cls: "", timer: { total: 0, left: 0, run: false, id: null, end: 0 } };
 function pageUrl(){ const c = document.querySelector('link[rel="canonical"]'); return c ? c.href : location.href.split("#")[0]; }
@@ -2546,9 +2547,11 @@ function clickerKey(e){
 }
 
 function toolsMode(m){
-  const r = $("tool-results"), tm = $("tool-timer");
+  const r = $("tool-results"), tm = $("tool-timer"), gm = $("tool-game");
   if (r) r.hidden = m === "class";
   if (tm) tm.hidden = m !== "class";
+  if (gm) gm.hidden = m !== "class";
+  if (m !== "class" && GAME.on) gameClose();
   if ((m === "class" && TOOLS.open === "results") || (m !== "class" && TOOLS.open === "timer")) toolPanel(null);
   if ($("modeDesc") && m === "class") $("modeDesc").textContent += " Clicker or arrow keys: next step / back.";
   if ($("timerFloat")) timerTick();
@@ -2565,6 +2568,7 @@ function toolsInit(){
   const tools = el("div", { class: "tools" },
     btn("results", "My results", '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>'),
     btn("timer", "Timer", '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>'),
+    el("button", { type: "button", class: "tool-btn tool-game", id: "tool-game", onclick: gameOpen }, icon('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'), "Lightning Round"),
     btn("share", "Share with your class", '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>'));
   fs.before(tools); tools.append(fs);
   const after = $("fsMsg");
@@ -2574,6 +2578,7 @@ function toolsInit(){
     el("span", { class: "tf-time", id: "timerFloatTime" }),
     el("button", { type: "button", id: "timerPause", class: "tf-b", onclick: timerPause, text: "Pause" }),
     el("button", { type: "button", class: "tf-b", "aria-label": "Close timer", onclick: timerStop, text: "✕" })));
+  window.addEventListener("keydown", gameKey, true);
   document.addEventListener("keydown", clickerKey, true);
   document.addEventListener("click", e => {
     const a = e.target.closest && e.target.closest("a[href]"); if (!a) return;
@@ -2581,7 +2586,7 @@ function toolsInit(){
     if (/-esl-lesson(-a1-a2|-c1-c2)?\.html/.test(h)) track("lesson_link_click", { link: h });
     else if (/-practice-room(-a1-a2|-c1-c2)?\.html/.test(h)) track("level_switch", { link: h });
   });
-  toolsStyle();
+  toolsStyle(); gameStyle();
 }
 function toolsStyle(){
   document.head.append(el("style", { text:
@@ -2619,6 +2624,183 @@ function toolsStyle(){
     "@keyframes tfflash{50%{transform:scale(1.06)}}@media (prefers-reduced-motion:reduce){.timer-float.up{animation:none}}" +
     "@media (max-width:900px){.share-opts{grid-template-columns:1fr 1fr}}" +
     "@media (max-width:620px){.share-opts{grid-template-columns:1fr}.tools{margin-left:0}}" }));
+}
+
+/* ---------------- Lightning Round (Classroom game) ----------------
+   A full-screen quiz built only from this room's own content: the vocabulary meanings,
+   the gap-fill sentences and the true-or-false statements. Nothing new is written.
+   Works the same for 1 student or 30: students raise hands or call out, the teacher shows
+   the answer, and students keep their own score. The screen never keeps score.
+   Each answer uncovers one tile of the issue's cover photo.
+   Keys: Page Down / Right / Space = show answer, then next question; Page Up / Left = back; Esc = close. */
+const GAME = { on: false, qs: [], i: 0, shown: false, secs: 10, left: 0, tick: null, end: 0, tiles: [] };
+function gameQuestions(){
+  const V = ISSUE.vocab || [], G = ISSUE.gaps || [], T = ISSUE.truefalse || [];
+  const wl = V.some(v => /\s/.test(v.word)) ? "What’s the expression?" : "What’s the word?";
+  const vq = V.map(v => ({ kind: "word", label: wl, q: v.def, a: v.word, note: v.ex || "" }));
+  const gq = G.map(g => ({ kind: "gap", label: "Fill the gap", before: g.before, after: g.after, a: g.answer, note: "" }));
+  const tq = T.map(t => ({ kind: "tf", label: "True or false?", q: t.s, a: t.a ? "True" : "False", note: t.why || "" }));
+  const sh = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const pools = [sh(vq), sh(tq), sh(gq)], out = [];
+  for (let r = 0; pools.some(p => p.length); r++) pools.forEach(p => { if (p.length) out.push(p.shift()); });
+  return out;
+}
+function gameCover(){ return ISSUE.cover || ("images/issue" + ISSUE.number + "-image.webp"); }
+function gameOpen(){
+  toolPanel(null);
+  GAME.on = true; GAME.qs = gameQuestions(); GAME.i = -1; GAME.shown = false;
+  const n = GAME.qs.length, cols = n > 12 ? 5 : 4;
+  GAME.tiles = Array.from({ length: n }, (_, k) => k).sort(() => Math.random() - .5);
+  const tiles = el("div", { class: "lr-tiles", style: "grid-template-columns:repeat(" + cols + ",1fr)" },
+    Array.from({ length: n }, (_, k) => el("span", { class: "lr-tile", id: "lrt" + k })));
+  const pic = el("div", { class: "lr-pic" }, el("img", { src: gameCover(), alt: "", onerror: function(){ const alt = "images/issue" + ISSUE.number + "-images.webp"; if (!ISSUE.cover && this.getAttribute("src") !== alt) this.src = alt; else this.parentNode.classList.add("noimg"); } }), tiles);
+  const box = el("div", { class: "lr", id: "lrBox", role: "dialog", "aria-modal": "true", "aria-label": "Lightning Round" },
+    el("div", { class: "lr-top" },
+      el("span", { class: "lr-brand", text: "⚡ Lightning Round · " + ISSUE.title }),
+      el("span", { class: "lr-count", id: "lrCount" }),
+      el("button", { type: "button", class: "lr-x", "aria-label": "Close the game", onclick: gameClose, text: "✕" })),
+    el("div", { class: "lr-main" }, el("div", { class: "lr-stage", id: "lrStage" }), pic),
+    el("div", { class: "lr-foot" },
+      el("button", { type: "button", class: "btn ghost", id: "lrBack", onclick: gamePrev, text: "← Back" }),
+      el("span", { class: "lr-keys", text: "Clicker or arrow keys work too" }),
+      el("button", { type: "button", class: "btn", id: "lrNext", onclick: gameNext })));
+  document.body.append(box); document.documentElement.classList.add("lr-open");
+  gameIntro(); track("game_start", { game: "lightning" });
+}
+function gameClose(){
+  clearInterval(GAME.tick); GAME.on = false;
+  const b = $("lrBox"); if (b) b.remove(); document.documentElement.classList.remove("lr-open");
+}
+function gameIntro(){
+  const secs = [10, 20, 0];
+  $("lrCount").textContent = "";
+  $("lrStage").replaceChildren(
+    el("p", { class: "lr-kind", text: "How to play" }),
+    el("h2", { class: "lr-title", text: GAME.qs.length + " quick questions from this lesson" }),
+    el("ol", { class: "lr-rules" },
+      el("li", { text: "Read the question. Raise your hand or call out the answer." }),
+      el("li", { text: "When the answer appears, give yourself a point if you were right." }),
+      el("li", { text: "Keep count on your fingers or on paper. Every answer uncovers part of the picture." })),
+    el("div", { class: "lr-set" }, el("span", { text: "Time per question:" }),
+      secs.map(s => el("button", { type: "button", class: "lr-opt" + (GAME.secs === s ? " on" : ""), "aria-pressed": GAME.secs === s ? "true" : "false",
+        onclick: () => { GAME.secs = s; gameIntro(); }, text: s ? s + " seconds" : "No timer" }))));
+  $("lrNext").textContent = "Start →"; $("lrBack").hidden = true;
+}
+function gameRing(){
+  if (!GAME.secs) return null;
+  const s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  s.setAttribute("viewBox", "0 0 44 44"); s.setAttribute("class", "lr-ring"); s.setAttribute("aria-hidden", "true");
+  s.innerHTML = '<circle cx="22" cy="22" r="19" class="lr-ring-bg"/><circle cx="22" cy="22" r="19" class="lr-ring-fg" id="lrRingFg"/><text x="22" y="27" text-anchor="middle" id="lrRingT"></text>';
+  return s;
+}
+function gameTimer(){
+  clearInterval(GAME.tick); if (!GAME.secs) return;
+  GAME.end = Date.now() + GAME.secs * 1000;
+  const C = 2 * Math.PI * 19;
+  const step = () => {
+    const fg = $("lrRingFg"), t = $("lrRingT"); if (!fg) { clearInterval(GAME.tick); return; }
+    const left = Math.max(0, (GAME.end - Date.now()) / 1000);
+    fg.style.strokeDasharray = C; fg.style.strokeDashoffset = C * (1 - left / GAME.secs);
+    t.textContent = left > 0 ? Math.ceil(left) : "0";
+    fg.parentNode.classList.toggle("up", left <= 0);
+    if (left <= 0) clearInterval(GAME.tick);
+  };
+  step(); GAME.tick = setInterval(step, 100);
+}
+function gameRender(){
+  const n = GAME.qs.length;
+  if (GAME.i >= n) return gameEnd();
+  const Q = GAME.qs[GAME.i];
+  $("lrCount").textContent = "Question " + (GAME.i + 1) + " of " + n;
+  const body = Q.kind === "gap"
+    ? el("p", { class: "lr-q" }, Q.before + " ", el("span", { class: "lr-gap" + (GAME.shown ? " filled" : ""), text: GAME.shown ? Q.a : "" }), " " + Q.after)
+    : el("p", { class: "lr-q" + (Q.kind === "word" ? " def" : "") }, Q.kind === "word" ? "“" + Q.q + "”" : Q.q);
+  const hint = Q.kind === "gap" && ISSUE.gapWords ? el("p", { class: "lr-hint", text: "Words: " + ISSUE.gapWords.join(" · ") }) : null;
+  const ans = GAME.shown ? el("div", { class: "lr-ans" + (Q.kind === "tf" ? (Q.a === "True" ? " t" : " f") : "") },
+    el("span", { class: "lr-ans-a", text: Q.a }), Q.note ? el("span", { class: "lr-ans-n", text: Q.note }) : null) : null;
+  $("lrStage").replaceChildren(...[
+    el("div", { class: "lr-head" }, el("p", { class: "lr-kind", text: Q.label }), GAME.shown ? null : gameRing()),
+    body, hint, ans].filter(Boolean));
+  $("lrNext").textContent = GAME.shown ? (GAME.i + 1 < n ? "Next question →" : "Finish →") : "Show answer";
+  $("lrBack").hidden = false;
+  for (let k = 0; k < n; k++) { const t = $("lrt" + GAME.tiles[k]); if (t) t.classList.toggle("gone", k < GAME.i + (GAME.shown ? 1 : 0)); }
+  if (!GAME.shown) gameTimer(); else clearInterval(GAME.tick);
+}
+function gameEnd(){
+  clearInterval(GAME.tick);
+  const n = GAME.qs.length;
+  GAME.tiles.forEach(k => { const t = $("lrt" + k); if (t) t.classList.add("gone"); });
+  const bands = [[n, "Perfect score!"], [Math.ceil(n * .8), "Expert"], [Math.ceil(n * .5), "Getting there"], [0, "Keep practicing"]];
+  $("lrCount").textContent = "";
+  $("lrStage").replaceChildren(
+    el("p", { class: "lr-kind", text: "Finished!" }),
+    el("h2", { class: "lr-title", text: "Count your points." }),
+    el("ul", { class: "lr-bands" }, bands.map((b, j) => el("li", {},
+      el("b", { text: j === 0 ? String(n) : b[0] + (j === 1 ? "–" + (n - 1) : "–" + (bands[j - 1][0] - 1)) }), " " + b[1]))),
+    el("button", { type: "button", class: "btn ghost lr-again", onclick: () => { gameClose(); gameOpen(); }, text: "Play again with a new order" }));
+  $("lrNext").textContent = "Close"; $("lrBack").hidden = false;
+  track("game_finish", { game: "lightning" });
+}
+function gameNext(){
+  if (GAME.i === -1) { GAME.i = 0; GAME.shown = false; return gameRender(); }
+  if (GAME.i >= GAME.qs.length) return gameClose();
+  if (!GAME.shown) { GAME.shown = true; return gameRender(); }
+  GAME.i++; GAME.shown = false; gameRender();
+}
+function gamePrev(){
+  if (GAME.i === -1) return;
+  if (GAME.i >= GAME.qs.length) { GAME.i = GAME.qs.length - 1; GAME.shown = true; return gameRender(); }
+  if (GAME.shown) { GAME.shown = false; return gameRender(); }
+  if (GAME.i === 0) { GAME.i = -1; clearInterval(GAME.tick); return gameIntro(); }
+  GAME.i--; GAME.shown = true; gameRender();
+}
+function gameKey(e){
+  if (!GAME.on || e.altKey || e.ctrlKey || e.metaKey) return;
+  const t = e.target;
+  if (t && /^(SELECT|INPUT|TEXTAREA)$/.test(t.tagName)) return;
+  const fwd = e.key === "PageDown" || e.key === "ArrowRight" || (e.key === " " && !(t && t.tagName === "BUTTON")),
+        back = e.key === "PageUp" || e.key === "ArrowLeft";
+  if (e.key === "Escape") { e.preventDefault(); e.stopImmediatePropagation(); return gameClose(); }
+  if (!fwd && !back) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  if (t && t.blur) t.blur();
+  fwd ? gameNext() : gamePrev();
+}
+function gameStyle(){
+  document.head.append(el("style", { text:
+    "html.lr-open{overflow:hidden}" +
+    ".lr{position:fixed;inset:0;z-index:60;background:var(--bg,#fff);display:flex;flex-direction:column;padding:18px 26px;gap:14px;color:var(--ink)}" +
+    ".lr-top{display:flex;align-items:center;gap:14px;border-bottom:3px solid var(--navy);padding-bottom:10px}" +
+    ".lr-brand{font-weight:800;color:var(--navy);font-size:1.05rem;letter-spacing:.2px}.lr-count{margin-left:auto;font-weight:700;color:var(--muted-strong);font-variant-numeric:tabular-nums}" +
+    ".lr-x{border:1.5px solid var(--line);background:var(--surface);border-radius:6px;min-width:44px;min-height:44px;font-size:1.1rem}" +
+    ".lr-main{flex:1;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:center;min-height:0}" +
+    ".lr-stage{display:flex;flex-direction:column;gap:18px;min-width:0}" +
+    ".lr-head{display:flex;align-items:center;justify-content:space-between;gap:16px}" +
+    ".lr-kind{margin:0;font-size:.9rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--navy)}" +
+    ".lr-title{margin:0;font-family:var(--display);font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.15;color:var(--navy)}" +
+    ".lr-q{margin:0;font-size:clamp(1.6rem,3.2vw,2.7rem);line-height:1.3;font-weight:700}.lr-q.def{font-family:var(--display);font-weight:800}" +
+    ".lr-gap{display:inline-block;min-width:5ch;border-bottom:4px solid var(--navy);padding:0 6px;text-align:center}.lr-gap.filled{background:var(--tint);color:var(--navy)}" +
+    ".lr-hint{margin:0;font-size:1.05rem;color:var(--muted-strong);font-weight:700}" +
+    ".lr-ans{display:flex;flex-direction:column;gap:6px;border-left:6px solid var(--good);background:var(--tint);border-radius:0 10px 10px 0;padding:14px 18px}" +
+    ".lr-ans.f{border-left-color:var(--bad)}.lr-ans-a{font-size:clamp(1.8rem,3.4vw,2.8rem);font-weight:800;color:var(--good)}.lr-ans.f .lr-ans-a{color:var(--bad)}" +
+    ".lr-ans-n{font-size:1.1rem;color:var(--muted-strong);font-style:italic}" +
+    ".lr-ring{width:92px;height:92px;flex:0 0 auto}.lr-ring-bg{fill:none;stroke:var(--line);stroke-width:4}" +
+    ".lr-ring-fg{fill:none;stroke:var(--navy);stroke-width:4;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .1s linear}" +
+    ".lr-ring text{font:800 15px system-ui,sans-serif;fill:var(--navy)}.lr-ring.up .lr-ring-fg{stroke:var(--bad)}.lr-ring.up text{fill:var(--bad)}" +
+    ".lr-pic{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--tint);box-shadow:0 8px 28px rgba(0,0,0,.18)}" +
+    ".lr-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.lr-pic.noimg img{display:none}" +
+    ".lr-tiles{position:absolute;inset:0;display:grid;gap:0}" +
+    ".lr-tile{background:var(--navy);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.14);transition:opacity .45s ease,transform .45s ease}.lr-tile:nth-child(odd){filter:brightness(1.12)}" +
+    ".lr-tile.gone{opacity:0;transform:scale(.85)}" +
+    ".lr-rules{margin:0;padding-left:26px;display:flex;flex-direction:column;gap:10px;font-size:1.25rem;line-height:1.45}" +
+    ".lr-set{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-weight:700;color:var(--muted-strong)}" +
+    ".lr-opt{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 16px;font-weight:700;min-height:44px}.lr-opt.on{background:var(--navy);border-color:var(--navy);color:var(--onnavy)}" +
+    ".lr-bands{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:1.3rem}.lr-bands li{display:contents}.lr-bands b{color:var(--navy);font-variant-numeric:tabular-nums}" +
+    ".lr-again{align-self:flex-start}" +
+    ".lr-foot{display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:12px}.lr-foot .btn{min-height:52px;font-size:1.05rem;padding:10px 22px}" +
+    "#lrNext{margin-left:auto}.lr-keys{color:var(--muted);font-size:.85rem}" +
+    "@media (max-width:820px){.lr{padding:12px 14px}.lr-main{grid-template-columns:1fr;align-content:start;overflow:auto}.lr-pic{max-height:32vh;aspect-ratio:auto;height:32vh}.lr-keys{display:none}.lr-ring{width:64px;height:64px}}" +
+    "@media (prefers-reduced-motion:reduce){.lr-tile,.lr-ring-fg{transition:none}}" }));
 }
 
 /* ---------------- start ---------------- */
